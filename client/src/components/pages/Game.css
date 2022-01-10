@@ -1,0 +1,7 @@
+.Game-canvas {
+  width: 512px;
+  height: 512px;
+  margin: 50px;
+  border: 1px solid black;
+  background-color: white;
+}
