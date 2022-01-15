@@ -28,11 +28,14 @@ export const removeUser = (user: User, socket: Socket): void => {
   socketToUserMap.delete(socket.id);
 };
 
+const DELTA_T_MS = 1000 / 60;
+
 setInterval(() => {
   sendGameState();
-}, 1000 / 60);
+}, DELTA_T_MS);
 
 const sendGameState = () => {
+  logic.updateState(DELTA_T_MS);
   io.emit("update", logic.gameState);
 };
 
