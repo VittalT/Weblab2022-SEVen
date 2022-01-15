@@ -45,9 +45,9 @@ export const init = (server: http.Server): void => {
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
     });
-    socket.on("move", (dir) => {
+    socket.on("boardClick", (x, y) => {
       const user = getUserFromSocketID(socket.id);
-      if (user) logic.movePlayer(user._id, dir);
+      if (user) logic.handleBoardClick(user._id, x, y);
     });
   });
 };

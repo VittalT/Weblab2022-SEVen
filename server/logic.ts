@@ -1,33 +1,6 @@
-/** Utils! */
+import { couldStartTrivia, formatDiagnosticsWithColorAndContext } from "typescript";
 
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-};
-
-const getDistanceFromGoal = (player) => {
-  return Math.abs(player.x - goal.x) + Math.abs(player.y - goal.y);
-};
-
-const getRandomLocation = () => {
-  return {
-    x: getRandomInt(-20, 20) * 20,
-    y: getRandomInt(-20, 20) * 20,
-  };
-};
-
-const getPlayerColor = (id) => {
-  const player = gameState.players[id];
-  const dist = Math.min(getDistanceFromGoal(player) / 800, 1);
-  const blueValue = (1 - dist) * 255;
-  const redValue = dist * 255;
-  return `rgb(${redValue}, 0, ${blueValue})`;
-};
-
-/** constants */
-const goal = getRandomLocation();
-
+/** helper enums */
 enum ClickState {
   Tower,
   Minion,
@@ -41,65 +14,162 @@ enum Size {
   Large,
 }
 
+/** constants */
+type TowerInfo = {
+  health: number;
+  healthRegenRate: number;
+  goldRate: number;
+  cost: number;
+  minAdjBuildRadius: number;
+  maxAdjBuildRadius: number;
+  hitRadius: number;
+};
+const towerInfo: Map<Size, TowerInfo> = new Map<Size, TowerInfo>();
+
+type minionInfo = {
+  damageRate: number;
+  cost: number;
+  speed: number;
+};
+const minionInfo: Map<Size, minionInfo> = new Map<Size, minionInfo>();
+
+type Point = {
+  x: number;
+  y: number;
+};
+
 /** game state */
 type Tower = {
-  health: Number;
-  location: [Number, Number];
+  health: number;
+  location: Point;
   size: Size;
 };
 
 type Minion = {
-  location: [Number, Number];
-  targetLocation: [Number, Number];
-  direction: Number;
+  location: Point;
+  targetLocation: Point;
+  direction: number;
   size: Size;
-  targetTower: String | null; // id
+  targetTower: string | null; // id
 };
 
 type Player = {
-  gold: Number;
-  towers: Map<String, Tower>;
-  minions: Map<String, Minion>;
+  gold: number;
+  towers: Array<Tower>;
+  minions: Array<Minion>;
   clickState: ClickState;
-  towerClicked: String; // id
-  showInfo: Boolean;
-  inGame: Boolean;
+  towerClicked: string; // id
+  showInfo: boolean;
+  inGame: boolean;
 };
 
 type Game = {
   timer: Date;
-  winner: String | null;
-  players: Map<String, Player>;
+  winner: string | null;
+  players: Map<string, Player>;
 };
 
-const gameState: Map<String, Game> = new Map();
+const gameState: Map<string, Game> = new Map<string, Game>();
 // represents all active games
 
 /** game logic */
 
-/** Adds a player to the game state, initialized with a random location */
-const addPlayer = (id) => {
-  gameState.players[id] = getRandomLocation();
-  gameState.players[id].color = getPlayerColor(id);
+const gameOfPlayer = (user_id: string): string => {
+  return "";
 };
 
-/**
- * Moves a player based off the sent data from the "move" socket msg
- * id: the player to move
- * dir: "up", "down", "left", or "right", passed to server through socket from input.js
- */
-const movePlayer = (id, dir) => {
-  if (dir === "up") {
-    gameState.players[id].y += 20;
-  } else if (dir === "down") {
-    gameState.players[id].y -= 20;
-  } else if (dir === "left") {
-    gameState.players[id].x -= 20;
-  } else if (dir === "right") {
-    gameState.players[id].x += 20;
+const getPlayer = (user_id: string): Player => {
+  const game_id = gameOfPlayer(user_id);
+  return gameState.get(game_id).players.get(user_id);
+};
+
+const toggleInfo = (user_id: string) => {
+  const player = getPlayer(user_id);
+  player.showInfo = !player.showInfo;
+};
+
+const distance = (x1: number, y1: number, x2: number, y2: number): number => {
+  return Math.pow(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2), 0.5);
+};
+
+const closeEnough = (user_id: string, x: number, y: number, maxDist: number): boolean => {
+  const player = getPlayer(user_id);
+  for (const tower of player.towers) {
+    if (distance(tower.location.x, tower.location.y, x, y) <= maxDist) {
+      return true;
+    }
   }
-  gameState.players[id].color = getPlayerColor(id);
-  // TODO Step 2 check win on move
+  return false;
+};
+
+const farEnough = (user_id: string, x: number, y: number, minDist: number): boolean => {
+  const player = getPlayer(user_id);
+  for (const tower of player.towers) {
+    if (distance(tower.location.x, tower.location.y, x, y) < minDist) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const buildTower = (user_id: string, towerSize: Size, x: number, y: number) => {
+  const player = getPlayer(user_id);
+  const towerSizeInfo = towerInfo.get(towerSize);
+  if (
+    towerSizeInfo.cost <= player.gold &&
+    closeEnough(user_id, x, y, towerSizeInfo.maxAdjBuildRadius) &&
+    farEnough(user_id, x, y, towerSizeInfo.minAdjBuildRadius)
+  ) {
+    player.gold -= towerSizeInfo.cost;
+    const newTower: Tower = {
+      health: towerSizeInfo.health,
+      location: { x, y },
+      size: towerSize,
+    };
+    player.towers.push(newTower);
+  }
+};
+
+const destroyTower = (user_id: string, towerIndex: number) => {
+  const player = getPlayer(user_id);
+  player.towers.splice(towerIndex, 1);
+  // assign remaining enemy minions to a new tower
+};
+
+const angle = (loc1, loc2): number => {
+  return Math.atan2(loc2.y, loc2.x) - Math.atan2(loc1.y, loc1.x);
+};
+
+const addMinion = (
+  user_id: string,
+  minionSize: Size,
+  allyTowerLoc: Point,
+  enemyTowerLoc: Point
+) => {
+  const player = getPlayer(user_id);
+  const minionSizeInfo = minionInfo.get(minionSize);
+  if (minionSizeInfo.cost <= player.gold) {
+    player.gold -= minionSizeInfo.cost;
+    const newMinion: Minion = {
+      location: allyTowerLoc,
+      targetLocation: enemyTowerLoc,
+      direction: angle(allyTowerLoc, enemyTowerLoc),
+      size: minionSize,
+      targetTower: "0",
+    };
+    player.minions.push(newMinion);
+  }
+};
+
+const destroyMinion = (user_id: string, minionIndex: number) => {
+  const player = getPlayer(user_id);
+  player.minions.splice(minionIndex, 1);
+};
+
+const handleBoardClick = (user_id: string, x: number, y: number) => {
+  const game_id = gameOfPlayer(user_id);
+  gameState.get(game_id).players.get(user_id).clickState = click;
+  gameState.get(game_id).players.get(user_id).towerClicked = towerClickedId;
 };
 
 /** Checks whether a player has won, if a player won, change the game state */
