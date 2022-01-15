@@ -6,8 +6,7 @@ import GoogleLogin, {
 } from "react-google-login";
 import "./Skeleton.css";
 import { RouteComponentProps } from "@reach/router";
-//TODO(weblab student): REPLACE WITH YOUR OWN CLIENT_ID
-const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "231096273873-qsgaohckiltuehaohhm6up2fk68cg53n.apps.googleusercontent.com";
 type Props = RouteComponentProps & {
   userId: String;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
