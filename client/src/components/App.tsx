@@ -9,9 +9,10 @@ import "../utilities.css";
 
 import { Router, RouteComponentProps } from "@reach/router";
 
-import Login from "./pages/Login";
 import NavigationButton from "./modules/NavigationButton";
 import HomeScreen from "./pages/HomeScreen";
+import FindGame from "./pages/FindGame";
+import GameConfig from "./pages/GameConfig";
 
 const App = () => {
   const [userId, setUserId] = useState<String>(undefined);
@@ -48,14 +49,14 @@ const App = () => {
   // All the pages need to have the props extended via RouteComponentProps for @reach/router to work properly. Please use the Skeleton as an example.
   return (
     <Router>
-      <Login path="/" />
-      <HomeScreen path="/homescreen" />
-      <Skeleton
-        path="/skeleton"
+      <HomeScreen
+        path="/"
         handleLogin={handleLogin as (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void}
         handleLogout={handleLogout}
         userId={userId}
       />
+      <FindGame path="/findgame" />
+      <GameConfig path="/gameconfig" />
       <NotFound default={true} />
     </Router>
   );
