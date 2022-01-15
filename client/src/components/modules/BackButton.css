@@ -1,11 +1,17 @@
-.NavigationButton-button {
+.BackButton-button {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  width: 300px;
+  border: 3px solid #73ad21;
+
   font-family: serif, sans-serif, Times;
   margin: 20px;
   border: 1px solid black;
   padding: auto;
-  width: 360px;
-  line-height: 60px;
-  height: 60px;
+  width: 145px;
+  line-height: 45px;
+  height: 45px;
   text-align: center;
   border-radius: 8px;
   color: black;
@@ -14,8 +20,8 @@
   text-decoration: none;
 }
 
-.NavigationButton-text {
+.BackButton-text {
   margin: auto;
-  font-size: 32px;
+  font-size: 24px;
   vertical-align: middle;
 }
