@@ -2,6 +2,7 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 let io: Server;
+const logic = require("./logic");
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
@@ -27,6 +28,14 @@ export const removeUser = (user: User, socket: Socket): void => {
   socketToUserMap.delete(socket.id);
 };
 
+setInterval(() => {
+  sendGameState();
+}, 1000 / 60);
+
+const sendGameState = () => {
+  io.emit("update", logic.gameState);
+};
+
 export const init = (server: http.Server): void => {
   io = new Server(server);
   io.on("connection", (socket) => {
@@ -35,6 +44,10 @@ export const init = (server: http.Server): void => {
       console.log(`socket has disconnected ${socket.id}`);
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
+    });
+    socket.on("move", (dir) => {
+      const user = getUserFromSocketID(socket.id);
+      if (user) logic.movePlayer(user._id, dir);
     });
   });
 };
