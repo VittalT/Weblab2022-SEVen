@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Router } from "@reach/router";
 import { get, post } from "../utilities";
 import NotFound from "./pages/NotFound";
 import Skeleton from "./pages/Skeleton";
@@ -7,6 +6,12 @@ import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-lo
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.css";
+
+import { Router, RouteComponentProps } from "@reach/router";
+
+import Login from "./pages/Login";
+import NavigationButton from "./modules/NavigationButton";
+import HomeScreen from "./pages/HomeScreen";
 
 const App = () => {
   const [userId, setUserId] = useState<String>(undefined);
@@ -43,8 +48,10 @@ const App = () => {
   // All the pages need to have the props extended via RouteComponentProps for @reach/router to work properly. Please use the Skeleton as an example.
   return (
     <Router>
+      <Login path="/" />
+      <HomeScreen path="/homescreen" />
       <Skeleton
-        path="/"
+        path="/skeleton"
         handleLogin={handleLogin as (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void}
         handleLogout={handleLogout}
         userId={userId}
