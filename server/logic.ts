@@ -207,17 +207,17 @@ const explode = (game: Game, userId: string, towerId: number) => {
   // TODO cleanup to delete tower or minion not in game
 };
 
-const updateGameState = (delta_t_ms: number) => {
+const updateGameState = (delta_t_s: number) => {
   for (const game of gameState.values()) {
-    updateMinionLocs(delta_t_ms, game);
-    updateMinionDamage(delta_t_ms, game);
-    updateTowerRegenHealth(delta_t_ms, game);
-    updateTowerDeath(delta_t_ms, game);
-    updateGold(delta_t_ms, game);
+    updateMinionLocs(delta_t_s, game);
+    updateMinionDamage(delta_t_s, game);
+    updateTowerRegenHealth(delta_t_s, game);
+    updateTowerDeath(delta_t_s, game);
+    updateGold(delta_t_s, game);
   }
 };
 
-const updateMinionLocs = (delta_t_ms: number, game: Game) => {
+const updateMinionLocs = (delta_t_s: number, game: Game) => {
   for (const [userId, player] of game.players) {
     for (const minionId of player.minionIds) {
       const minion = getMinion(game, minionId);
@@ -225,8 +225,8 @@ const updateMinionLocs = (delta_t_ms: number, game: Game) => {
         const speed = minionInfo.get(minion.size).speed;
         const xSpeed = speed * Math.cos(minion.direction);
         const ySpeed = speed * Math.sin(minion.direction);
-        minion.location.x += xSpeed * delta_t_ms;
-        minion.location.y += ySpeed * delta_t_ms;
+        minion.location.x += xSpeed * delta_t_s;
+        minion.location.y += ySpeed * delta_t_s;
         if ((minion.location.x - minion.targetLocation.x) * xSpeed > 0) {
           minion.location = minion.targetLocation;
           minion.reachedTarget = true;
@@ -236,28 +236,28 @@ const updateMinionLocs = (delta_t_ms: number, game: Game) => {
   }
 };
 
-const updateMinionDamage = (delta_t_ms: number, game: Game) => {
+const updateMinionDamage = (delta_t_s: number, game: Game) => {
   for (const [userId, player] of game.players) {
     for (const minionId of player.minionIds) {
       const minion = getMinion(game, minionId);
       if (minion.reachedTarget) {
         const targetTower = getTower(game, minion.targetTowerId);
-        targetTower.health -= minionInfo.get(minion.size).damageRate * delta_t_ms;
+        targetTower.health -= minionInfo.get(minion.size).damageRate * delta_t_s;
       }
     }
   }
 };
 
-const updateTowerRegenHealth = (delta_t_ms: number, game: Game) => {
+const updateTowerRegenHealth = (delta_t_s: number, game: Game) => {
   for (const [userId, player] of game.players) {
     for (const towerId of player.towerIds) {
       const tower = getTower(game, towerId);
-      tower.health += towerInfo.get(tower.size).healthRegenRate * delta_t_ms;
+      tower.health += towerInfo.get(tower.size).healthRegenRate * delta_t_s;
     }
   }
 };
 
-const updateTowerDeath = (delta_t_ms: number, game: Game) => {
+const updateTowerDeath = (delta_t_s: number, game: Game) => {
   for (const [userId, player] of game.players) {
     for (const towerId of player.towerIds) {
       const tower = getTower(game, towerId);
@@ -268,11 +268,11 @@ const updateTowerDeath = (delta_t_ms: number, game: Game) => {
   }
 };
 
-const updateGold = (delta_t_ms: number, game: Game) => {
+const updateGold = (delta_t_s: number, game: Game) => {
   for (const [userId, player] of game.players) {
     for (const towerId of player.towerIds) {
       const tower = getTower(game, towerId);
-      player.gold += towerInfo.get(tower.size).goldRate * delta_t_ms;
+      player.gold += towerInfo.get(tower.size).goldRate * delta_t_s;
     }
   }
 };

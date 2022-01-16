@@ -28,14 +28,14 @@ export const removeUser = (user: User, socket: Socket): void => {
   socketToUserMap.delete(socket.id);
 };
 
-const DELTA_T_MS = 1000 / 60;
+const DELTA_T_S = 1 / 60;
 
 setInterval(() => {
   sendGameState();
-}, DELTA_T_MS);
+}, DELTA_T_S * 1000);
 
 const sendGameState = () => {
-  logic.updateState(DELTA_T_MS);
+  logic.updateGameState(DELTA_T_S);
   io.emit("update", logic.gameState);
 };
 
@@ -48,10 +48,10 @@ export const init = (server: http.Server): void => {
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
     });
-    socket.on("boardClick", (x, y) => {
-      const user = getUserFromSocketID(socket.id);
-      if (user) logic.handleBoardClick(user._id, x, y);
-    });
+    // socket.on("boardClick", (x, y) => {
+    //   const user = getUserFromSocketID(socket.id);
+    //   if (user) logic.handleBoardClick(user._id, x, y);
+    // });
   });
 };
 

@@ -8,9 +8,9 @@ import path from "path"; // Allows us to retrieve file paths
 import auth from "./auth"; // weblab authentication helper
 import socketManager from "./server-socket"; // websockets
 import api from "./api";
+require("dotenv").config();
 // Loads environmental variables
 dotenv.config({});
-
 // Server configuration below
 // TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.MONGO_SRV;
