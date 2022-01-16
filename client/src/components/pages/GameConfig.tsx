@@ -6,7 +6,9 @@ import NavigationButton from "../modules/NavigationButton";
 
 import { Router, RouteComponentProps } from "@reach/router";
 
-const GameConfig = (props: RouteComponentProps) => {
+type Props = RouteComponentProps & {};
+
+const GameConfig = (props: Props) => {
   return (
     <>
       <div className="HomeScreen-container">
@@ -14,7 +16,7 @@ const GameConfig = (props: RouteComponentProps) => {
         <div> game type: blah </div>
         <div> game code: blah </div>
         <div> curent players: blah </div>
-        <div> current map; blah (with map preview) </div>
+        <div> current map; blah (with map preview and ability to change map) </div>
         <div> start game button </div>
       </div>
     </>
