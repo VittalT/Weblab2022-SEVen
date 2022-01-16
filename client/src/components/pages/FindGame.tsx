@@ -27,7 +27,7 @@ const FindGame = (props: RouteComponentProps) => {
           </div>
         </div>
       </div>
-      <BackButton text="PRIVATE" destPath="/homescreen" />
+      <BackButton destPath="/" />
     </>
   );
 };
