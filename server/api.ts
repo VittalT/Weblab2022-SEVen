@@ -1,6 +1,7 @@
 import express from "express";
 import auth from "./auth";
 import socketManager from "./server-socket";
+import { Request, Response, NextFunction } from "express";
 const router = express.Router();
 
 router.post("/login", auth.login);
@@ -10,9 +11,9 @@ router.get("/whoami", (req, res) => {
     // Not logged in.
     return res.send({});
   }
-  res.send(req.user);
+  res.send(req.params.user);
 });
-router.post("/initsocket", (req, res) => {
+router.post("/initsocket", (req: Request, res: Response) => {
   // do nothing if user not logged in
   if (req.user) {
     const socket = socketManager.getSocketFromSocketID(req.body.socketid);
@@ -26,7 +27,7 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 
 // anything else falls to this "not found" case
-router.all("*", (req, res) => {
+router.all("*", (req: Request, res: Response) => {
   const msg = `Api route not found: ${req.method} ${req.url}`;
   res.status(404).send({ msg });
 });
