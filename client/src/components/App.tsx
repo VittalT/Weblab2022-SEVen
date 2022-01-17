@@ -13,7 +13,8 @@ import { Router, RouteComponentProps } from "@reach/router";
 import NavigationButton from "./modules/NavigationButton";
 import HomeScreen from "./pages/HomeScreen";
 import FindGame from "./pages/FindGame";
-import GameConfig from "./pages/GameConfig";
+import GameConfigPublic from "./pages/GameConfigPublic";
+import GameConfigPrivate from "./pages/GameConfigPrivate";
 import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 
@@ -59,7 +60,8 @@ const App = () => {
         userId={userId}
       />
       <FindGame path="/findgame" />
-      <GameConfig path="/gameconfig" passedUserId={userId} />
+      <GameConfigPublic path="/gameconfigpublic" passedUserId={userId} />
+      <GameConfigPrivate path="/gameconfigprivate" passedUserId={userId} />
       <GameWaiting path="/gamewaiting" />
       <Lobby path="/lobby" />
       <Game path="/game" userId={userId} gameId={0} />
