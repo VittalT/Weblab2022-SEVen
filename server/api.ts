@@ -45,7 +45,7 @@ router.post("/createGame", (req: Request, res: Response) => {
 });
 
 // gets all games with a certain creator then takes the last one
-router.get("/getGame", async (req: Request, res: Response) => {
+router.get("/getGameByCreatorId", async (req: Request, res: Response) => {
   const allGames = await GameModel.find({ creator_id: req.query.creator_id!.toString() });
   if (allGames.length === 0) {
     console.log("didnt find anything");

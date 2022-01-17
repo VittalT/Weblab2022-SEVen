@@ -9,6 +9,16 @@ import { Router, RouteComponentProps } from "@reach/router";
 import { post } from "../../utilities";
 import { isPropertySignature } from "typescript";
 
+type Game = {
+  is_private: string;
+  game_code: string;
+  map_id: string;
+  created: Date;
+  creator_id: string;
+  players_ids: Array<string>;
+  _id: string;
+};
+
 type Props = RouteComponentProps & {};
 
 const FindGame = (props: Props) => {
@@ -24,12 +34,12 @@ const FindGame = (props: Props) => {
             <NavigationButton
               onClickFunction={doNothing}
               text="PUBLIC"
-              destPath="/gameconfigpublic"
+              destPath="/gameconfig/public"
             />
             <NavigationButton
               onClickFunction={doNothing}
               text="PRIVATE"
-              destPath="/gameconfigprivate"
+              destPath="/gameconfig/private"
             />
           </div>
         </div>
@@ -46,4 +56,4 @@ const FindGame = (props: Props) => {
   );
 };
 
-export default FindGame;
+export { Game, FindGame };
