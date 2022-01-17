@@ -2,7 +2,7 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 let io: Server;
-const logic = require("./logic");
+// const logic = require("./logic");
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
@@ -28,16 +28,16 @@ export const removeUser = (user: User, socket: Socket): void => {
   socketToUserMap.delete(socket.id);
 };
 
-const DELTA_T_S = 1 / 60;
+// const DELTA_T_S = 1 / 60;
 
-setInterval(() => {
-  sendGameState();
-}, DELTA_T_S * 1000);
+// setInterval(() => {
+//   sendGameState();
+// }, DELTA_T_S * 1000);
 
-const sendGameState = () => {
-  logic.updateGameState(DELTA_T_S);
-  io.emit("update", logic.gameState);
-};
+// const sendGameState = () => {
+//   logic.updateGameState(DELTA_T_S);
+//   io.emit("update", logic.gameState);
+// };
 
 export const init = (server: http.Server): void => {
   io = new Server(server);

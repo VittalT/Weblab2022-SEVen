@@ -8,12 +8,9 @@
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true
   },
-  "include": [
-    "./client/"
-  ],
-  "exclude": [
-    "./node_modules"
-  ]
+  "include": ["./client/"],
+  "exclude": ["./node_modules"]
 }

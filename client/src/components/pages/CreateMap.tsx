@@ -6,9 +6,9 @@ import "./CreateMap.css";
 import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
 
-import { Router } from "@reach/router";
+import { Router, RouteComponentProps } from "@reach/router";
 
-type CreateMapProps = {
+type CreateMapProps = RouteComponentProps & {
   userId: string;
 };
 
@@ -21,7 +21,7 @@ const CreateMap = (props: CreateMapProps) => {
 
   return (
     <>
-      <BackButton text="BACK" destPath="/homescreen" />
+      <BackButton destPath="/homescreen" />
       <div className="Creation-titleContainer">
         <h1 className="Creation-gameTitle u-textCenter">Minion Battle</h1>
       </div>
