@@ -15,12 +15,12 @@ type Props = RouteComponentProps & {
 };
 
 const GameConfig = (props: Props) => {
-  const [userId, setUserId] = useState<string>(undefined);
-  const [isPrivate, setIsPrivate] = useState<string>(undefined);
-  const [gameCode, setGameCode] = useState<string>(undefined);
-  const [mapId, setmapId] = useState<string>(undefined);
-  const [creatorId, setcreatorId] = useState<string>(undefined);
-  const [playersIds, setplayersIds] = useState<Array<string>>(undefined);
+  const [userId, setUserId] = useState<string>("");
+  const [isPrivate, setIsPrivate] = useState<string>("");
+  const [gameCode, setGameCode] = useState<string>("");
+  const [mapId, setmapId] = useState<string>("");
+  const [creatorId, setcreatorId] = useState<string>("");
+  const [playersIds, setplayersIds] = useState<Array<string>>([""]);
 
   useEffect(() => {
     console.log(typeof props.passedUserId);
