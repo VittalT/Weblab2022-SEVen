@@ -23,6 +23,8 @@ const loadCurrentPublicGames = async (): Promise<Array<Game>> => {
 const Lobby = (props: Props) => {
   const [publicGames, setPublicGames] = useState<Array<Game>>([]);
 
+  const doNothing = () => {};
+
   useEffect(() => {
     // borrow stuff from chatbook messageslist, basically get the list of shit
     async function performThings() {
@@ -40,7 +42,12 @@ const Lobby = (props: Props) => {
         <div>LOBBY</div>
         <div>
           {publicGames.map((game: Game) => (
-            <LobbyGameDisplay gameCode={game.game_code} /> //ownerName.creator_name} />
+            <NavigationButton
+              onClickFunction={doNothing}
+              destPath={"/gamewaiting/public/" + game.game_code}
+              text={game.game_code}
+            />
+            //<LobbyGameDisplay gameCode={game.game_code} /> //ownerName.creator_name} />
           ))}{" "}
         </div>
       </div>

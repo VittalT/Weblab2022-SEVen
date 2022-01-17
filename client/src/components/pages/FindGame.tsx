@@ -22,7 +22,23 @@ type Game = {
 type Props = RouteComponentProps & {};
 
 const FindGame = (props: Props) => {
+  const [gameCode, setGameCode] = useState<string>("");
+
   const doNothing = () => {};
+
+  const generateCode = (length: number) => {
+    let result = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    setGameCode(generateCode(5));
+  }, []);
 
   return (
     <>
@@ -34,12 +50,12 @@ const FindGame = (props: Props) => {
             <NavigationButton
               onClickFunction={doNothing}
               text="PUBLIC"
-              destPath="/gameconfig/public"
+              destPath={"/gameconfig/public/" + gameCode}
             />
             <NavigationButton
               onClickFunction={doNothing}
               text="PRIVATE"
-              destPath="/gameconfig/private"
+              destPath={"/gameconfig/private/" + gameCode}
             />
           </div>
         </div>

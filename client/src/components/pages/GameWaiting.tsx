@@ -10,7 +10,12 @@ import { Router, RouteComponentProps } from "@reach/router";
 import BackButton from "../modules/BackButton";
 import { isAssertionExpression } from "typescript";
 
-type Props = RouteComponentProps & {
+interface URLProps extends RouteComponentProps {
+  publicPrivate?: string;
+  gameCode?: string;
+}
+
+type Props = URLProps & {
   passedUserId: string;
 };
 
@@ -26,9 +31,6 @@ const GameWaiting = (props: Props) => {
 
   useEffect(() => {
     async function performThings() {
-      const gameCodeThing = props.location!.state;
-      const bop = gameCodeThing.gameCode ?? assert.fail("bop");
-
       const response = await get("/api/getGameByCreatorId", { creator_id: props.passedUserId });
       console.log(response.toString());
 
