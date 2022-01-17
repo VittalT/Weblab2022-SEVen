@@ -21,24 +21,29 @@ const GameConfig = (props: Props) => {
   const [mapId, setmapId] = useState<string>("");
   const [creatorId, setcreatorId] = useState<string>("");
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
+  const [playersNames, setPlayersNames] = useState<Array<string>>([""]);
 
   useEffect(() => {
-    console.log(typeof props.passedUserId);
-    get("/api/getGame", { creatorId: props.passedUserId }).then((response) => {
-      console.log("successfully called get request");
-      if (response.msg !== "Error") {
-        console.log(response.toString());
-        console.log(response.isPrivate);
-        setIsPrivate(response.isPrivate);
-        setGameCode(response.gameCode);
-        setmapId(response.mapId);
-        setcreatorId(response.creatorId);
-        console.log(response.playersIds);
-        setplayersIds(response.playersIds);
-      } else {
-        console.log("Error");
+    async function performThings() {
+      const response = await get("/api/getGame", { creator_id: props.passedUserId });
+      console.log(response.toString());
+
+      setIsPrivate(response.is_private);
+      setGameCode(response.game_code);
+      setmapId(response.map_id);
+      setcreatorId(response.creator_id);
+      setplayersIds(Array.from(response.players_ids));
+
+      const playerIds = Array.from(response.players_ids);
+      let playersNamesArray = new Array<string>();
+      for (let i = 0; i < playerIds.length; i++) {
+        const data = await get("/api/getUserName", { userId: playerIds[i] });
+        playersNamesArray.push(data.userName);
       }
-    });
+      setPlayersNames(playersNamesArray);
+    }
+
+    performThings();
   }, []);
 
   return (
@@ -47,7 +52,7 @@ const GameConfig = (props: Props) => {
         <h3 className="GameConfig-header">MINION BATTLE</h3>
         <div> game type: {isPrivate} </div>
         <div> game code: {gameCode} </div>
-        <div> curent players: </div>
+        <div> curent players: {playersNames.toString()} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
       </div>
