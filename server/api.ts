@@ -62,6 +62,13 @@ router.get("/getGame", async (req: Request, res: Response) => {
   }
 });
 
+// destroys the game in the database
+router.post("/destroyGame", (req: Request, res: Response) => {
+  GameModel.deleteMany({ creator_id: req.body.creator_id!.toString() }).then(() => {
+    res.send({ msg: "Succesfully deleted" });
+  });
+});
+
 router.get("/getUserName", async (req: Request, res: Response) => {
   const userObject = await UserModel.findOne({ _id: req.query.userId?.toString() });
   res.send({ userName: userObject.name });
