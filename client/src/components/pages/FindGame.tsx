@@ -12,28 +12,7 @@ import { isPropertySignature } from "typescript";
 type Props = RouteComponentProps & {};
 
 const FindGame = (props: Props) => {
-  const generateCode = (length: number) => {
-    let result = "";
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
-
-  const createPublicGame = (event: React.MouseEvent<HTMLElement>) => {
-    post("/api/createGame", { is_private: "public", game_code: "N/A", map_id: "default for now" });
-  };
-
-  const createPrivateGame = (event: React.MouseEvent<HTMLElement>) => {
-    const gameCode = generateCode(5);
-    post("/api/createGame", {
-      is_private: "private",
-      game_code: gameCode,
-      map_id: "default for now",
-    });
-  };
+  const doNothing = () => {};
 
   return (
     <>
@@ -43,22 +22,22 @@ const FindGame = (props: Props) => {
           <button className="dropbtn">CREATE</button>
           <div className="dropdown-content">
             <NavigationButton
-              onClickFunction={createPublicGame}
+              onClickFunction={doNothing}
               text="PUBLIC"
-              destPath="/gameconfig"
+              destPath="/gameconfigpublic"
             />
             <NavigationButton
-              onClickFunction={createPrivateGame}
+              onClickFunction={doNothing}
               text="PRIVATE"
-              destPath="/gameconfig"
+              destPath="/gameconfigprivate"
             />
           </div>
         </div>
         <div className="dropdown">
           <button className="dropbtn">JOIN</button>
           <div className="dropdown-content">
-            <NavigationButton onClickFunction={createPublicGame} text="PUBLIC" destPath="/lobby" />
-            <NavigationButton onClickFunction={createPublicGame} text="PRIVATE" destPath="/TODO" />
+            <NavigationButton onClickFunction={doNothing} text="PUBLIC" destPath="/lobby" />
+            <NavigationButton onClickFunction={doNothing} text="PRIVATE" destPath="/TODO" />
           </div>
         </div>
       </div>

@@ -14,17 +14,39 @@ type Props = RouteComponentProps & {
   passedUserId: string;
 };
 
-const GameConfig = (props: Props) => {
+const GameConfigPrivate = (props: Props) => {
   const [userId, setUserId] = useState<string>("");
   const [isPrivate, setIsPrivate] = useState<string>("");
   const [gameCode, setGameCode] = useState<string>("");
   const [mapId, setmapId] = useState<string>("");
   const [creatorId, setcreatorId] = useState<string>("");
+  const [creatorName, setcreatorName] = useState<string>("");
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
   const [playersNames, setPlayersNames] = useState<Array<string>>([""]);
 
+  const generateCode = (length: number) => {
+    let result = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  const createPrivateGame = async () => {
+    const gameCode = generateCode(5);
+    await post("/api/createGame", {
+      is_private: "private",
+      game_code: gameCode,
+      map_id: "default for now",
+    });
+  };
+
   useEffect(() => {
     async function performThings() {
+      const createGame = await createPrivateGame();
+
       const response = await get("/api/getGame", { creator_id: props.passedUserId });
       console.log(response.toString());
 
@@ -33,6 +55,9 @@ const GameConfig = (props: Props) => {
       setmapId(response.map_id);
       setcreatorId(response.creator_id);
       setplayersIds(Array.from(response.players_ids));
+
+      const data = await get("/api/getUserName", { userId: response.creator_id });
+      setcreatorName(data.userName);
 
       const playerIds = Array.from(response.players_ids);
       let playersNamesArray = new Array<string>();
@@ -44,6 +69,10 @@ const GameConfig = (props: Props) => {
     }
 
     performThings();
+
+    return () => {
+      post("/api/destroyGame", { creator_id: props.passedUserId });
+    };
   }, []);
 
   return (
@@ -51,8 +80,9 @@ const GameConfig = (props: Props) => {
       <div className="GameConfig-container">
         <h3 className="GameConfig-header">MINION BATTLE</h3>
         <div> game type: {isPrivate} </div>
-        <div> game code: {gameCode} </div>
+        <div> lobby owner: {creatorName} </div>
         <div> curent players: {playersNames.toString()} </div>
+        <div> game code: {gameCode} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
       </div>
@@ -61,4 +91,4 @@ const GameConfig = (props: Props) => {
   );
 };
 
-export default GameConfig;
+export default GameConfigPrivate;

@@ -12,7 +12,7 @@ const GameSchema = new Schema({
 export interface Game extends Document {
   is_private: string;
   game_code: string;
-  map_dd: string;
+  map_id: string;
   created: Date;
   creator_id: string;
   players_ids: Types.Array<string>;
