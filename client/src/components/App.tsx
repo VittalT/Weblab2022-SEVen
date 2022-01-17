@@ -13,15 +13,17 @@ import NavigationButton from "./modules/NavigationButton";
 import HomeScreen from "./pages/HomeScreen";
 import FindGame from "./pages/FindGame";
 import GameConfig from "./pages/GameConfig";
+import GameWaiting from "./pages/GameWaiting";
+import Lobby from "./pages/Lobby";
 
 const App = () => {
-  const [userId, setUserId] = useState<String>(undefined);
+  const [userId, setUserId] = useState<string>(undefined);
 
   useEffect(() => {
     get("/api/whoami")
-      .then((user: User) => {
+      .then((user) => {
         if (user._id) {
-          // TRhey are registed in the database and currently logged in.
+          // they are registed in the database, and currently logged in.
           setUserId(user._id);
         }
       })
@@ -56,7 +58,9 @@ const App = () => {
         userId={userId}
       />
       <FindGame path="/findgame" />
-      <GameConfig path="/gameconfig" />
+      <GameConfig path="/gameconfig" passedUserId={userId} />
+      <GameWaiting path="/gamewaiting" />
+      <Lobby path="/lobby" />
       <NotFound default={true} />
     </Router>
   );

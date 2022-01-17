@@ -3,7 +3,11 @@ import { Link } from "@reach/router";
 import "../../utilities.css";
 import "./BackButton.css";
 
-const BackButton = (props) => {
+type Props = {
+  destPath: string;
+};
+
+const BackButton = (props: Props) => {
   return (
     <Link to={props.destPath} className="BackButton-button">
       <p className="BackButton-text">&lt;-- BACK</p>

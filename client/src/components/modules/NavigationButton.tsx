@@ -3,9 +3,15 @@ import { Link } from "@reach/router";
 import "../../utilities.css";
 import "./NavigationButton.css";
 
-const NavigationButton = (props) => {
+type Props = {
+  destPath: string;
+  text: string;
+  onClickFunction: React.MouseEventHandler<HTMLAnchorElement>;
+};
+
+const NavigationButton = (props: Props) => {
   return (
-    <Link to={props.destPath} className="NavigationButton-button">
+    <Link onClick={props.onClickFunction} to={props.destPath} className="NavigationButton-button">
       <p className="NavigationButton-text">{props.text}</p>
     </Link>
   );

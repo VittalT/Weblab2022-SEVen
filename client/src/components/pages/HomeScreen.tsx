@@ -21,21 +21,19 @@ type Props = RouteComponentProps & {
 };
 
 const HomeScreen = (props: Props) => {
+  const doNothing = () => {};
+
   return (
     <>
       <div className="HomeScreen-container">
         <h3 className="HomeScreen-header">MINION BATTLE</h3>
         {props.userId ? (
           <>
-            <NavigationButton className="HomeScreen-button" text="FIND GAME" destPath="/findgame" />
-            <NavigationButton className="HomeScreen-button" text="CREATE MAP" destPath="/TODO" />
-            <NavigationButton
-              className="HomeScreen-button"
-              text="CUSTOMIZATIONS"
-              destPath="/TODO"
-            />
-            <NavigationButton className="HomeScreen-button" text="HOW TO PLAY" destPath="/TODO" />
-            <NavigationButton className="HomeScreen-button" text="ACHIEVEMENTS" destPath="/TODO" />
+            <NavigationButton onClickFunction={doNothing} text="FIND GAME" destPath="/findgame" />
+            <NavigationButton onClickFunction={doNothing} text="CREATE MAP" destPath="/TODO" />
+            <NavigationButton onClickFunction={doNothing} text="CUSTOMIZATIONS" destPath="/TODO" />
+            <NavigationButton onClickFunction={doNothing} text="HOW TO PLAY" destPath="/TODO" />
+            <NavigationButton onClickFunction={doNothing} text="ACHIEVEMENTS" destPath="/TODO" />
           </>
         ) : (
           <GoogleLogin
