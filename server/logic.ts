@@ -1,5 +1,4 @@
-import { couldStartTrivia, formatDiagnosticsWithColorAndContext } from "typescript";
-
+import assert from "assert";
 /** helper enums */
 enum ClickState {
   Tower,
@@ -26,12 +25,12 @@ type TowerInfo = {
 };
 const towerInfo: Map<Size, TowerInfo> = new Map<Size, TowerInfo>();
 
-type minionInfo = {
+type MinionInfo = {
   damageRate: number;
   cost: number;
   speed: number;
 };
-const minionInfo: Map<Size, minionInfo> = new Map<Size, minionInfo>();
+const minionInfo: Map<Size, MinionInfo> = new Map<Size, MinionInfo>();
 
 type Point = {
   x: number;
@@ -79,20 +78,20 @@ const gameOfPlayer: Map<string, number> = new Map(); // TODO map player id to ga
 /** game logic */
 
 const getGameOfPlayer = (userId: string): Game => {
-  const gameId = gameOfPlayer.get(userId);
-  return gameState.get(gameId);
+  const gameId = gameOfPlayer.get(userId) ?? assert.fail();
+  return gameState.get(gameId) ?? assert.fail();
 };
 
 const getPlayer = (game: Game, userId: string): Player => {
-  return game.players.get(userId);
+  return game.players.get(userId) ?? assert.fail();
 };
 
 const getTower = (game: Game, towerId: number): Tower => {
-  return game.towers.get(towerId);
+  return game.towers.get(towerId) ?? assert.fail();
 };
 
 const getMinion = (game: Game, minionId: number): Minion => {
-  return game.minions.get(minionId);
+  return game.minions.get(minionId) ?? assert.fail();
 };
 
 const toggleInfo = (game: Game, userId: string) => {
@@ -134,7 +133,7 @@ const farEnough = (game: Game, userId: string, x: number, y: number, minDist: nu
 
 const addTower = (game: Game, userId: string, towerSize: Size, x: number, y: number) => {
   const player = getPlayer(game, userId);
-  const towerSizeInfo = towerInfo.get(towerSize);
+  const towerSizeInfo = towerInfo.get(towerSize) ?? assert.fail();
   if (towerSizeInfo.cost > player.gold) {
     console.log("Not enough money"); // TODO Display this
   } else if (!closeEnough(game, userId, x, y, towerSizeInfo.maxAdjBuildRadius)) {
@@ -160,7 +159,7 @@ const removeTower = (game: Game, towerId: number) => {
   // TODO assign remaining enemy minions to a new tower
 };
 
-const angle = (loc1, loc2): number => {
+const angle = (loc1: Point, loc2: Point): number => {
   return Math.atan2(loc2.y, loc2.x) - Math.atan2(loc1.y, loc1.x);
 };
 
@@ -173,7 +172,7 @@ const addMinion = (
 ) => {
   const player = getPlayer(game, userId);
 
-  const minionSizeInfo = minionInfo.get(minionSize);
+  const minionSizeInfo = minionInfo.get(minionSize) ?? assert.fail();
   const allyTower = getTower(game, allyTowerId);
   const enemyTower = getTower(game, enemyTowerId);
 
@@ -218,11 +217,11 @@ const updateGameState = (delta_t_s: number) => {
 };
 
 const updateMinionLocs = (delta_t_s: number, game: Game) => {
-  for (const [userId, player] of game.players) {
+  for (const player of game.players.values()) {
     for (const minionId of player.minionIds) {
       const minion = getMinion(game, minionId);
       if (!minion.reachedTarget) {
-        const speed = minionInfo.get(minion.size).speed;
+        const speed = (minionInfo.get(minion.size) ?? assert.fail()).speed;
         const xSpeed = speed * Math.cos(minion.direction);
         const ySpeed = speed * Math.sin(minion.direction);
         minion.location.x += xSpeed * delta_t_s;
@@ -237,28 +236,28 @@ const updateMinionLocs = (delta_t_s: number, game: Game) => {
 };
 
 const updateMinionDamage = (delta_t_s: number, game: Game) => {
-  for (const [userId, player] of game.players) {
+  for (const player of game.players.values()) {
     for (const minionId of player.minionIds) {
       const minion = getMinion(game, minionId);
-      if (minion.reachedTarget) {
+      if (minion.targetTowerId && minion.reachedTarget) {
         const targetTower = getTower(game, minion.targetTowerId);
-        targetTower.health -= minionInfo.get(minion.size).damageRate * delta_t_s;
+        targetTower.health -= (minionInfo.get(minion.size) ?? assert.fail()).damageRate * delta_t_s;
       }
     }
   }
 };
 
 const updateTowerRegenHealth = (delta_t_s: number, game: Game) => {
-  for (const [userId, player] of game.players) {
+  for (const player of game.players.values()) {
     for (const towerId of player.towerIds) {
       const tower = getTower(game, towerId);
-      tower.health += towerInfo.get(tower.size).healthRegenRate * delta_t_s;
+      tower.health += (towerInfo.get(tower.size) ?? assert.fail()).healthRegenRate * delta_t_s;
     }
   }
 };
 
 const updateTowerDeath = (delta_t_s: number, game: Game) => {
-  for (const [userId, player] of game.players) {
+  for (const player of game.players.values()) {
     for (const towerId of player.towerIds) {
       const tower = getTower(game, towerId);
       if (tower.health < 0) {
@@ -269,10 +268,10 @@ const updateTowerDeath = (delta_t_s: number, game: Game) => {
 };
 
 const updateGold = (delta_t_s: number, game: Game) => {
-  for (const [userId, player] of game.players) {
+  for (const player of game.players.values()) {
     for (const towerId of player.towerIds) {
       const tower = getTower(game, towerId);
-      player.gold += towerInfo.get(tower.size).goldRate * delta_t_s;
+      player.gold += (towerInfo.get(tower.size) ?? assert.fail()).goldRate * delta_t_s;
     }
   }
 };
