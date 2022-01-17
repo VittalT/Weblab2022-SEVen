@@ -10,11 +10,15 @@ import { Router, RouteComponentProps } from "@reach/router";
 
 import BackButton from "../modules/BackButton";
 
-type Props = RouteComponentProps & {
+interface PublicPrivateProps extends RouteComponentProps {
+  publicPrivate?: string;
+}
+
+type Props = PublicPrivateProps & {
   passedUserId: string;
 };
 
-const GameConfigPrivate = (props: Props) => {
+const GameConfig = (props: Props) => {
   const [userId, setUserId] = useState<string>("");
   const [isPrivate, setIsPrivate] = useState<string>("");
   const [gameCode, setGameCode] = useState<string>("");
@@ -34,6 +38,15 @@ const GameConfigPrivate = (props: Props) => {
     return result;
   };
 
+  const createPublicGame = async () => {
+    const gameCode = generateCode(5);
+    await post("/api/createGame", {
+      is_private: "public",
+      game_code: gameCode,
+      map_id: "default for now",
+    });
+  };
+
   const createPrivateGame = async () => {
     const gameCode = generateCode(5);
     await post("/api/createGame", {
@@ -45,9 +58,14 @@ const GameConfigPrivate = (props: Props) => {
 
   useEffect(() => {
     async function performThings() {
-      const createGame = await createPrivateGame();
+      const publicPrivate = props.publicPrivate;
+      if (publicPrivate === "public") {
+        const createGame = await createPublicGame();
+      } else {
+        const createGame = await createPrivateGame();
+      }
 
-      const response = await get("/api/getGame", { creator_id: props.passedUserId });
+      const response = await get("/api/getGameByCreatorId", { creator_id: props.passedUserId });
       console.log(response.toString());
 
       setIsPrivate(response.is_private);
@@ -75,14 +93,16 @@ const GameConfigPrivate = (props: Props) => {
     };
   }, []);
 
+  // *either you are the host or waiting to start
   return (
     <>
       <div className="GameConfig-container">
         <h3 className="GameConfig-header">MINION BATTLE</h3>
+        <div> GAME CONFIG </div>
         <div> game type: {isPrivate} </div>
-        <div> lobby owner: {creatorName} </div>
-        <div> curent players: {playersNames.toString()} </div>
         <div> game code: {gameCode} </div>
+        <div> *game owner: {creatorName} </div>
+        <div> curent players: {playersNames.toString()} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
       </div>
@@ -91,4 +111,4 @@ const GameConfigPrivate = (props: Props) => {
   );
 };
 
-export default GameConfigPrivate;
+export default GameConfig;

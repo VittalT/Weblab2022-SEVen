@@ -6,15 +6,14 @@ import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-lo
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.css";
-import Game from "./pages/Game";
+// import Game from "./pages/Game";
 
 import { Router, RouteComponentProps } from "@reach/router";
 
 import NavigationButton from "./modules/NavigationButton";
 import HomeScreen from "./pages/HomeScreen";
-import FindGame from "./pages/FindGame";
-import GameConfigPublic from "./pages/GameConfigPublic";
-import GameConfigPrivate from "./pages/GameConfigPrivate";
+import { FindGame } from "./pages/FindGame";
+import GameConfig from "./pages/GameConfig";
 import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 
@@ -60,11 +59,10 @@ const App = () => {
         userId={userId}
       />
       <FindGame path="/findgame" />
-      <GameConfigPublic path="/gameconfigpublic" passedUserId={userId} />
-      <GameConfigPrivate path="/gameconfigprivate" passedUserId={userId} />
-      <GameWaiting path="/gamewaiting" />
+      <GameConfig path="/gameconfig/:publicPrivate" passedUserId={userId} />
+      <GameWaiting path="/gamewaiting" passedUserId={userId} />
       <Lobby path="/lobby" />
-      <Game path="/game" userId={userId} gameId={0} />
+      {/* <Game path="/game" userId={userId} gameId={0} /> */}
       <NotFound default={true} />
     </Router>
   );
