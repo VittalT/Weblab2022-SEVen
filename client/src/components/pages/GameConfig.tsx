@@ -10,11 +10,12 @@ import { Router, RouteComponentProps } from "@reach/router";
 
 import BackButton from "../modules/BackButton";
 
-interface PublicPrivateProps extends RouteComponentProps {
+interface URLProps extends RouteComponentProps {
   publicPrivate?: string;
+  gameCode?: string;
 }
 
-type Props = PublicPrivateProps & {
+type Props = URLProps & {
   passedUserId: string;
 };
 
@@ -28,18 +29,8 @@ const GameConfig = (props: Props) => {
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
   const [playersNames, setPlayersNames] = useState<Array<string>>([""]);
 
-  const generateCode = (length: number) => {
-    let result = "";
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
-
   const createPublicGame = async () => {
-    const gameCode = generateCode(5);
+    const gameCode = props.gameCode;
     await post("/api/createGame", {
       is_private: "public",
       game_code: gameCode,
@@ -48,7 +39,7 @@ const GameConfig = (props: Props) => {
   };
 
   const createPrivateGame = async () => {
-    const gameCode = generateCode(5);
+    const gameCode = props.gameCode;
     await post("/api/createGame", {
       is_private: "private",
       game_code: gameCode,
@@ -59,6 +50,7 @@ const GameConfig = (props: Props) => {
   useEffect(() => {
     async function performThings() {
       const publicPrivate = props.publicPrivate;
+
       if (publicPrivate === "public") {
         const createGame = await createPublicGame();
       } else {

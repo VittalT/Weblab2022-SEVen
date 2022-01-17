@@ -59,8 +59,8 @@ const App = () => {
         userId={userId}
       />
       <FindGame path="/findgame" />
-      <GameConfig path="/gameconfig/:publicPrivate" passedUserId={userId} />
-      <GameWaiting path="/gamewaiting" passedUserId={userId} />
+      <GameConfig path="/gameconfig/:publicPrivate/:gameCode" passedUserId={userId} />
+      <GameWaiting path="/gamewaiting/:publicPrivate/:gameCode" passedUserId={userId} />
       <Lobby path="/lobby" />
       {/* <Game path="/game" userId={userId} gameId={0} /> */}
       <NotFound default={true} />
