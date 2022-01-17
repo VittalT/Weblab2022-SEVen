@@ -1,21 +1,21 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 const GameSchema = new Schema({
-  isPrivate: { type: String },
-  gameCode: { type: String },
-  mapId: { type: String },
+  is_private: { type: String },
+  game_code: { type: String },
+  map_id: { type: String },
   created: { type: Date },
-  creatorId: { type: String },
-  playersIds: [{ type: String }],
+  creator_id: { type: String },
+  players_ids: [{ type: String }],
 });
 
 export interface Game extends Document {
-  isPrivate: string;
-  gameCode: string;
-  mapId: string;
+  is_private: string;
+  game_code: string;
+  map_dd: string;
   created: Date;
-  creatorId: string;
-  playersIds: Types.Array<string>;
+  creator_id: string;
+  players_ids: Types.Array<string>;
   _id: string;
 }
 

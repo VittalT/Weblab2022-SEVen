@@ -4,7 +4,9 @@ import socketManager from "./server-socket";
 import { Request, Response, NextFunction } from "express";
 
 import GameModel from "./models/Game";
+import UserModel from "./models/User";
 import { Mongoose } from "mongoose";
+import { isAssertionExpression } from "typescript";
 
 const router = express.Router();
 
@@ -29,34 +31,40 @@ router.post("/initsocket", (req: Request, res: Response) => {
 
 router.post("/createGame", (req: Request, res: Response) => {
   const newGame = new GameModel({
-    isPrivate: req.body.isPrivate,
-    gameCode: req.body.gameCode,
-    mapId: req.body.mapId,
+    is_private: req.body.is_private,
+    game_code: req.body.game_code,
+    map_id: req.body.map_id,
     created: Date.now(),
-    creatorId: req.user,
-    playersIds: [req.user],
+    creator_id: req.user ? req.user._id : "FAILED",
+    players_ids: [req.user ? req.user._id : "FAILED"],
   });
   newGame.save().then(() => {
     res.status(200).send({ msg: "Success!" });
   });
 });
 
+// gets all games with a certain creator then takes the last one
 router.get("/getGame", async (req: Request, res: Response) => {
-  const students = await GameModel.find({ userId: req.query.userId });
-  if (students.length === 0) {
+  const allGames = await GameModel.find({ creator_id: req.query.creator_id!.toString() });
+  if (allGames.length === 0) {
     console.log("didnt find anything");
     res.send({ msg: "Error" });
   } else {
-    const lastStudent = students[students.length - 1];
+    const lastStudent = allGames[allGames.length - 1];
     res.send({
       msg: "No Error",
-      isPrivate: lastStudent.isPrivate,
-      gameCode: lastStudent.gameCode,
-      mapId: lastStudent.mapId,
-      creatorId: lastStudent.creatorId,
-      playersIds: lastStudent.playersIds,
+      is_private: lastStudent.is_private,
+      game_code: lastStudent.game_code,
+      map_id: lastStudent.map_id,
+      creator_id: lastStudent.creator_id,
+      players_ids: lastStudent.players_ids,
     });
   }
+});
+
+router.get("/getUserName", async (req: Request, res: Response) => {
+  const userObject = await UserModel.findOne({ _id: req.query.userId?.toString() });
+  res.send({ userName: userObject.name });
 });
 
 // |------------------------------|

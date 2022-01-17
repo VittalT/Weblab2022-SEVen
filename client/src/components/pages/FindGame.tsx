@@ -23,13 +23,16 @@ const FindGame = (props: Props) => {
   };
 
   const createPublicGame = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("BWAHHH");
-    post("/api/createGame", { isPrivate: "public", gameCode: "N/A", mapId: "default for now" });
+    post("/api/createGame", { is_private: "public", game_code: "N/A", map_id: "default for now" });
   };
 
   const createPrivateGame = (event: React.MouseEvent<HTMLElement>) => {
     const gameCode = generateCode(5);
-    post("/api/createGame", { isPrivate: "private", gameCode: gameCode, mapId: "default for now" });
+    post("/api/createGame", {
+      is_private: "private",
+      game_code: gameCode,
+      map_id: "default for now",
+    });
   };
 
   return (
