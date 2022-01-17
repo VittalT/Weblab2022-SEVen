@@ -17,7 +17,7 @@ import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 
 const App = () => {
-  const [userId, setUserId] = useState<string>(undefined);
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
     get("/api/whoami")
@@ -43,7 +43,7 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    setUserId(undefined);
+    setUserId("");
     post("/api/logout");
   };
 
