@@ -4,6 +4,7 @@ import socketManager from "./server-socket";
 import { Request, Response, NextFunction } from "express";
 
 import GameModel from "./models/Game";
+import Game from "./models/Game";
 import UserModel from "./models/User";
 import { Mongoose } from "mongoose";
 import { isAssertionExpression } from "typescript";
@@ -72,6 +73,13 @@ router.post("/destroyGame", (req: Request, res: Response) => {
 router.get("/getUserName", async (req: Request, res: Response) => {
   const userObject = await UserModel.findOne({ _id: req.query.userId?.toString() });
   res.send({ userName: userObject.name });
+});
+
+router.get("/getPublicGames", (req: Request, res: Response) => {
+  GameModel.find({ is_private: "public" }).then((lobbies: Array<typeof Game>) => {
+    console.log(lobbies);
+    res.send(lobbies);
+  });
 });
 
 // |------------------------------|
