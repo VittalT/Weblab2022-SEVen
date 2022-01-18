@@ -72,7 +72,7 @@ const GameWaiting = (props: Props) => {
         <div> curent players: {playersNames.toString()} </div>
         <div> current map (TO DO: just display it): {mapId} </div>
       </div>
-      <BackButton destPath="/findgame" />
+      <BackButton text="BACK" destPath="/findgame" />
     </>
   );
 };

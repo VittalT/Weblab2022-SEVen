@@ -5,12 +5,13 @@ import "./BackButton.css";
 
 type Props = {
   destPath: string;
+  text: string;
 };
 
 const BackButton = (props: Props) => {
   return (
     <Link to={props.destPath} className="BackButton-button">
-      <p className="BackButton-text">&lt;-- BACK</p>
+      <p className="BackButton-text">&lt;-- {props.text}</p>
     </Link>
   );
 };

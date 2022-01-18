@@ -51,7 +51,7 @@ const Lobby = (props: Props) => {
           ))}{" "}
         </div>
       </div>
-      <BackButton destPath="/findgame" />
+      <BackButton text="BACK" destPath="/findgame" />
     </>
   );
 };

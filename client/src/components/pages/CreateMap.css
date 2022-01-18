@@ -1,5 +1,9 @@
+.overallDiv {
+  background: #ef5d3b;
+}
+
 .Creation-titleContainer {
-  height: 100vh;
+  height: 20vh;
   width: 100%;
   position: relative;
   display: flex;
@@ -32,9 +36,16 @@
 }
 
 .Creation-button {
+  background-color: #98c1d9;
   font-family: "Open Sans";
   font-size: 14px;
   padding: var(--s) var(--m);
+}
+
+.configurables {
+  padding-top: 10%;
+  padding-bottom: 10%;
+  font-family: Metal Mania;
 }
 
 .dropbtn {

@@ -9,6 +9,7 @@ import UserModel from "./models/User";
 import MapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import { getTokenSourceMapRange, isAssertionExpression } from "typescript";
+import { minionConstants, towerConstants } from "./models/GameState";
 
 const router = express.Router();
 
@@ -129,6 +130,10 @@ router.get("/getPublicGames", (req: Request, res: Response) => {
     console.log(lobbies);
     res.send(lobbies);
   });
+});
+
+router.get("/gameConstants", (req: Request, res: Response) => {
+  res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
 });
 
 // |------------------------------|
