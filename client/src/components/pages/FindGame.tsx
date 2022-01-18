@@ -67,7 +67,7 @@ const FindGame = (props: Props) => {
           </div>
         </div>
       </div>
-      <BackButton destPath="/" />
+      <BackButton text="BACK" destPath="/" />
     </>
   );
 };

@@ -6,8 +6,8 @@ import {
   Minion,
   Player,
   GameState,
-  towerInfo,
-  minionInfo,
+  towerConstants,
+  minionConstants,
   gameState,
   getTeamId,
   getPlayer,
@@ -16,23 +16,21 @@ import {
 } from "../../server/models/GameState";
 
 let canvas: HTMLCanvasElement;
-let goldSize: number = 1;
-let goldColor: string = "FFFF00";
 /** utils */
 
 // converts a coordinate in a normal X Y plane to canvas coordinates
-const convertCoord = (loc: Point): Point => {
-  return {
-    x: loc.x, // canvas.width / 2 + loc.x,
-    y: canvas.height - loc.y, // canvas.height / 2 - loc.y,
-  };
-};
+// const convertCoord = (loc: Point): Point => {
+//   return {
+//     x: loc.x, // canvas.width / 2 + loc.x,
+//     y: canvas.height - loc.y, // canvas.height / 2 - loc.y,
+//   };
+// };
 
 const colors: Array<string> = [
-  "EE6C4D", // orange
-  "98C1D9", // light blue
-  "08A721", // light green
-  "CFD215", // brown-ish yellow
+  "#EE6C4D", // orange
+  "#98C1D9", // light blue
+  "#08A721", // light green
+  "#CFD215", // brown-ish yellow
 ];
 
 // fills a circle at a given x, y canvas coord with radius and color
@@ -82,17 +80,17 @@ const fillTriangle = (
 /** drawing functions */
 
 const drawTower = (context: CanvasRenderingContext2D, tower: Tower, teamId: number) => {
-  const drawLoc = convertCoord(tower.location);
+  const drawLoc = tower.location;
+  const towerRadius = towerConstants[tower.size].hitRadius;
 
   // draw circle
   const color = colors[teamId];
-  fillCircle(context, drawLoc, tower.size, color);
+  fillCircle(context, drawLoc, towerRadius, color);
 
   // draw health bar
-  context.fillStyle = "green";
-  const totalHealth = (towerInfo.get(tower.size) ?? assert.fail()).health;
+  const totalHealth = towerConstants[tower.size].health;
   const fracHealth = tower.health / totalHealth;
-  fillHealthBar(context, drawLoc, tower.size, fracHealth);
+  fillHealthBar(context, drawLoc, towerRadius, fracHealth);
 };
 
 const fillHealthBar = (
@@ -109,15 +107,12 @@ const fillHealthBar = (
 };
 
 const drawMinion = (context: CanvasRenderingContext2D, minion: Minion, teamId: number) => {
-  const drawLoc = convertCoord(minion.location);
+  const drawLoc = minion.location;
+  const minionRadius = minionConstants[minion.size].boundingRadius;
 
   // draw triangle
   const color = colors[teamId];
-  fillTriangle(context, drawLoc, minion.size, minion.direction, color);
-};
-
-const drawGoldMine = (context: CanvasRenderingContext2D, coord: Point) => {
-  fillCircle(context, coord, goldSize, goldColor);
+  fillTriangle(context, drawLoc, minionRadius, minion.direction, color);
 };
 
 /** main draw */
@@ -132,7 +127,7 @@ export const drawCanvas = (gameState: GameState) => {
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   // display all towers and minions
-  for (const [userId, player] of gameState.players) {
+  for (const [userId, player] of Object.entries(gameState.players)) {
     const teamId = getTeamId(gameState, userId);
     for (const towerId of player.towerIds) {
       const tower = getTower(gameState, towerId);
@@ -142,21 +137,5 @@ export const drawCanvas = (gameState: GameState) => {
       const minion = getMinion(gameState, minionId);
       drawMinion(context, minion, teamId);
     }
-  }
-};
-
-export const drawCreateCanvas = (goldMines: Point[]) => {
-  canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
-  canvas.addEventListener("click", (event: MouseEvent) => {
-    let coord: Point = { x: event.offsetX, y: event.offsetY };
-    //setGoldMines([...goldMines, coord]);
-    drawCreateCanvas([coord]);
-  });
-  if (!canvas) return;
-  const context = canvas.getContext("2d") ?? assert.fail();
-  context.fillStyle = "black";
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  for (const coord of goldMines) {
-    drawGoldMine(context, coord);
   }
 };

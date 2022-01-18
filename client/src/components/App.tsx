@@ -20,7 +20,7 @@ import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 
 const App = () => {
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     get("/api/whoami")
@@ -41,7 +41,10 @@ const App = () => {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
+      post("/api/initsocket", { socketid: socket.id });
       setUserId(user._id);
+      // console.log(`User Id: ${user._id}`);
+      // console.log(`User Id: ${userId}`);
     });
   };
 
@@ -65,7 +68,7 @@ const App = () => {
       <GameConfig path="/gameconfig/:publicPrivate/:gameCode" passedUserId={userId} />
       <GameWaiting path="/gamewaiting/:publicPrivate/:gameCode" passedUserId={userId} />
       <Lobby path="/lobby" />
-      {/* <Game path="/game" userId={userId} gameId={0} /> */}
+      <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
     </Router>
   );

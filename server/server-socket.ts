@@ -1,6 +1,7 @@
 import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
+import { ClickState, gameState, Size } from "./models/GameState";
 let io: Server;
 const logic = require("./logic");
 
@@ -36,7 +37,11 @@ setInterval(() => {
 
 const sendGameState = () => {
   logic.timeUpdate(DELTA_T_S);
-  io.emit("update", logic.gameState);
+  io.emit("update", gameState);
+};
+
+export const updateDisplay = (userId: string, message: string) => {
+  io.emit("updateDisplay", userId, message);
 };
 
 export const init = (server: http.Server): void => {
@@ -48,10 +53,18 @@ export const init = (server: http.Server): void => {
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
     });
-    // socket.on("boardClick", (x, y) => {
-    //   const user = getUserFromSocketID(socket.id);
-    //   if (user) logic.handleBoardClick(user._id, x, y);
-    // });
+    socket.on("GamePanel/click", (click: { gameId: number; clickType: ClickState; size: Size }) => {
+      // console.log(`C ${click.clickType} ${click.size}`);
+      const user = getUserFromSocketID(socket.id);
+      if (user) {
+        logic.updateGamePanelClickState(click.gameId, user._id, click.clickType, click.size);
+      }
+    });
+    socket.on("GameMap/click", (click: { gameId: number; x: number; y: number }) => {
+      // console.log(`C ${click.x} ${click.y}`);
+      const user = getUserFromSocketID(socket.id);
+      if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
+    });
   });
 };
 
@@ -65,4 +78,5 @@ export default {
   getSocketFromSocketID,
   getUserFromSocketID,
   getSocketFromUserID,
+  updateDisplay,
 };
