@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "../../utilities.css";
 import "../../input";
-import "./Game.css";
+import "./GamePanel.css";
 import { socket, clickGamePanelButton } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
@@ -37,28 +37,31 @@ const GamePanel = (props: GameProps) => {
 
   return (
     <>
-      <div className="Game-body">
-        <Gold amount={props.gold} />
+      <div className="GamePanel-body">
+        <Gold amount={Math.round(props.gold)} />
         {towerSizes.map((size, i) => (
           <button
+            className="GamePanel-button"
             key={i}
             onClick={() => clickGamePanelButton(props.gameId, ClickState.Tower, size)}
           >
-            {size} Tower
+            <p className="GamePanel-text"> {size} Tower </p>
           </button>
         ))}
         {minionSizes.map((size, i) => (
           <button
+            className="GamePanel-button"
             key={i}
             onClick={() => clickGamePanelButton(props.gameId, ClickState.Minion, size)}
           >
-            {size} Minion
+            <p className="GamePanel-text"> {size} Minion </p>
           </button>
         ))}
         <button
+          className="GamePanel-button"
           onClick={() => clickGamePanelButton(props.gameId, ClickState.Explosion, Size.Small)}
         >
-          Explosion
+          <p className="GamePanel-text"> Explosion </p>
         </button>
       </div>
     </>

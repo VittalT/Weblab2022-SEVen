@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "../../utilities.css";
 import "../../input";
-import "./Game.css";
+import "./GameMap.css";
 import { socket, clickGameMap } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
@@ -26,13 +26,17 @@ const GameMap = (props: GameMapProps) => {
   ) as unknown as HTMLCanvasElement;
 
   useEffect(() => {
-    canvas.addEventListener("click", (event: MouseEvent) => {
-      // replace ⭐ with O or circle emoji to draw a blank
-      clickGameMap(props.gameId, event.offsetX, event.offsetY);
-    });
+    // canvas.addEventListener("click", (event: MouseEvent) => {
+    //   // replace ⭐ with O or circle emoji to draw a blank
+    //   clickGameMap(props.gameId, event.offsetX, event.offsetY);
+    // });
   }, []);
 
-  return <div>{canvas}</div>;
+  return (
+    <>
+      <div>{canvas}</div>
+    </>
+  );
 };
 
 export default GameMap;

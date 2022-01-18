@@ -19,13 +19,12 @@ type GameProps = RouteComponentProps & {
 };
 
 const Game = (props: GameProps) => {
-  const [winner, setWinner] = useState(null);
   const [gold, setGold] = useState(0);
   const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
   const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
 
   useEffect(() => {
-    socket.on("update", (gameState: Map<number, GameState>) => {
+    socket.on("update", (gameState: Record<number, GameState>) => {
       processUpdate(gameState);
     });
   }, []);
@@ -39,30 +38,34 @@ const Game = (props: GameProps) => {
     );
   }, []);
 
-  const processUpdate = (gameState: Map<number, GameState>) => {
-    const game = gameState.get(props.gameId) ?? assert.fail();
+  const processUpdate = (gameState: Record<number, GameState>) => {
+    console.log(gameState);
+    const game = gameState[props.gameId];
+    console.log(game);
     updateGold(game);
     drawCanvas(game);
   };
 
   const updateGold = (game: GameState) => {
-    const player = game.players.get(props.userId) ?? assert.fail();
+    console.log("gae");
+    console.log(game);
+    console.log(props.userId);
+    const player = game.players[props.userId];
+    console.log(player);
     setGold(player.gold);
   };
 
   const doNothing = () => {};
 
-  let winnerModal = null;
-  if (winner) {
-    winnerModal = <div className="Game-winner">the winner is {winner} yay cool cool</div>;
-  }
   return (
     <>
       <div className="Game-body">
-        <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" />
-        <GameMap width={1000} height={800} gameId={props.gameId} />
+        <div>
+          {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
+          <GameMap width={1600} height={750} gameId={props.gameId} />
+        </div>
         <GamePanel
-          width={1000}
+          width={1600}
           height={200}
           userId={props.userId}
           gameId={props.gameId}
@@ -70,7 +73,6 @@ const Game = (props: GameProps) => {
           minionConstants={minionConstants}
           gold={gold}
         />
-        {winnerModal}
       </div>
     </>
   );

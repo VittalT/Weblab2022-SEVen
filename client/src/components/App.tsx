@@ -20,7 +20,7 @@ import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 
 const App = () => {
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     get("/api/whoami")
@@ -42,6 +42,8 @@ const App = () => {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
       setUserId(user._id);
+      console.log(`User Id: ${user._id}`);
+      console.log(`User Id: ${userId}`);
     });
   };
 

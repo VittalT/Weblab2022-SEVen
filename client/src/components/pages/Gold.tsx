@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "../../utilities.css";
 import "../../input";
-import "./Game.css";
+import "./Gold.css";
 import { socket } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
@@ -25,7 +25,9 @@ const Gold = (props: GoldProps) => {
 
   return (
     <>
-      <div className="Game-body">{props.amount}</div>
+      <div className="GamePanel-button">
+        <p className="GamePanel-text">Gold: {props.amount}</p>
+      </div>
     </>
   );
 };
