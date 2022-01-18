@@ -57,7 +57,7 @@ const Game = (props: GameProps) => {
   }, []);
 
   const processUpdate = (gameState: Record<number, GameState>) => {
-    // console.log(gameState);
+    console.log(gameState);
     const game = gameState[props.gameId];
 
     updateDisplayState(game);
