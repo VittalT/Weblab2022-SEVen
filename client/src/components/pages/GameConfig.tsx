@@ -29,6 +29,10 @@ const GameConfig = (props: Props) => {
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
   const [playersNames, setPlayersNames] = useState<Array<string>>([""]);
 
+  const startGame = () => {
+    post("/api/startGame", { gameId: gameCode, userIds: playersIds });
+  };
+
   const createPublicGame = async () => {
     const gameCode = props.gameCode;
     await post("/api/createGame", {
@@ -99,6 +103,7 @@ const GameConfig = (props: Props) => {
         <div> curent players: {playersNames.toString()} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
+        <NavigationButton destPath="/game" text="START" onClickFunction={startGame} />
       </div>
       <BackButton text="BACK" destPath="/findgame" />
     </>
