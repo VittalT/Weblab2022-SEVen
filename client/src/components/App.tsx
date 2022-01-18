@@ -18,6 +18,7 @@ import CreateMap from "./pages/CreateMap";
 import GameConfig from "./pages/GameConfig";
 import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
+import HowToPlay from "./pages/HowToPlay";
 
 const App = () => {
   const [userId, setUserId] = useState("");
@@ -70,6 +71,7 @@ const App = () => {
       <Lobby path="/lobby" />
       <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
+      <HowToPlay path="/howtoplay" />
     </Router>
   );
 };
