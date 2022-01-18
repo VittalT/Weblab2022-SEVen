@@ -21,13 +21,9 @@ type GameMapProps = {
 };
 
 const GameMap = (props: GameMapProps) => {
-  const canvas: HTMLCanvasElement = (
-    <canvas id="game-canvas" width={props.width} height={props.height} />
-  ) as unknown as HTMLCanvasElement;
-
   useEffect(() => {
-    const canvas2 = document.getElementById("game-canvas") ?? assert.fail();
-    canvas2.addEventListener("click", (event: MouseEvent) => {
+    const canvas = document.getElementById("game-canvas") ?? assert.fail();
+    canvas.addEventListener("click", (event: MouseEvent) => {
       // console.log(`A ${event.offsetX} ${event.offsetY}`);
       clickGameMap(props.gameId, event.offsetX, event.offsetY);
     });
@@ -35,7 +31,7 @@ const GameMap = (props: GameMapProps) => {
 
   return (
     <>
-      <div>{canvas}</div>
+      <canvas id="game-canvas" width={props.width} height={props.height} />
     </>
   );
 };

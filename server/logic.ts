@@ -74,7 +74,6 @@ const addTower = (game: GameState, userId: string, towerSize: Size, loc: Point) 
 };
 
 const removeTower = (game: GameState, towerId: number) => {
-  console.log("REMOVE");
   const tower = getTower(game, towerId);
   for (const minionId of tower.enemyMinionIds) {
     const minion = getMinion(game, minionId);
@@ -188,7 +187,7 @@ const updateMinionDamage = (delta_t_s: number, game: GameState) => {
         const targetTower = getTower(game, minion.targetTowerId);
         targetTower.health = Math.max(
           targetTower.health - minionConstants[minion.size].damageRate * delta_t_s,
-          0
+          -1
         );
       }
     }
