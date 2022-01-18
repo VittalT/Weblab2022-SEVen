@@ -6,12 +6,11 @@ import { Request, Response, NextFunction } from "express";
 import GameModel from "./models/Game";
 import Game from "./models/Game";
 import UserModel from "./models/User";
+import MapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import { getTokenSourceMapRange, isAssertionExpression } from "typescript";
 
 const router = express.Router();
-
-const Map = require("./models/map");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -33,7 +32,7 @@ router.post("/initsocket", (req: Request, res: Response) => {
 });
 
 router.post("/createMap", (req: Request, res: Response) => {
-  const newMap = new Map({
+  const newMap = new MapModel({
     name: req.body.name,
     creator_id: req.body.creator_id,
     num_players: req.body.num_players,
