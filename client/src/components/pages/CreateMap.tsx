@@ -5,27 +5,34 @@ import "./CreateMap.css";
 
 import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
+import { Point } from "../../../../server/models/GameState";
 
 import { Router, RouteComponentProps } from "@reach/router";
 // import { drawCanvas } from "../../canvasManager";
 import { post } from "../../utilities";
+import { isNonNullChain } from "typescript";
+import assert from "assert";
 
 type CreateMapProps = RouteComponentProps & {
   userId: string;
 };
 
 const CreateMap = (props: CreateMapProps) => {
-  const [addGoldToggled, setAddGoldToggled] = useState(false);
-  const [mapName, setMapName] = useState("New Map");
-  const [creatorName, setCreatorName] = useState(props.userId);
-  const [numPlayers, setNumPlayers] = useState(2);
-  const [goldMines, setGoldMines] = useState([]);
-  const [towers, setTowers] = useState([]);
+  const [addGoldToggled, setAddGoldToggled] = useState<boolean>(false);
+  const [mapName, setMapName] = useState<string>("New Map");
+  const [creatorName, setCreatorName] = useState<string>(props.userId);
+  const [numPlayers, setNumPlayers] = useState<number>(2);
+  const [goldMines, setGoldMines] = useState<Point[]>([]);
+  const [towers, setTowers] = useState<Point[]>([]);
+
+  let canvas = document.getElementById("create-canvas") ?? assert.fail("missing canvas");
+  canvas.addEventListener("click", (event: MouseEvent) => {
+    let coord: Point = { x: event.offsetX, y: event.offsetY };
+    setGoldMines([...goldMines, coord]);
+  });
 
   const canvasWidth = 800;
   const canvasHeight = 800;
-
-  const handleClick = () => {};
 
   const toggleAddGold = () => {
     setAddGoldToggled(!addGoldToggled);
@@ -48,7 +55,9 @@ const CreateMap = (props: CreateMapProps) => {
       towers: towers,
       created: Date.now(),
     };
-    post("/api/maps", mapInfo);
+    post("/api/createMap", mapInfo).then(() => {
+      console.log("Added map");
+    });
   };
 
   return (
@@ -59,12 +68,7 @@ const CreateMap = (props: CreateMapProps) => {
       </div>
       <div className="u-flex">
         <div className="Creation-subContainer">
-          <canvas
-            id="create-canvas"
-            width={canvasWidth}
-            height={canvasHeight}
-            onClick={handleClick}
-          />
+          <canvas id="create-canvas" width={canvasWidth} height={canvasHeight} />
           <button className="Creation-button u-pointer" onClick={toggleAddGold}>
             Add gold
           </button>
