@@ -31,7 +31,9 @@ const GameWaiting = (props: Props) => {
 
   useEffect(() => {
     async function performThings() {
-      const response = await get("/api/getGameByCreatorId", { creator_id: props.passedUserId });
+      // in here, we have to add the userID to the game and then return a function that keeps it done
+      const response = await post("/api/joinGame", { game_code: props.gameCode });
+
       console.log(response.toString());
 
       setIsPrivate(response.is_private);
@@ -55,7 +57,7 @@ const GameWaiting = (props: Props) => {
     performThings();
 
     return () => {
-      //delete user from database
+      post("/api/leaveGame", { game_code: props.gameCode });
     };
   }, []);
 
