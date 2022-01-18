@@ -34,7 +34,7 @@ const colors: Array<string> = [
 ];
 
 // fills a circle at a given x, y canvas coord with radius and color
-const fillCircle = (
+export const fillCircle = (
   context: CanvasRenderingContext2D,
   loc: Point,
   radius: number,
