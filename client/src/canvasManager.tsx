@@ -16,8 +16,6 @@ import {
 } from "../../server/models/GameState";
 
 let canvas: HTMLCanvasElement;
-let goldSize: number = 1;
-let goldColor: string = "FFFF00";
 /** utils */
 
 // converts a coordinate in a normal X Y plane to canvas coordinates
@@ -116,10 +114,6 @@ const drawMinion = (context: CanvasRenderingContext2D, minion: Minion, teamId: n
   fillTriangle(context, drawLoc, minion.size, minion.direction, color);
 };
 
-const drawGoldMine = (context: CanvasRenderingContext2D, coord: Point) => {
-  fillCircle(context, coord, goldSize, goldColor);
-};
-
 /** main draw */
 export const drawCanvas = (gameState: GameState) => {
   // get the canvas element
@@ -144,19 +138,3 @@ export const drawCanvas = (gameState: GameState) => {
     }
   }
 };
-
-// export const drawCreateCanvas = (goldMines: Point[]) => {
-//   canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
-//   canvas.addEventListener("click", (event: MouseEvent) => {
-//     let coord: Point = { x: event.offsetX, y: event.offsetY };
-//     //setGoldMines([...goldMines, coord]);
-//     drawCreateCanvas([coord]);
-//   });
-//   if (!canvas) return;
-//   const context = canvas.getContext("2d") ?? assert.fail();
-//   context.fillStyle = "black";
-//   context.fillRect(0, 0, canvas.width, canvas.height);
-//   for (const coord of goldMines) {
-//     drawGoldMine(context, coord);
-//   }
-// };
