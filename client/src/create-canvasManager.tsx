@@ -1,17 +1,6 @@
 import { Point } from "../../server/models/GameState";
 import assert from "assert";
-
-const fillCircle = (
-  context: CanvasRenderingContext2D,
-  loc: Point,
-  radius: number,
-  color: string
-) => {
-  context.beginPath();
-  context.arc(loc.x, loc.y, radius, 0, 2 * Math.PI, false);
-  context.fillStyle = color;
-  context.fill();
-};
+import { fillCircle } from "./canvasManager";
 
 let canvas: HTMLCanvasElement;
 let scaleFactor: number = 2;
