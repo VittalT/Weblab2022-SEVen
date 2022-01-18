@@ -7,6 +7,7 @@ import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.css";
 import Game from "./pages/Game";
+import assert from "assert";
 
 import { Router, RouteComponentProps } from "@reach/router";
 

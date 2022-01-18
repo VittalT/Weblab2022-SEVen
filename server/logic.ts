@@ -75,7 +75,7 @@ const addTower = (game: GameState, userId: string, towerSize: Size, x: number, y
       size: towerSize,
       enemyMinionIds: new Set(),
     };
-    const newTowerId = 0; // TODO
+    const newTowerId = game.maxTowerId++;
     game.towers.set(newTowerId, newTower);
     player.towerIds.add(newTowerId);
   }
@@ -113,7 +113,7 @@ const addMinion = (
       targetTowerId: enemyTowerId,
       reachedTarget: false,
     };
-    const newMinionId = 0;
+    const newMinionId = game.maxMinionId++;
     game.minions.set(newMinionId, newMinion);
     player.minionIds.add(newMinionId);
   } else {
