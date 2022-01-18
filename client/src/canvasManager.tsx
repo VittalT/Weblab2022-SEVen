@@ -147,12 +147,15 @@ export const drawCanvas = (gameState: GameState) => {
 
 export const drawCreateCanvas = (goldMines: Point[]) => {
   canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
+  canvas.addEventListener("click", (event: MouseEvent) => {
+    let coord: Point = { x: event.offsetX, y: event.offsetY };
+    //setGoldMines([...goldMines, coord]);
+    drawCreateCanvas([coord]);
+  });
   if (!canvas) return;
   const context = canvas.getContext("2d") ?? assert.fail();
-
-  context.fillStyle = "white";
+  context.fillStyle = "black";
   context.fillRect(0, 0, canvas.width, canvas.height);
-
   for (const coord of goldMines) {
     drawGoldMine(context, coord);
   }
