@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import "../../utilities.css";
 import "./CreateMap.css";
 
-import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
 import { Point } from "../../../../server/models/GameState";
 
