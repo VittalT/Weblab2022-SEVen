@@ -6,8 +6,8 @@ import {
   Minion,
   Player,
   GameState,
-  towerInfo,
-  minionInfo,
+  towerConstants,
+  minionConstants,
   gameState,
   getTeamId,
   getPlayer,
@@ -88,7 +88,7 @@ const drawTower = (context: CanvasRenderingContext2D, tower: Tower, teamId: numb
 
   // draw health bar
   context.fillStyle = "green";
-  const totalHealth = (towerInfo.get(tower.size) ?? assert.fail()).health;
+  const totalHealth = (towerConstants.get(tower.size) ?? assert.fail()).health;
   const fracHealth = tower.health / totalHealth;
   fillHealthBar(context, drawLoc, tower.size, fracHealth);
 };
