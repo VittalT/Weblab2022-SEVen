@@ -7,9 +7,11 @@ import GameModel from "./models/Game";
 import Game from "./models/Game";
 import UserModel from "./models/User";
 import { Mongoose } from "mongoose";
-import { isAssertionExpression } from "typescript";
+import { getTokenSourceMapRange, isAssertionExpression } from "typescript";
 
 const router = express.Router();
+
+const Map = require("./models/map");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -28,6 +30,20 @@ router.post("/initsocket", (req: Request, res: Response) => {
     if (socket !== undefined) socketManager.addUser(req.user, socket);
   }
   res.send({});
+});
+
+router.post("/createMap", (req: Request, res: Response) => {
+  const newMap = new Map({
+    name: req.body.name,
+    creator_id: req.body.creator_id,
+    num_players: req.body.num_players,
+    gold_mines: req.body.gold_mines,
+    towers: req.body.towers,
+    created: req.body.created,
+  });
+  newMap.save().then(() => {
+    res.status(200).send({msg: "Successfully created map"});
+  })
 });
 
 router.post("/createGame", (req: Request, res: Response) => {
