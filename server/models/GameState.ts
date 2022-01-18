@@ -66,7 +66,9 @@ export type GameState = {
   timer: Date;
   winnerId: string | null;
   towers: Map<number, Tower>; // id to tower
+  maxTowerId: number;
   minions: Map<number, Minion>; // id to minion
+  maxMinionId: number;
   players: Map<string, Player>; // id to player
   playerToTeamId: Map<string, number>; // playerId to teamId
 };
