@@ -41,9 +41,10 @@ const App = () => {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
+      post("/api/initsocket", { socketid: socket.id });
       setUserId(user._id);
-      console.log(`User Id: ${user._id}`);
-      console.log(`User Id: ${userId}`);
+      // console.log(`User Id: ${user._id}`);
+      // console.log(`User Id: ${userId}`);
     });
   };
 

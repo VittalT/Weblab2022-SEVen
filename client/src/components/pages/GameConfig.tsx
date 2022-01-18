@@ -100,7 +100,7 @@ const GameConfig = (props: Props) => {
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
       </div>
-      <BackButton destPath="/findgame" />
+      <BackButton text="BACK" destPath="/findgame" />
     </>
   );
 };

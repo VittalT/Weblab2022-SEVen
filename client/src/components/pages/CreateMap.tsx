@@ -94,7 +94,7 @@ const CreateMap = (props: CreateMapProps) => {
           </div>
         </div>
       </div>
-      <BackButton destPath="/" />
+      <BackButton text="BACK" destPath="/" />
     </>
   );
 };
