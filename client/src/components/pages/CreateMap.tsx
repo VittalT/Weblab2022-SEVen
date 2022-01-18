@@ -7,7 +7,7 @@ import BackButton from "../modules/BackButton";
 import { Point } from "../../../../server/models/GameState";
 
 import { Router, RouteComponentProps } from "@reach/router";
-// import { drawCanvas } from "../../canvasManager";
+//import { drawCreateCanvas } from "../../canvasManager";
 import { post } from "../../utilities";
 import { isNonNullChain } from "typescript";
 import assert from "assert";
@@ -24,14 +24,10 @@ const CreateMap = (props: CreateMapProps) => {
   const [goldMines, setGoldMines] = useState<Point[]>([]);
   const [towers, setTowers] = useState<Point[]>([]);
 
-  let canvas = document.getElementById("create-canvas") ?? assert.fail("missing canvas");
-  canvas.addEventListener("click", (event: MouseEvent) => {
-    let coord: Point = { x: event.offsetX, y: event.offsetY };
-    setGoldMines([...goldMines, coord]);
-  });
+  // let canvas = document.getElementById("create-canvas") ?? assert.fail("missing canvas");
 
-  const canvasWidth = 800;
-  const canvasHeight = 800;
+  const canvasWidth = 200;
+  const canvasHeight = 200;
 
   const toggleAddGold = () => {
     setAddGoldToggled(!addGoldToggled);
@@ -61,7 +57,6 @@ const CreateMap = (props: CreateMapProps) => {
 
   return (
     <>
-      <BackButton destPath="/homescreen" />
       <div className="Creation-titleContainer">
         <h1 className="Creation-gameTitle u-textCenter">Minion Battle</h1>
       </div>
@@ -99,6 +94,7 @@ const CreateMap = (props: CreateMapProps) => {
           </div>
         </div>
       </div>
+      <BackButton destPath="/" />
     </>
   );
 };
