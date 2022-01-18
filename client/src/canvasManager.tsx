@@ -90,7 +90,7 @@ const drawTower = (context: CanvasRenderingContext2D, tower: Tower, teamId: numb
 
   // draw health bar
   context.fillStyle = "green";
-  const totalHealth = (towerConstants.get(tower.size) ?? assert.fail()).health;
+  const totalHealth = towerConstants[tower.size].health;
   const fracHealth = tower.health / totalHealth;
   fillHealthBar(context, drawLoc, tower.size, fracHealth);
 };
@@ -132,7 +132,7 @@ export const drawCanvas = (gameState: GameState) => {
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   // display all towers and minions
-  for (const [userId, player] of gameState.players) {
+  for (const [userId, player] of Object.entries(gameState.players)) {
     const teamId = getTeamId(gameState, userId);
     for (const towerId of player.towerIds) {
       const tower = getTower(gameState, towerId);
@@ -145,18 +145,18 @@ export const drawCanvas = (gameState: GameState) => {
   }
 };
 
-export const drawCreateCanvas = (goldMines: Point[]) => {
-  canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
-  canvas.addEventListener("click", (event: MouseEvent) => {
-    let coord: Point = { x: event.offsetX, y: event.offsetY };
-    //setGoldMines([...goldMines, coord]);
-    drawCreateCanvas([coord]);
-  });
-  if (!canvas) return;
-  const context = canvas.getContext("2d") ?? assert.fail();
-  context.fillStyle = "black";
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  for (const coord of goldMines) {
-    drawGoldMine(context, coord);
-  }
-};
+// export const drawCreateCanvas = (goldMines: Point[]) => {
+//   canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
+//   canvas.addEventListener("click", (event: MouseEvent) => {
+//     let coord: Point = { x: event.offsetX, y: event.offsetY };
+//     //setGoldMines([...goldMines, coord]);
+//     drawCreateCanvas([coord]);
+//   });
+//   if (!canvas) return;
+//   const context = canvas.getContext("2d") ?? assert.fail();
+//   context.fillStyle = "black";
+//   context.fillRect(0, 0, canvas.width, canvas.height);
+//   for (const coord of goldMines) {
+//     drawGoldMine(context, coord);
+//   }
+// };

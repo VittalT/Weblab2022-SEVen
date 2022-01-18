@@ -21,6 +21,10 @@ const entryFile = path.resolve(__dirname, "client", "src", "index.tsx");
 const outputDir = path.resolve(__dirname, "client", "dist");
 
 const webpack = require("webpack");
+// const dotenv = require("dotenv");
+
+// // this will update the process.env with environment variables in .env file
+// dotenv.config();
 
 module.exports = {
   entry: ["@babel/polyfill", entryFile],
@@ -42,11 +46,11 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader',
+            loader: "ts-loader",
             options: {
-              configFile: 'client-tsconfig.json',
-            },    
-          }
+              configFile: "client-tsconfig.json",
+            },
+          },
         ],
       },
       {
@@ -72,8 +76,23 @@ module.exports = {
   },
   resolve: {
     extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
+    alias: {
+      process: "process/browser",
+    },
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.DefinePlugin({
+    //   "process.env.MONGO_SRV": JSON.stringify(process.env.MONGO_SRV),
+    //   "process.env.SESSION_SECRET": JSON.stringify(process.env.SESSION_SECRET),
+    // }),
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
+    // new webpack.DefinePlugin({
+    //   "process.env": JSON.stringify(process.env),
+    // }),
+  ],
   devServer: {
     historyApiFallback: true,
     contentBase: "./client/dist",
