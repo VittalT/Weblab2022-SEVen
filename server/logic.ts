@@ -309,7 +309,7 @@ const checkWin = () => {
   // TODO Step 2
 };
 
-const createGame = (gameId: number, userIds: Array<string>) => {
+const startGame = (gameId: number, userIds: Array<string>) => {
   let game = {
     timer: new Date(),
     winnerId: null,
