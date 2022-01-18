@@ -35,7 +35,7 @@ setInterval(() => {
 }, DELTA_T_S * 1000);
 
 const sendGameState = () => {
-  logic.updateGameState(DELTA_T_S);
+  logic.timeUpdate(DELTA_T_S);
   io.emit("update", logic.gameState);
 };
 

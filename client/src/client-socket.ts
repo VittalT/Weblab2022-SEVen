@@ -8,6 +8,6 @@ export const socket = socketIOClient.io(endpoint);
 // });
 
 /** send a message to the server with the move you made */
-export const move = (dir) => {
+export const move = (dir: string) => {
   socket.emit("move", dir);
 };
