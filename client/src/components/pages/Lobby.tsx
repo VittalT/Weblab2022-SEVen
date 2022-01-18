@@ -9,22 +9,21 @@ import { Router, RouteComponentProps } from "@reach/router";
 import BackButton from "../modules/BackButton";
 import { get } from "../../utilities";
 
-import Game from "../../../../server/models/Game";
-
 import LobbyGameDisplay from "../modules/LobbyGameDisplay";
+
+import { Game } from "./FindGame";
 
 type Props = RouteComponentProps & {};
 
-const loadCurrentPublicGames = async (): Promise<Array<typeof Document>> => {
-  const publicGames: Array<typeof Document> = await get("/api/getPublicGames");
-
+const loadCurrentPublicGames = async (): Promise<Array<Game>> => {
+  const publicGames: Array<Game> = await get("/api/getPublicGames");
   return publicGames;
 };
 
 const Lobby = (props: Props) => {
-  // USE A REFRESH BUTTON!!
+  const [publicGames, setPublicGames] = useState<Array<Game>>([]);
 
-  const [publicGamesIds, setPublicGames] = useState<Array<typeof Document>>([]); // holds the IDs of the lobby owners
+  const doNothing = () => {};
 
   useEffect(() => {
     // borrow stuff from chatbook messageslist, basically get the list of shit
@@ -40,9 +39,15 @@ const Lobby = (props: Props) => {
     <>
       <div className="Lobby-container">
         <h3 className="Lobby-header">MINION BATTLE</h3>
+        <div>LOBBY</div>
         <div>
-          {publicGamesIds.map((ownerName: typeof Document) => (
-            <LobbyGameDisplay gameOwner={""} /> //ownerName.creator_name} />
+          {publicGames.map((game: Game) => (
+            <NavigationButton
+              onClickFunction={doNothing}
+              destPath={"/gamewaiting/public/" + game.game_code}
+              text={game.game_code}
+            />
+            //<LobbyGameDisplay gameCode={game.game_code} /> //ownerName.creator_name} />
           ))}{" "}
         </div>
       </div>
