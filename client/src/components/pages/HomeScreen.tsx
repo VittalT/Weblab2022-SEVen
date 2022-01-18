@@ -32,7 +32,11 @@ const HomeScreen = (props: Props) => {
             <NavigationButton onClickFunction={doNothing} text="FIND GAME" destPath="/findgame" />
             <NavigationButton onClickFunction={doNothing} text="CREATE MAP" destPath="/createmap" />
             <NavigationButton onClickFunction={doNothing} text="CUSTOMIZATIONS" destPath="/TODO" />
-            <NavigationButton onClickFunction={doNothing} text="HOW TO PLAY" destPath="/TODO" />
+            <NavigationButton
+              onClickFunction={doNothing}
+              text="HOW TO PLAY"
+              destPath="/howtoplay"
+            />
             <NavigationButton onClickFunction={doNothing} text="ACHIEVEMENTS" destPath="/TODO" />
             <NavigationButton onClickFunction={doNothing} text="GAME" destPath="/game" />
           </>

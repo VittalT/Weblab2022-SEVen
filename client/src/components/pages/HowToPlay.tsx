@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Router, RouteComponentProps } from "@reach/router";
 
 import "../../utilities.css";
 
-const HowToPlay = () => {
+const HowToPlay = (props: RouteComponentProps) => {
   return (
     <div>
       <p>
