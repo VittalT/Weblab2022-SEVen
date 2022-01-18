@@ -23,15 +23,11 @@ type GameProps = {
   userId: string;
   gameId: number;
   gold: number;
-  towerConstants: TowerConstants;
-  minionConstants: MinionConstants;
+  //   towerConstants: TowerConstants;
+  //   minionConstants: MinionConstants;
 };
 
 const GamePanel = (props: GameProps) => {
-  useEffect(() => {
-    //
-  }, []);
-
   const towerSizes = [Size.Small, Size.Medium, Size.Large];
   const minionSizes = [Size.Small, Size.Medium, Size.Large];
 

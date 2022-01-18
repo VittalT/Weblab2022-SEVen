@@ -132,9 +132,9 @@ router.get("/getPublicGames", (req: Request, res: Response) => {
   });
 });
 
-router.get("/gameConstants", (req: Request, res: Response) => {
-  res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
-});
+// router.get("/gameConstants", (req: Request, res: Response) => {
+//   res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
+// });
 
 // |------------------------------|
 // | write your API methods below!|

@@ -29,8 +29,8 @@ const Game = (props: GameProps) => {
   const [gold, setGold] = useState(0);
   const [clickState, setClickState] = useState(ClickState.Tower);
   const [sizeClicked, setSizeClicked] = useState(Size.Small);
-  const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
-  const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
+  //   const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
+  //   const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
@@ -47,14 +47,14 @@ const Game = (props: GameProps) => {
     });
   }, []);
 
-  useEffect(() => {
-    get("/api/gameConstants").then(
-      (gameConstants: { minionConstants: MinionConstants; towerConstants: TowerConstants }) => {
-        setTowerConstants(gameConstants.towerConstants);
-        setMinionConstants(gameConstants.minionConstants);
-      }
-    );
-  }, []);
+  //   useEffect(() => {
+  //     get("/api/gameConstants").then(
+  //       (gameConstants: { minionConstants: MinionConstants; towerConstants: TowerConstants }) => {
+  //         setTowerConstants(gameConstants.towerConstants);
+  //         setMinionConstants(gameConstants.minionConstants);
+  //       }
+  //     );
+  //   }, []);
 
   const processUpdate = (gameState: Record<number, GameState>) => {
     console.log(gameState);
@@ -91,8 +91,8 @@ const Game = (props: GameProps) => {
           height={200}
           userId={props.userId}
           gameId={props.gameId}
-          towerConstants={towerConstants}
-          minionConstants={minionConstants}
+          //   towerConstants={towerConstants}
+          //   minionConstants={minionConstants}
           gold={gold}
         />
       </div>

@@ -44,6 +44,10 @@ export const makeCopy = (p: Point) => {
   return { x: p.x, y: p.y };
 };
 
+export const sumPoints = (p1: Point, p2: Point) => {
+  return { x: p1.x + p2.x, y: p1.y + p2.y };
+};
+
 /** game state */
 export type Tower = {
   health: number;
@@ -133,57 +137,57 @@ export const minionConstants: Record<Size, MinionConstants> = {
   },
 };
 
-// export const gameState: Record<number, GameState> = new Record<number, GameState>(); // represents all active games
-const ID_1 = "61e4e1bf335ba570cd3f5f6a";
-const TEAM_1 = 0;
-const START_TOWER_ID_1 = 0;
-const START_TOWER_1: Tower = {
-  health: 50,
-  location: { x: 200, y: 375 },
-  size: Size.Small,
-  enemyMinionIds: [],
-};
-const PLAYER_1: Player = {
-  gold: 50,
-  towerIds: [START_TOWER_ID_1],
-  minionIds: [],
-  clickState: ClickState.Tower,
-  towerClickedId: -1,
-  sizeClicked: Size.Small,
-  showInfo: false,
-  inGame: true,
-};
-const ID_2 = "61e7121c513458dd1dbcdc13";
-const TEAM_2 = 1;
-const START_TOWER_ID_2 = 1;
-const START_TOWER_2: Tower = {
-  health: 50,
-  location: { x: 1300, y: 375 },
-  size: Size.Small,
-  enemyMinionIds: [],
-};
-const PLAYER_2: Player = {
-  gold: 50,
-  towerIds: [START_TOWER_ID_2],
-  minionIds: [],
-  clickState: ClickState.Tower,
-  towerClickedId: -1,
-  sizeClicked: Size.Small,
-  showInfo: false,
-  inGame: true,
-};
-export const gameState: Record<number, GameState> = {
-  0: {
-    timer: new Date(),
-    winnerId: null,
-    towers: { [START_TOWER_ID_1]: START_TOWER_1, [START_TOWER_ID_2]: START_TOWER_2 },
-    maxTowerId: 1,
-    minions: {},
-    maxMinionId: 0,
-    players: { [ID_1]: PLAYER_1, [ID_2]: PLAYER_2 },
-    playerToTeamId: { [ID_1]: TEAM_1, [ID_2]: TEAM_2 },
-  },
-};
+export const gameState: Record<number, GameState> = {}; // represents all active games
+// const ID_1 = "61e4e1bf335ba570cd3f5f6a";
+// const TEAM_1 = 0;
+// const START_TOWER_ID_1 = 0;
+// const START_TOWER_1: Tower = {
+//   health: 50,
+//   location: { x: 200, y: 375 },
+//   size: Size.Small,
+//   enemyMinionIds: [],
+// };
+// const PLAYER_1: Player = {
+//   gold: 50,
+//   towerIds: [START_TOWER_ID_1],
+//   minionIds: [],
+//   clickState: ClickState.Tower,
+//   towerClickedId: -1,
+//   sizeClicked: Size.Small,
+//   showInfo: false,
+//   inGame: true,
+// };
+// const ID_2 = "61e7121c513458dd1dbcdc13";
+// const TEAM_2 = 1;
+// const START_TOWER_ID_2 = 1;
+// const START_TOWER_2: Tower = {
+//   health: 50,
+//   location: { x: 1300, y: 375 },
+//   size: Size.Small,
+//   enemyMinionIds: [],
+// };
+// const PLAYER_2: Player = {
+//   gold: 50,
+//   towerIds: [START_TOWER_ID_2],
+//   minionIds: [],
+//   clickState: ClickState.Tower,
+//   towerClickedId: -1,
+//   sizeClicked: Size.Small,
+//   showInfo: false,
+//   inGame: true,
+// };
+// export const gameState: Record<number, GameState> = {
+//   0: {
+//     timer: new Date(),
+//     winnerId: null,
+//     towers: { [START_TOWER_ID_1]: START_TOWER_1, [START_TOWER_ID_2]: START_TOWER_2 },
+//     maxTowerId: 1,
+//     minions: {},
+//     maxMinionId: 0,
+//     players: { [ID_1]: PLAYER_1, [ID_2]: PLAYER_2 },
+//     playerToTeamId: { [ID_1]: TEAM_1, [ID_2]: TEAM_2 },
+//   },
+// };
 // const gameOfPlayer: Record<string, number> = new Map(); // TODO map player id to game id
 
 // export const getGameOfPlayer = (userId: string): GameState => {
