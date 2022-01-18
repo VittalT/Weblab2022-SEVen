@@ -49,6 +49,8 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     async function performThings() {
+      post("/api/destroyGame", { creator_id: props.passedUserId });
+
       const publicPrivate = props.publicPrivate;
 
       if (publicPrivate === "public") {

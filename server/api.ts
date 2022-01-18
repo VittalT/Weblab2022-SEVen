@@ -63,6 +63,40 @@ router.get("/getGameByCreatorId", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/joinGame", async (req: Request, res: Response) => {
+  const currGame = await GameModel.findOne({ game_code: req.body.game_code });
+  const newIds = [...currGame.players_ids];
+  newIds.push(req.user ? req.user._id : "FAILED");
+  currGame.players_ids = newIds;
+  await currGame.save();
+  res.send({
+    is_private: currGame.is_private,
+    game_code: currGame.game_code,
+    map_id: currGame.map_id,
+    creator_id: currGame.creator_id,
+    players_ids: currGame.players_ids,
+  });
+});
+
+router.post("/leaveGame", async (req: Request, res: Response) => {
+  const currGame = await GameModel.findOne({ game_code: req.body.game_code });
+  const newIds = [...currGame.players_ids];
+  const reqUserId = req.user ? req.user._id : "FAILED";
+  const index = newIds.indexOf(reqUserId, 0);
+  if (index > -1) {
+    newIds.splice(index, 1);
+  }
+  currGame.players_ids = newIds;
+  await currGame.save();
+  res.send({
+    is_private: currGame.is_private,
+    game_code: currGame.game_code,
+    map_id: currGame.map_id,
+    creator_id: currGame.creator_id,
+    players_ids: currGame.players_ids,
+  });
+});
+
 // destroys the game in the database
 router.post("/destroyGame", (req: Request, res: Response) => {
   GameModel.deleteMany({ creator_id: req.body.creator_id!.toString() }).then(() => {
