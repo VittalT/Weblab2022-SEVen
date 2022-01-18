@@ -2,9 +2,12 @@ import assert from "assert";
 import {
   ClickState,
   Size,
+  TowerConstants,
+  MinionConstants,
   Point,
   toString,
   makeCopy,
+  sumPoints,
   Tower,
   Minion,
   Player,
@@ -15,6 +18,8 @@ import {
   getPlayer,
   getTower,
   getMinion,
+  getTeamId,
+  getGame,
 } from "./models/GameState";
 import { updateDisplay } from "./server-socket";
 /** game logic */
@@ -107,10 +112,15 @@ const addMinion = (
 
   if (minionSizeConstants.cost <= player.gold) {
     player.gold -= minionSizeConstants.cost;
+    const dir = angle(allyTower.location, enemyTower.location);
+    const allyRadius = towerConstants[allyTower.size].hitRadius;
+    const enemyRadius = towerConstants[enemyTower.size].hitRadius;
+    const startOffset = { x: allyRadius * Math.cos(dir), y: allyRadius * Math.sin(dir) };
+    const endOffset = { x: -enemyRadius * Math.cos(dir), y: -enemyRadius * Math.sin(dir) };
     const newMinion: Minion = {
-      location: makeCopy(allyTower.location),
-      targetLocation: makeCopy(enemyTower.location),
-      direction: angle(allyTower.location, enemyTower.location),
+      location: sumPoints(makeCopy(allyTower.location), startOffset),
+      targetLocation: sumPoints(makeCopy(enemyTower.location), endOffset),
+      direction: dir,
       size: minionSize,
       targetTowerId: enemyTowerId,
       reachedTarget: false,
@@ -297,6 +307,47 @@ export const updateGameMapClickState = (gameId: number, userId: string, x: numbe
 /** Checks whether a player has won, if a player won, change the game state */
 const checkWin = () => {
   // TODO Step 2
+};
+
+const createGame = (gameId: number, userIds: Array<string>) => {
+  let game = {
+    timer: new Date(),
+    winnerId: null,
+    towers: {} as Record<number, Tower>,
+    maxTowerId: userIds.length - 1,
+    minions: {} as Record<number, Minion>,
+    maxMinionId: 0,
+    players: {} as Record<string, Player>,
+    playerToTeamId: {} as Record<string, number>,
+  };
+
+  for (let teamId = 0; teamId < userIds.length; teamId++) {
+    const userId = userIds[teamId];
+    const startTowerId = teamId;
+    const dir = (2 * Math.PI) / userIds.length;
+    const startTowerLoc = { x: 800 + 300 * Math.cos(dir), y: 375 + 300 * Math.sin(dir) };
+    const startTower: Tower = {
+      health: 50,
+      location: startTowerLoc,
+      size: Size.Small,
+      enemyMinionIds: [],
+    };
+    const player: Player = {
+      gold: 50,
+      towerIds: [startTowerId],
+      minionIds: [],
+      clickState: ClickState.Tower,
+      towerClickedId: -1,
+      sizeClicked: Size.Small,
+      showInfo: false,
+      inGame: true,
+    };
+    game.towers[startTowerId] = startTower;
+    game.players[userId] = player;
+    game.playerToTeamId[userId] = teamId;
+
+    gameState[gameId] = game;
+  }
 };
 
 module.exports = {
