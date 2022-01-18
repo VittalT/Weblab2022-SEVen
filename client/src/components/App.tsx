@@ -6,7 +6,7 @@ import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-lo
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.css";
-// import Game from "./pages/Game";
+import Game from "./pages/Game";
 
 import { Router, RouteComponentProps } from "@reach/router";
 
@@ -64,7 +64,7 @@ const App = () => {
       <GameConfig path="/gameconfig/:publicPrivate/:gameCode" passedUserId={userId} />
       <GameWaiting path="/gamewaiting/:publicPrivate/:gameCode" passedUserId={userId} />
       <Lobby path="/lobby" />
-      {/* <Game path="/game" userId={userId} gameId={0} /> */}
+      <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
     </Router>
   );
