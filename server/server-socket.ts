@@ -40,6 +40,10 @@ const sendGameState = () => {
   io.emit("update", gameState);
 };
 
+export const updateDisplay = (userId: string, message: string) => {
+  io.emit("updateDisplay", userId, message);
+};
+
 export const init = (server: http.Server): void => {
   io = new Server(server);
   io.on("connection", (socket) => {
@@ -50,11 +54,14 @@ export const init = (server: http.Server): void => {
       if (user !== undefined) removeUser(user, socket);
     });
     socket.on("GamePanel/click", (click: { gameId: number; clickType: ClickState; size: Size }) => {
+      // console.log(`C ${click.clickType} ${click.size}`);
       const user = getUserFromSocketID(socket.id);
-      if (user)
+      if (user) {
         logic.updateGamePanelClickState(click.gameId, user._id, click.clickType, click.size);
+      }
     });
     socket.on("GameMap/click", (click: { gameId: number; x: number; y: number }) => {
+      // console.log(`C ${click.x} ${click.y}`);
       const user = getUserFromSocketID(socket.id);
       if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
     });
@@ -71,4 +78,5 @@ export default {
   getSocketFromSocketID,
   getUserFromSocketID,
   getSocketFromUserID,
+  updateDisplay,
 };

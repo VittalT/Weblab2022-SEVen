@@ -26,10 +26,11 @@ const GameMap = (props: GameMapProps) => {
   ) as unknown as HTMLCanvasElement;
 
   useEffect(() => {
-    // canvas.addEventListener("click", (event: MouseEvent) => {
-    //   // replace ⭐ with O or circle emoji to draw a blank
-    //   clickGameMap(props.gameId, event.offsetX, event.offsetY);
-    // });
+    const canvas2 = document.getElementById("game-canvas") ?? assert.fail();
+    canvas2.addEventListener("click", (event: MouseEvent) => {
+      // console.log(`A ${event.offsetX} ${event.offsetY}`);
+      clickGameMap(props.gameId, event.offsetX, event.offsetY);
+    });
   }, []);
 
   return (

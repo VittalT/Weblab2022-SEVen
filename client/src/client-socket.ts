@@ -10,9 +10,11 @@ socket.on("connect", () => {
 
 /** send a message to the server with the move you made */
 export const clickGamePanelButton = (gameId: number, clickType: ClickState, size: Size) => {
+  // console.log(`B ${clickType} ${size}`);
   socket.emit("GamePanel/click", { gameId: gameId, clickType: clickType, size: size });
 };
 
 export const clickGameMap = (gameId: number, x: number, y: number) => {
+  // console.log(`B ${x} ${y}`);
   socket.emit("GameMap/click", { gameId: gameId, x: x, y: y });
 };
