@@ -13,6 +13,7 @@ import { Router, RouteComponentProps } from "@reach/router";
 import NavigationButton from "./modules/NavigationButton";
 import HomeScreen from "./pages/HomeScreen";
 import { FindGame } from "./pages/FindGame";
+import CreateMap from "./pages/CreateMap";
 import GameConfig from "./pages/GameConfig";
 import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
@@ -59,6 +60,7 @@ const App = () => {
         userId={userId}
       />
       <FindGame path="/findgame" />
+      <CreateMap path="/createmap" userId={userId} />
       <GameConfig path="/gameconfig/:publicPrivate/:gameCode" passedUserId={userId} />
       <GameWaiting path="/gamewaiting/:publicPrivate/:gameCode" passedUserId={userId} />
       <Lobby path="/lobby" />
