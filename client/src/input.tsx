@@ -1,7 +1,7 @@
 import { move } from "./client-socket";
 
 /** add other controls here */
-const handleInput = (e) => {
+const handleInput = (e: { key: string }) => {
   if (e.key === "ArrowUp") {
     move("up");
   } else if (e.key === "ArrowDown") {
