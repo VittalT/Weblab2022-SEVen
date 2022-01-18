@@ -41,8 +41,8 @@ router.post("/createMap", (req: Request, res: Response) => {
     created: req.body.created,
   });
   newMap.save().then(() => {
-    res.status(200).send({msg: "Successfully created map"});
-  })
+    res.status(200).send({ msg: "Successfully created map" });
+  });
 });
 
 router.post("/createGame", (req: Request, res: Response) => {
