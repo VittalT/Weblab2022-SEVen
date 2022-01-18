@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import "../../utilities.css";
 import "./LobbyGameDisplay.css";
 
 type Props = {
-  gameOwner: string;
+  gameCode: string;
 };
 
 const LobbyGameDisplay = (props: Props) => {
-  return <div> {props.gameOwner} </div>;
+  <div>
+    <button
+      onSubmit={() => {
+        navigate("/gamewaiting", { state: { gameCode: props.gameCode } });
+      }}
+    >
+      {props.gameCode}
+    </button>
+  </div>;
+  return <div> {props.gameCode} </div>;
 };
 
 export default LobbyGameDisplay;
