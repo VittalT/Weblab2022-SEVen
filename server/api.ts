@@ -8,6 +8,7 @@ import Game from "./models/Game";
 import UserModel from "./models/User";
 import { Mongoose } from "mongoose";
 import { getTokenSourceMapRange, isAssertionExpression } from "typescript";
+import { minionConstants, towerConstants } from "./models/GameState";
 
 const router = express.Router();
 
@@ -42,8 +43,8 @@ router.post("/createMap", (req: Request, res: Response) => {
     created: req.body.created,
   });
   newMap.save().then(() => {
-    res.status(200).send({msg: "Successfully created map"});
-  })
+    res.status(200).send({ msg: "Successfully created map" });
+  });
 });
 
 router.post("/createGame", (req: Request, res: Response) => {
@@ -130,6 +131,10 @@ router.get("/getPublicGames", (req: Request, res: Response) => {
     console.log(lobbies);
     res.send(lobbies);
   });
+});
+
+router.get("/gameConstants", (req: Request, res: Response) => {
+  res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
 });
 
 // |------------------------------|
