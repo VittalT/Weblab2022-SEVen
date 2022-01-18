@@ -8,8 +8,13 @@ import Game from "./models/Game";
 import UserModel from "./models/User";
 import MapModel from "./models/Map";
 import { Mongoose } from "mongoose";
-import { getTokenSourceMapRange, isAssertionExpression } from "typescript";
+import {
+  getTokenSourceMapRange,
+  isAssertionExpression,
+  isShorthandPropertyAssignment,
+} from "typescript";
 import { minionConstants, towerConstants } from "./models/GameState";
+const logic = require("./logic");
 
 const router = express.Router();
 
@@ -130,6 +135,11 @@ router.get("/getPublicGames", (req: Request, res: Response) => {
     console.log(lobbies);
     res.send(lobbies);
   });
+});
+
+router.post("/startGame", (req: Request, res: Response) => {
+  logic.startGame(parseInt(req.body.gameCode), req.body.userIds);
+  res.send({});
 });
 
 // router.get("/gameConstants", (req: Request, res: Response) => {
