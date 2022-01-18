@@ -49,7 +49,7 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     async function performThings() {
-      post("/api/destroyGame", { creator_id: props.passedUserId });
+      await post("/api/destroyGame", { creator_id: props.passedUserId });
 
       const publicPrivate = props.publicPrivate;
 
@@ -80,11 +80,11 @@ const GameConfig = (props: Props) => {
       setPlayersNames(playersNamesArray);
     }
 
-    performThings();
-
-    return () => {
+    const performThingsAfter = async () => {
       post("/api/destroyGame", { creator_id: props.passedUserId });
     };
+
+    performThings();
   }, []);
 
   // *either you are the host or waiting to start
