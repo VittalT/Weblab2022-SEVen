@@ -137,6 +137,10 @@ export const minionConstants: Record<Size, MinionConstants> = {
   },
 };
 
+export const GoldConstants = {
+  realRadius: 50,
+}
+
 export const gameState: Record<number, GameState> = {}; // represents all active games
 // const ID_1 = "61e4e1bf335ba570cd3f5f6a";
 // const TEAM_1 = 0;

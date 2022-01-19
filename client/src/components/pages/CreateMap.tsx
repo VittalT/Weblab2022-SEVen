@@ -4,7 +4,7 @@ import "../../utilities.css";
 import "./CreateMap.css";
 
 import BackButton from "../modules/BackButton";
-import { Point } from "../../../../server/models/GameState";
+import { Point, GoldConstants, towerConstants } from "../../../../server/models/GameState";
 
 import { Router, RouteComponentProps } from "@reach/router";
 //import { drawCreateCanvas } from "../../canvasManager";
@@ -12,6 +12,7 @@ import { post } from "../../utilities";
 import { isNonNullChain } from "typescript";
 import assert from "assert";
 import { drawCreateCanvas, drawGoldMine } from "../../create-canvasManager";
+import { off } from "process";
 
 type CreateMapProps = RouteComponentProps & {
   userId: string;
@@ -25,10 +26,16 @@ const CreateMap = (props: CreateMapProps) => {
   const [towers, setTowers] = useState<Point[]>([]);
 
   const scaleFactor = 2;
+  const realWidth = 1600;
+  const realHeight = 750;
+  const canvasWidth = realWidth / scaleFactor;
+  const canvasHeight = realHeight / scaleFactor;
 
-  const canvasWidth = 1600 / scaleFactor;
-  const canvasHeight = 750 / scaleFactor;
   let canvas;
+
+  const getDistance = (a: Point, b: Point) => {
+    return Math.pow(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2), 0.5);
+  };
 
   useEffect(() => {
     canvas = document.getElementById("create-canvas") ?? assert.fail();
@@ -40,15 +47,40 @@ const CreateMap = (props: CreateMapProps) => {
     canvas = document.getElementById("create-canvas") ?? assert.fail();
     const handleClick = (event: MouseEvent) => {
       console.log("click");
-      let drawCoord: Point = { x: event.offsetX, y: event.offsetY };
-      console.log(drawCoord.x + " " + drawCoord.y);
-      drawGoldMine(drawCoord);
-      let officialCoord: Point = { x: scaleFactor * event.offsetX, y: scaleFactor * event.offsetY };
-      setGoldMines([...goldMines, officialCoord]);
+      let officialCoordFirst: Point = {
+        x: scaleFactor * event.offsetX,
+        y: scaleFactor * event.offsetY,
+      };
+      let officialCoordSecond: Point = {
+        x: realWidth - scaleFactor * event.offsetX,
+        y: realHeight - scaleFactor * event.offsetY,
+      };
+      if (getDistance(officialCoordFirst, officialCoordSecond) < 2 * GoldConstants.realRadius)
+        return;
+      for (let i = 0; i < goldMines.length; i++) {
+        if (getDistance(officialCoordFirst, goldMines[i]) < 2 * GoldConstants.realRadius) return;
+      }
+      for (let i = 0; i < towers.length; i++) {
+        if (
+          getDistance(officialCoordFirst, towers[i]) <
+          GoldConstants.realRadius + towerConstants.Medium.minAdjBuildRadius
+        )
+          return;
+      }
+      setGoldMines([...goldMines, officialCoordFirst, officialCoordSecond]);
+      let drawCoordFirst: Point = { x: event.offsetX, y: event.offsetY };
+      let drawCoordSecond: Point = {
+        x: canvasWidth - event.offsetX,
+        y: canvasHeight - event.offsetY,
+      };
+      drawGoldMine(drawCoordFirst);
+      drawGoldMine(drawCoordSecond);
       console.log(goldMines.length);
     };
     canvas.addEventListener("click", handleClick);
-    return canvas.removeEventListener("click", handleClick);
+    return () => {
+      canvas.removeEventListener("click", handleClick);
+    };
   }, [goldMines]);
 
   const handleCreatorChange = (event: React.ChangeEvent<HTMLInputElement>) => {

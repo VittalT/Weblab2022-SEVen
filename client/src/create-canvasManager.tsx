@@ -1,11 +1,11 @@
-import { Point } from "../../server/models/GameState";
+import { Point, GoldConstants } from "../../server/models/GameState";
 import assert from "assert";
 import { fillCircle } from "./canvasManager";
 
 let canvas: HTMLCanvasElement;
 let scaleFactor: number = 2;
 
-let goldRadius: number = 25;
+let goldDrawRadius: number = GoldConstants.realRadius / 2;
 let goldColor: string = "#FFFF00";
 
 export const drawGoldMine = (coord: Point) => {
@@ -13,7 +13,7 @@ export const drawGoldMine = (coord: Point) => {
   if (!canvas) return;
   console.log("drawing");
   const context = canvas.getContext("2d") ?? assert.fail();
-  fillCircle(context, coord, goldRadius / scaleFactor, goldColor);
+  fillCircle(context, coord, goldDrawRadius / scaleFactor, goldColor);
 };
 
 export const drawCreateCanvas = () => {
