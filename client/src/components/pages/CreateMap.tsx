@@ -31,7 +31,7 @@ const CreateMap = (props: CreateMapProps) => {
   const canvasWidth = realWidth / scaleFactor;
   const canvasHeight = realHeight / scaleFactor;
 
-  let canvas;
+  let canvas: HTMLElement;
 
   const getDistance = (a: Point, b: Point) => {
     return Math.pow(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2), 0.5);
