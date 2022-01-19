@@ -20,23 +20,24 @@ type Game = {
 };
 
 type Props = RouteComponentProps & {
-  joinRoom: (gameCode: string) => void;
+  passedUserId: string;
+  joinRoom: (userId: string, gameCode: string) => void;
 };
 
 const FindGame = (props: Props) => {
   const doNothing = () => {};
 
   const createPublicGame = async () => {
-    const data = await post("/api/create", { gameType: "public" }); // creates backend game
+    const data = await post("/api/createGame", { gameType: "public" }); // creates backend game
     const gameCode = data.gameCode;
-    await props.joinRoom(gameCode); // triggers emit("joinRoom"), which adds the socket
+    await props.joinRoom(props.passedUserId, gameCode); // triggers emit("joinRoom"), which adds the socket
     navigate("/gameconfig");
   };
 
   const createPrivateGame = async () => {
-    const data = await post("/api/create", { gameType: "private" }); // creates backend game
+    const data = await post("/api/createGame", { gameType: "private" }); // creates backend game
     const gameCode = data.gameCode;
-    await props.joinRoom(gameCode); // triggers emit("joinRoom"), which adds the socket
+    await props.joinRoom(props.passedUserId, gameCode); // triggers emit("joinRoom"), which adds the socket
     navigate("/gameconfig");
   };
 
@@ -45,7 +46,7 @@ const FindGame = (props: Props) => {
   };
 
   const joinPrivateGame = async () => {
-    // to do
+    // TO DO
   };
 
   useEffect(() => {}, []);

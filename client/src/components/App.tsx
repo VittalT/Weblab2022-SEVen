@@ -24,8 +24,8 @@ const App = () => {
   const [userId, setUserId] = useState("");
   const [gameCode, setGameCode] = useState("");
 
-  const joinRoom = async (gameCode: string) => {
-    socket.emit("joinRoom", { gameCode: gameCode });
+  const joinRoom = async (userId: string, gameCode: string) => {
+    socket.emit("joinRoom", { userId: userId, gameCode: gameCode });
     setGameCode(gameCode);
   };
 
@@ -39,6 +39,7 @@ const App = () => {
       })
       .then(() =>
         socket.on("connect", () => {
+          console.log("initailized socket from who am i");
           post("/api/initsocket", { socketid: socket.id });
         })
       );
@@ -48,7 +49,6 @@ const App = () => {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
-      post("/api/initsocket", { socketid: socket.id });
       setUserId(user._id);
       // console.log(`User Id: ${user._id}`);
       // console.log(`User Id: ${userId}`);
@@ -70,7 +70,7 @@ const App = () => {
         handleLogout={handleLogout}
         userId={userId}
       />
-      <FindGame path="/findgame" joinRoom={joinRoom} />
+      <FindGame path="/findgame" passedUserId={userId} joinRoom={joinRoom} />
       <CreateMap path="/createmap" userId={userId} />
       <GameConfig path="/gameconfig" passedUserId={userId} />
       <GameWaiting path="/gamewaiting" passedUserId={userId} />

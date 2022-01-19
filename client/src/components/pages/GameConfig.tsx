@@ -12,7 +12,6 @@ import BackButton from "../modules/BackButton";
 import { socket } from "../../client-socket";
 
 interface URLProps extends RouteComponentProps {
-  publicPrivate?: string;
   gameCode?: string;
 }
 
@@ -21,7 +20,7 @@ type Props = URLProps & {
 };
 
 const GameConfig = (props: Props) => {
-  const [gameType, setGameType] = useState<string>("");
+  const [gameType, setGameType] = useState<string>("bop");
   const [gameCode, setGameCode] = useState<string>("");
   const [hostName, setHostName] = useState<string>("");
   const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
@@ -47,11 +46,7 @@ const GameConfig = (props: Props) => {
   };
 
   useEffect(() => {
-    async function performThings() {
-      socket.on("updateLobbies", updateLobbyData);
-    }
-
-    performThings();
+    socket.on("updateLobbies", updateLobbyData);
   }, []);
 
   // *either you are the host or waiting to start
@@ -60,10 +55,10 @@ const GameConfig = (props: Props) => {
       <div className="GameConfig-container">
         <h3 className="GameConfig-header">MINION BATTLE</h3>
         <div> GAME CONFIG </div>
-        <div> game type: {isPrivate} </div>
+        <div> game type: {gameType} </div>
         <div> game code: {gameCode} </div>
-        <div> *game owner: {creatorName} </div>
-        <div> curent players: {playersNames.toString()} </div>
+        <div> *game owner: {hostName} </div>
+        <div> curent players: {playerNames.toString()} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
         <NavigationButton destPath="/game" text="START" onClickFunction={startGame} />

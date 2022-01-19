@@ -5,6 +5,7 @@ const endpoint = `${window.location.hostname}:${window.location.port}`;
 export const socket = socketIOClient.io(endpoint);
 
 socket.on("connect", () => {
+  // // there is no need to initialize the socket connection immediately
   post("/api/initsocket", { socketid: socket.id });
 });
 
