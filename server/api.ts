@@ -95,6 +95,7 @@ router.post("/createMap", (req: Request, res: Response) => {
   const newMap = new MapModel({
     name: req.body.name,
     creator_id: req.body.creator_id,
+    creator_name: req.body.creator_name,
     num_players: req.body.num_players,
     gold_mines: req.body.gold_mines,
     towers: req.body.towers,
