@@ -2,6 +2,9 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 import { ClickState, gameState, Size } from "./models/GameState";
+
+const { games } = require("./data/games");
+
 let io: Server;
 const logic = require("./logic");
 
@@ -64,6 +67,16 @@ export const init = (server: http.Server): void => {
       // console.log(`C ${click.x} ${click.y}`);
       const user = getUserFromSocketID(socket.id);
       if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
+    });
+    // this is the function called by App, when a socket joins a room
+    socket.on("joinRoom", (data: { gameCode: string }) => {
+      const gameCode = data.gameCode;
+      const currGame = games[gameCode];
+      const userId = getUserFromSocketID(socket.id)!._id;
+      if (currGame.hasPlayer(userId)) {
+        socket.join(gameCode);
+        // currGame.updateLobbies();
+      }
     });
   });
 };
