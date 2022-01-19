@@ -7,7 +7,7 @@ const { getSocketFromUserID } = require("./server-socket");
 import socketManager from "./server-socket";
 const { games } = require("./data/games");
 const { Game } = require("./data/Game");
-const { clients } = require("./data/client");
+const { clients } = require("./data/clients");
 
 // util
 const { generateGameCode } = require("./util");
@@ -49,19 +49,19 @@ router.post("/initsocket", (req: Request, res: Response) => {
 // req has only paramter public vs private
 // this function creates a completely new game and updates all the backend data but does ont modify sockets
 // it also calls updateLobbies(), which shouldmodify the frontend
-router.post("/createGame", (req: Request, res: Response) => {
+router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const userId = req.user!._id;
   const userName = req.user!.name;
-  const gameType = req.query.gameType;
+  const gameType = req.body.gameType;
 
-  let gameCode = generateGameCode();
+  let gameCode = generateGameCode(6);
   while (gameCode in games) {
-    gameCode = generateGameCode();
+    gameCode = generateGameCode(6);
   }
   const currGame = new Game(gameCode, gameType, userId, userName, [userId]);
   games[gameCode] = currGame;
   // leave the current game if the user is already in a game
-  if (clients.includes(userId) && clients[userId].room !== gameCode) {
+  if (userId in clients && clients[userId].room !== gameCode) {
     getSocketFromUserID[userId].leave(clients[userId].room);
   }
   clients[userId] = {
@@ -71,7 +71,7 @@ router.post("/createGame", (req: Request, res: Response) => {
   res.send({ gameCode: gameCode });
 });
 
-router.post("/joinGame", (req: Request, res: Response) => {
+router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const userId = req.user!._id;
   const userName = req.user!.name;
   const gameCode = req.body.gameCode;
@@ -80,7 +80,7 @@ router.post("/joinGame", (req: Request, res: Response) => {
   const joinedStatus = currGame.join(userId, userName);
   if (joinedStatus) {
     // leave the current game if the user is already in a game
-    if (clients.includes(userId) && clients[userId].room !== gameCode) {
+    if (userId in clients && clients[userId].room !== gameCode) {
       getSocketFromUserID[userId].leave(clients[userId].room);
     }
     clients[userId] = {

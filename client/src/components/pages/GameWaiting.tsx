@@ -6,6 +6,7 @@ import assert from "assert";
 import NavigationButton from "../modules/NavigationButton";
 
 import { Router, RouteComponentProps } from "@reach/router";
+import { socket } from "../../client-socket";
 
 import BackButton from "../modules/BackButton";
 import { isAssertionExpression } from "typescript";
@@ -20,57 +21,52 @@ type Props = URLProps & {
 };
 
 const GameWaiting = (props: Props) => {
-  const [userId, setUserId] = useState<string>("");
-  const [isPrivate, setIsPrivate] = useState<string>("");
+  const [gameType, setGameType] = useState<string>("");
   const [gameCode, setGameCode] = useState<string>("");
-  const [mapId, setmapId] = useState<string>("");
-  const [creatorId, setcreatorId] = useState<string>("");
-  const [creatorName, setcreatorName] = useState<string>("");
+  const [hostName, setHostName] = useState<string>("");
+  const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
+
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
-  const [playersNames, setPlayersNames] = useState<Array<string>>([""]);
+  const [mapId, setmapId] = useState<string>("");
+  const [creatorName, setcreatorName] = useState<string>("");
+
+  const startGame = () => {
+    post("/api/startGame", { gameId: gameCode, userIds: playersIds });
+  };
+
+  const updateLobbyData = (data: {
+    gameType: string;
+    gameCode: string;
+    hostName: string;
+    playerNames: Array<string>;
+  }) => {
+    setGameType(data.gameType);
+    setGameCode(data.gameCode);
+    setHostName(data.hostName);
+    setPlayerNames(data.playerNames);
+  };
 
   useEffect(() => {
     async function performThings() {
-      // in here, we have to add the userID to the game and then return a function that keeps it done
-      const response = await post("/api/joinGame", { game_code: props.gameCode });
-
-      console.log(response.toString());
-
-      setIsPrivate(response.is_private);
-      setGameCode(response.game_code);
-      setmapId(response.map_id);
-      setcreatorId(response.creator_id);
-      setplayersIds(Array.from(response.players_ids));
-
-      const data = await get("/api/getUserName", { userId: response.creator_id });
-      setcreatorName(data.userName);
-
-      const playerIds = Array.from(response.players_ids);
-      let playersNamesArray = new Array<string>();
-      for (let i = 0; i < playerIds.length; i++) {
-        const data = await get("/api/getUserName", { userId: playerIds[i] });
-        playersNamesArray.push(data.userName);
-      }
-      setPlayersNames(playersNamesArray);
+      socket.on("updateLobbies", updateLobbyData);
     }
 
     performThings();
-
-    return () => {
-      post("/api/leaveGame", { game_code: props.gameCode });
-    };
   }, []);
 
+  // *either you are the host or waiting to start
   return (
     <>
       <div className="GameConfig-container">
         <h3 className="GameConfig-header">MINION BATTLE</h3>
-        <div> GAME WAITING </div>
-        <div> game type: {isPrivate} </div>
+        <div> GAME CONFIG </div>
+        <div> game type: {gameType} </div>
         <div> game code: {gameCode} </div>
-        <div> *game owner: {creatorName} </div>
-        <div> curent players: {playersNames.toString()} </div>
-        <div> current map (TO DO: just display it): {mapId} </div>
+        <div> *game owner: {hostName} </div>
+        <div> curent players: {playerNames.toString()} </div>
+        <div> current map (TO DO: add option to switch): {mapId} </div>
+        <div> start game button (TO DO: implement this) </div>
+        <NavigationButton destPath="/game" text="START" onClickFunction={startGame} />
       </div>
       <BackButton text="BACK" destPath="/findgame" />
     </>

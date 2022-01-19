@@ -69,13 +69,15 @@ export const init = (server: http.Server): void => {
       if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
     });
     // this is the function called by App, when a socket joins a room
-    socket.on("joinRoom", (data: { gameCode: string }) => {
+    socket.on("joinRoom", (data: { userId: string; gameCode: string }) => {
+      // connect the socket first
       const gameCode = data.gameCode;
       const currGame = games[gameCode];
-      const userId = getUserFromSocketID(socket.id)!._id;
+      const userId = data.userId;
       if (currGame.hasPlayer(userId)) {
         socket.join(gameCode);
-        // currGame.updateLobbies();
+        console.log("socket " + socket.id + " has joined room " + gameCode);
+        currGame.updateLobbies();
       }
     });
   });
