@@ -5,7 +5,7 @@ import "./FindGame.css";
 import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
 
-import { Router, RouteComponentProps } from "@reach/router";
+import { Router, RouteComponentProps, navigate } from "@reach/router";
 import { post } from "../../utilities";
 import { isPropertySignature } from "typescript";
 
@@ -19,26 +19,36 @@ type Game = {
   _id: string;
 };
 
-type Props = RouteComponentProps & {};
+type Props = RouteComponentProps & {
+  joinRoom: (gameCode: string) => void;
+};
 
 const FindGame = (props: Props) => {
-  const [gameCode, setGameCode] = useState<string>("");
-
   const doNothing = () => {};
 
-  const generateCode = (length: number) => {
-    let result = "";
-    const characters = "0123456789";
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  const createPublicGame = async () => {
+    const data = await post("/api/create", { gameType: "public" }); // creates backend game
+    const gameCode = data.gameCode;
+    await props.joinRoom(gameCode); // triggers emit("joinRoom"), which adds the socket
+    navigate("/gameconfig");
   };
 
-  useEffect(() => {
-    setGameCode(generateCode(5));
-  }, []);
+  const createPrivateGame = async () => {
+    const data = await post("/api/create", { gameType: "private" }); // creates backend game
+    const gameCode = data.gameCode;
+    await props.joinRoom(gameCode); // triggers emit("joinRoom"), which adds the socket
+    navigate("/gameconfig");
+  };
+
+  const navToLobby = () => {
+    navigate("/lobby");
+  };
+
+  const joinPrivateGame = async () => {
+    // to do
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -47,23 +57,15 @@ const FindGame = (props: Props) => {
         <div className="dropdown">
           <button className="dropbtn">CREATE</button>
           <div className="dropdown-content">
-            <NavigationButton
-              onClickFunction={doNothing}
-              text="PUBLIC"
-              destPath={"/gameconfig/public/" + gameCode}
-            />
-            <NavigationButton
-              onClickFunction={doNothing}
-              text="PRIVATE"
-              destPath={"/gameconfig/private/" + gameCode}
-            />
+            <div onClick={createPublicGame}>PUBLIC</div>
+            <div onClick={createPrivateGame}>PRIVATE</div>
           </div>
         </div>
         <div className="dropdown">
           <button className="dropbtn">JOIN</button>
           <div className="dropdown-content">
-            <NavigationButton onClickFunction={doNothing} text="PUBLIC" destPath="/lobby" />
-            <NavigationButton onClickFunction={doNothing} text="PRIVATE" destPath="/TODO" />
+            <div onClick={navToLobby}>PUBLIC</div>
+            <div onClick={joinPrivateGame}>PRIVATE</div>
           </div>
         </div>
       </div>

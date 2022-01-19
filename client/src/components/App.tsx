@@ -22,6 +22,12 @@ import HowToPlay from "./pages/HowToPlay";
 
 const App = () => {
   const [userId, setUserId] = useState("");
+  const [gameCode, setGameCode] = useState("");
+
+  const joinRoom = async (gameCode: string) => {
+    socket.emit("joinRoom", { gameCode: gameCode });
+    setGameCode(gameCode);
+  };
 
   useEffect(() => {
     get("/api/whoami")
@@ -64,10 +70,10 @@ const App = () => {
         handleLogout={handleLogout}
         userId={userId}
       />
-      <FindGame path="/findgame" />
+      <FindGame path="/findgame" joinRoom={joinRoom} />
       <CreateMap path="/createmap" userId={userId} />
-      <GameConfig path="/gameconfig/:publicPrivate/:gameCode" passedUserId={userId} />
-      <GameWaiting path="/gamewaiting/:publicPrivate/:gameCode" passedUserId={userId} />
+      <GameConfig path="/gameconfig" passedUserId={userId} />
+      <GameWaiting path="/gamewaiting" passedUserId={userId} />
       <Lobby path="/lobby" />
       <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
