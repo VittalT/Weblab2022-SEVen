@@ -101,9 +101,9 @@ router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const joinedStatus = currGame.join(userId, userName);
   if (joinedStatus) {
     // leave the current game if the user is already in a game
-    if (userId in clients && clients[userId].gameCode !== gameCode) {
-      getSocketFromUserID[userId].leave(clients[userId].gameCode);
-    }
+    // if (userId in clients && clients[userId].gameCode !== gameCode) {
+    //   getSocketFromUserID[userId].leave(clients[userId].gameCode);
+    // }
     clients[userId] = {
       gameCode: gameCode,
     };
