@@ -3,7 +3,7 @@ const { getIo } = require("../server-socket");
 class Game {
   private readonly gameCode: string;
   private readonly gameType: string;
-  private readonly hostId: string;
+  private hostId: string;
   private readonly playerIds: Array<string>;
   private readonly idToName: Map<string, string>;
 
@@ -30,6 +30,7 @@ class Game {
       gameType: this.gameType,
       gameCode: this.gameCode,
       hostName: hostName,
+      hostId: this.hostId,
       playerNames: playerNames,
     };
     getIo().in(this.gameCode).emit("updateLobbies", data); //should be to
@@ -43,6 +44,23 @@ class Game {
     }
     this.playerIds.push(userId);
     this.idToName.set(userId, userName);
+    return true;
+  }
+
+  public leave(userId: string, userName: string): boolean {
+    // remove player from playerIds
+    const index = this.playerIds.indexOf(userId, 0);
+    if (index > -1) {
+      this.playerIds.splice(index, 1);
+    }
+    if (userId === this.hostId) {
+      // if there are still players, select a new host
+      if (this.playerIds.length > 0) {
+        this.hostId = this.playerIds[0];
+      } else {
+        this.hostId = "NONE";
+      }
+    }
     return true;
   }
 
@@ -69,6 +87,10 @@ class Game {
 
   public toString(): string {
     return "Game With gameCode: " + this.gameCode;
+  }
+
+  public numPlayers(): string {
+    return this.playerIds.length.toString();
   }
 }
 

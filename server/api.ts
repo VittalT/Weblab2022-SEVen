@@ -33,9 +33,7 @@ router.get("/whoami", (req, res) => {
   if (!req.user) {
     // not logged in
     return res.send({ msg: "not logged in" });
-    console.log("USER NOT FOUND");
   }
-  console.log("USER FOUND, IS " + req.user.name);
   res.send(req.user);
 });
 
@@ -104,6 +102,21 @@ router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   res.send({ gameCode: gameCode });
 });
 
+router.post("/leaveGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const userId = req.user!._id;
+  const userName = req.user!.name;
+  const gameCode = req.body.gameCode;
+
+  const currGame = games[gameCode];
+  const leftStatus = currGame.leave(userId, userName);
+  if (userId in clients) {
+    delete clients[userId];
+  }
+
+  currGame.updateLobbies;
+  res.send({ gameCode: gameCode });
+});
+
 router.post("/getLobbyInfo", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const userId = req.user!._id;
   const gameCode: string = clients[userId].gameCode;
@@ -118,8 +131,9 @@ router.post("/getLobbyInfo", auth.ensureLoggedIn, (req: Request, res: Response) 
 
 router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const data = new Array<{ hostName: string; gameCode: string }>();
-  for (const game of games) {
-    if (game.getGameType === "public") {
+  for (const gameCode of Object.keys(games)) {
+    const game = games[gameCode];
+    if (game.getGameType() === "public" && game.numPlayers.toString() > 0) {
       data.push({ hostName: game.getHostName(), gameCode: game.getGameCode() });
     }
   }
