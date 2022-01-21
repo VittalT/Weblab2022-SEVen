@@ -16,6 +16,7 @@ import { Game } from "./FindGame";
 type Props = RouteComponentProps & {
   passedUserId: string;
   joinRoom: (userId: string, gameCode: string) => void;
+  forceNavigate: () => void;
 };
 
 const Lobby = (props: Props) => {
@@ -30,6 +31,7 @@ const Lobby = (props: Props) => {
   useEffect(() => {
     // TODO:: EVENTUALLY, IF THERE IS NOONE IN THE GAME, THEN JUST DONT SHOW THE FUCKING GAME!!
     // ALSO, MAKE A FUCKING REFRESH BUTTON! LMAO XD! AND ENCODE LOGIC FOR WHAT HAPPENS IF THE GAME IS GONE! HAHA!
+    props.forceNavigate();
     get("/api/getPublicGames").then((data) => {
       setPublicGames(data);
     });

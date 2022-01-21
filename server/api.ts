@@ -120,9 +120,9 @@ router.post("/leaveGame", auth.ensureLoggedIn, (req: Request, res: Response) => 
   const currGame = games[gameCode];
   const leftStatus = currGame.leave(userId, userName);
 
-  // if (userId in clients) {
-  //   delete clients[userId];
-  // }
+  if (userId in clients) {
+    delete clients[userId];
+  }
 
   currGame.updateLobbies;
   res.send({ gameCode: gameCode });
@@ -136,6 +136,7 @@ router.post("/getLobbyInfo", auth.ensureLoggedIn, (req: Request, res: Response) 
     gameType: currGame.getGameType(),
     gameCode: currGame.getGameCode(),
     hostName: currGame.getHostName(),
+    hostId: currGame.getHostId(),
     playerNames: currGame.getPlayerNames(),
   });
 });
@@ -183,7 +184,9 @@ router.post("/getGameActiveStatus", (req: Request, res: Response) => {
 });
 
 router.post("/startGame", (req: Request, res: Response) => {
-  console.log(req.body.gameCode);
+  // let the game know that the game has started, then game can force all players to navigate to the game page
+  // and then start the game
+  const gameCode = req.body.gameCode;
   logic.createGameState(parseInt(req.body.gameId), req.body.userIds);
   res.send({});
 });

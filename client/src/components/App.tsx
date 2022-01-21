@@ -9,7 +9,7 @@ import "../utilities.css";
 import Game from "./pages/Game";
 import assert from "assert";
 
-import { Router, RouteComponentProps } from "@reach/router";
+import { Router, RouteComponentProps, navigate } from "@reach/router";
 
 import NavigationButton from "./modules/NavigationButton";
 import HomeScreen from "./pages/HomeScreen";
@@ -40,21 +40,28 @@ const App = () => {
     return true;
   };
 
+  const forceNavigate = async () => {
+    const data = await get("/api/getCurrRoomGameCode");
+    const currGameCode = data.gameCode;
+    setGameCode(data.gameCode);
+    if (currGameCode !== "none") {
+      navigate("/gameconfig");
+    }
+  };
+
   useEffect(() => {
     console.log("app was entered or refreshed!");
-    get("/api/whoami").then((user) => {
+
+    const doThings = async () => {
+      const user: User = await get("/api/whoami");
       if (user._id) {
         // they are registed in the database, and currently logged in.
         setUserId(user._id);
       }
-    });
-    // });
-    // .then(() =>
-    //   socket.on("connect", () => {
-    //     console.log("initailized socket from who am i");
-    //     // post("/api/initsocket", { socketid: socket.id });
-    //   })
-    // );
+    };
+    forceNavigate();
+
+    doThings();
   }, []);
 
   const handleLogin = (res: GoogleLoginResponse) => {
@@ -82,7 +89,12 @@ const App = () => {
         handleLogout={handleLogout}
         userId={userId}
       />
-      <FindGame path="/findgame" passedUserId={userId} joinRoom={joinRoom} />
+      <FindGame
+        path="/findgame"
+        passedUserId={userId}
+        joinRoom={joinRoom}
+        forceNavigate={forceNavigate}
+      />
       <CreateMap path="/createmap" userId={userId} />
       <GameConfig
         path="/gameconfig"
@@ -91,7 +103,12 @@ const App = () => {
         leaveRoom={leaveRoom}
         passedGameCode={gameCode}
       />
-      <Lobby path="/lobby" passedUserId={userId} joinRoom={joinRoom} />
+      <Lobby
+        path="/lobby"
+        passedUserId={userId}
+        joinRoom={joinRoom}
+        forceNavigate={forceNavigate}
+      />
       <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
       <HowToPlay path="/howtoplay" />
