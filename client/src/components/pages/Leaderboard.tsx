@@ -96,7 +96,7 @@ const Leaderboard = (props: RouteComponentProps) => {
             {highestGamesPlayed}
           </div>
           <div className="Leaderboard-column">
-            <h2>Current Rating</h2>
+            <h2>Games Won</h2>
             <hr className="Leaderboard-line" />
             {highestGamesWon}
           </div>
