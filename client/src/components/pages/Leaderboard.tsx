@@ -20,6 +20,7 @@ const Leaderboard = (props: RouteComponentProps) => {
 
   useEffect(() => {
     get("/api/users").then((users: User[]) => {
+      for (let i = 0; i < users.length; i++) console.log(users[i].rating);
       setBestRatings(
         users
           .sort((a: User, b: User) => b.rating - a.rating)
@@ -69,7 +70,7 @@ const Leaderboard = (props: RouteComponentProps) => {
           ))
       );
     });
-  });
+  }, []);
 
   return (
     <>
