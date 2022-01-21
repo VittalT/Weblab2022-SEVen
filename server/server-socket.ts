@@ -2,6 +2,7 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 import { ClickState, gameState, Size } from "./models/GameState";
+import UserModel from "./models/User";
 
 const { games } = require("./data/games");
 
@@ -69,8 +70,11 @@ export const init = (server: http.Server): void => {
       if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
     });
     // this is the function called by App, when a socket joins a room
-    socket.on("joinRoom", (data: { userId: string; gameCode: string }) => {
-      // connect the socket first
+    socket.on("joinRoom", (data: { user: User; userId: string; gameCode: string }) => {
+      // connect socket
+      addUser(data.user, socket);
+
+      // join the gamecode
       const gameCode = data.gameCode;
       const currGame = games[gameCode];
       const userId = data.userId;

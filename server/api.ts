@@ -33,7 +33,9 @@ router.get("/whoami", (req, res) => {
   if (!req.user) {
     // not logged in
     return res.send({ msg: "not logged in" });
+    console.log("USER NOT FOUND");
   }
+  console.log("USER FOUND, IS " + req.user.name);
   res.send(req.user);
 });
 
@@ -46,6 +48,16 @@ router.post("/initsocket", (req: Request, res: Response) => {
   res.send({});
 });
 
+router.get("/getCurrRoomGameCode", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const userId = req.user!._id;
+
+  if (userId in clients) {
+    res.send({ gameCode: clients[userId].gameCode });
+  } else {
+    res.send({ gameCode: "none" });
+  }
+});
+
 // req has only paramter public vs private
 // this function creates a completely new game and updates all the backend data but does ont modify sockets
 // it also calls updateLobbies(), which shouldmodify the frontend
@@ -54,6 +66,7 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   const userName = req.user!.name;
   const gameType = req.body.gameType;
 
+  // do the other stuff
   let gameCode = generateGameCode(6);
   while (gameCode in games) {
     gameCode = generateGameCode(6);
@@ -61,11 +74,11 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   const currGame = new Game(gameCode, gameType, userId, userName, [userId]);
   games[gameCode] = currGame;
   // leave the current game if the user is already in a game
-  if (userId in clients && clients[userId].room !== gameCode) {
-    getSocketFromUserID[userId].leave(clients[userId].room);
+  if (userId in clients && clients[userId].gameCode !== gameCode) {
+    getSocketFromUserID[userId].leave(clients[userId].gameCode);
   }
   clients[userId] = {
-    room: gameCode,
+    gameCode: gameCode,
   };
   currGame.updateLobbies;
   res.send({ gameCode: gameCode });
@@ -80,15 +93,37 @@ router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const joinedStatus = currGame.join(userId, userName);
   if (joinedStatus) {
     // leave the current game if the user is already in a game
-    if (userId in clients && clients[userId].room !== gameCode) {
-      getSocketFromUserID[userId].leave(clients[userId].room);
+    if (userId in clients && clients[userId].gameCode !== gameCode) {
+      getSocketFromUserID[userId].leave(clients[userId].gameCode);
     }
     clients[userId] = {
-      room: gameCode,
+      gameCode: gameCode,
     };
   }
   currGame.updateLobbies;
   res.send({ gameCode: gameCode });
+});
+
+router.post("/getLobbyInfo", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const userId = req.user!._id;
+  const gameCode: string = clients[userId].gameCode;
+  const currGame = games[gameCode];
+  res.send({
+    gameType: currGame.getGameType(),
+    gameCode: currGame.getGameCode(),
+    hostName: currGame.getHostName(),
+    playerNames: currGame.getPlayerNames(),
+  });
+});
+
+router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const data = new Array<{ hostName: string; gameCode: string }>();
+  for (const game of games) {
+    if (game.getGameType === "public") {
+      data.push({ hostName: game.getHostName(), gameCode: game.getGameCode() });
+    }
+  }
+  res.send(data);
 });
 
 router.post("/createMap", (req: Request, res: Response) => {
