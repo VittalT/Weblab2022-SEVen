@@ -12,7 +12,8 @@ import BackButton from "../modules/BackButton";
 import { socket } from "../../client-socket";
 
 interface URLProps extends RouteComponentProps {
-  gameCode?: string;
+  gameCode: string;
+  joinRoom: (userId: string, gameCode: string) => void;
 }
 
 type Props = URLProps & {
@@ -43,10 +44,25 @@ const GameConfig = (props: Props) => {
     setGameCode(data.gameCode);
     setHostName(data.hostName);
     setPlayerNames(data.playerNames);
+    console.log("function updatelobby data ran");
   };
 
   useEffect(() => {
     socket.on("updateLobbies", updateLobbyData);
+
+    const doThings = async () => {
+      // using gamecode associated with app, populate page with lobby info
+      const data = await get("/api/getCurrRoomGameCode");
+      const currGameCode = data.gameCode;
+      if (currGameCode !== "none") {
+        const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
+        post("/api/getLobbyInfo", { gameCode: currGameCode }).then((data) => {
+          updateLobbyData(data);
+        });
+      }
+    };
+
+    doThings();
   }, []);
 
   // *either you are the host or waiting to start

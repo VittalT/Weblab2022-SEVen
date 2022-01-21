@@ -49,6 +49,27 @@ class Game {
   public hasPlayer(userId: string): boolean {
     return this.playerIds.includes(userId);
   }
+
+  public getGameType(): string {
+    return this.gameType;
+  }
+
+  public getHostName(): string {
+    return this.idToName.get(this.hostId)!;
+  }
+
+  public getGameCode(): string {
+    return this.gameCode;
+  }
+
+  public getPlayerNames(): Array<string> {
+    const playerNames = this.playerIds.map((name: string) => this.idToName.get(name)!.toString());
+    return playerNames;
+  }
+
+  public toString(): string {
+    return "Game With gameCode: " + this.gameCode;
+  }
 }
 
 module.exports = {
