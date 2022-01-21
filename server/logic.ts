@@ -309,7 +309,8 @@ const checkWin = () => {
   // TODO Step 2
 };
 
-const startGame = (gameId: number, userIds: Array<string>) => {
+const createGameState = (gameId: number, userIds: Array<string>) => {
+  console.log("D");
   let game = {
     timer: new Date(),
     winnerId: null,
@@ -353,6 +354,7 @@ const startGame = (gameId: number, userIds: Array<string>) => {
 module.exports = {
   toggleInfo,
   timeUpdate,
+  createGameState,
   updateGamePanelClickState,
   updateGameMapClickState,
 };
