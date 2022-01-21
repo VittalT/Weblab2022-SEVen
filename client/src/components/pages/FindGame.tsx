@@ -45,7 +45,7 @@ const FindGame = (props: Props) => {
     navigate("/lobby");
   };
 
-  const joinPrivateGame = async () => {
+  const joinGame = async () => {
     // TO DO
   };
 
@@ -66,7 +66,7 @@ const FindGame = (props: Props) => {
           <button className="dropbtn">JOIN</button>
           <div className="dropdown-content">
             <div onClick={navToLobby}>PUBLIC</div>
-            <div onClick={joinPrivateGame}>PRIVATE</div>
+            <div onClick={joinGame}>PRIVATE</div>
           </div>
         </div>
       </div>

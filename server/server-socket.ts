@@ -72,17 +72,33 @@ export const init = (server: http.Server): void => {
     // this is the function called by App, when a socket joins a room
     socket.on("joinRoom", (data: { user: User; userId: string; gameCode: string }) => {
       // connect socket
-      addUser(data.user, socket);
-
-      // join the gamecode
       const gameCode = data.gameCode;
-      const currGame = games[gameCode];
       const userId = data.userId;
+      const user = data.user;
+
+      addUser(user, socket);
+
+      const currGame = games[gameCode];
+
       if (currGame.hasPlayer(userId)) {
         socket.join(gameCode);
         console.log("socket " + socket.id + " has joined room " + gameCode);
         currGame.updateLobbies();
       }
+    });
+    socket.on("leaveRoom", (data: { user: User; userId: string; gameCode: string }) => {
+      // connect socket
+      const gameCode = data.gameCode;
+      const userId = data.userId;
+      const user = data.user;
+
+      removeUser(user, socket);
+
+      const currGame = games[gameCode];
+
+      socket.leave(gameCode);
+      console.log("socket " + socket.id + " has left room " + gameCode);
+      currGame.updateLobbies();
     });
   });
 };

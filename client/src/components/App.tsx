@@ -16,7 +16,6 @@ import HomeScreen from "./pages/HomeScreen";
 import { FindGame } from "./pages/FindGame";
 import CreateMap from "./pages/CreateMap";
 import GameConfig from "./pages/GameConfig";
-import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 import HowToPlay from "./pages/HowToPlay";
 
@@ -29,6 +28,14 @@ const App = () => {
     const user: User = await get("/api/whoami");
     socket.emit("joinRoom", { user: user, userId: userId, gameCode: gameCode });
     setGameCode(gameCode);
+    return true;
+  };
+
+  // leaves the room
+  const leaveRoom = async (userId: string, gameCode: string) => {
+    const user: User = await get("/api/whoami");
+    socket.emit("leaveRoom", { user: user, userId: userId, gameCode: gameCode });
+    setGameCode("");
     return true;
   };
 
@@ -80,10 +87,10 @@ const App = () => {
         path="/gameconfig"
         passedUserId={userId}
         joinRoom={joinRoom}
-        gameCode={gameCode}
+        leaveRoom={leaveRoom}
+        passedGameCode={gameCode}
       />
-      <GameWaiting path="/gamewaiting" passedUserId={userId} gameCode={gameCode} />
-      <Lobby path="/lobby" />
+      <Lobby path="/lobby" passedUserId={userId} joinRoom={joinRoom} />
       <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
       <HowToPlay path="/howtoplay" />

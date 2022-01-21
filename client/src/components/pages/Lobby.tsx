@@ -4,30 +4,32 @@ import "./Lobby.css";
 
 import NavigationButton from "../modules/NavigationButton";
 
-import { Router, RouteComponentProps } from "@reach/router";
+import { Router, RouteComponentProps, navigate } from "@reach/router";
 
 import BackButton from "../modules/BackButton";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 import LobbyGameDisplay from "../modules/LobbyGameDisplay";
 
 import { Game } from "./FindGame";
 
-type Props = RouteComponentProps & {};
-
-const loadCurrentPublicGames = async (): Promise<Array<Game>> => {
-  const publicGames: Array<Game> = await get("/api/getPublicGames");
-  return publicGames;
+type Props = RouteComponentProps & {
+  passedUserId: string;
+  joinRoom: (userId: string, gameCode: string) => void;
 };
 
 const Lobby = (props: Props) => {
   const [publicGames, setPublicGames] = useState<Array<{ hostName: string; gameCode: string }>>([]);
 
-  const joinPublicGame = (gameCode: string) => {
-    // code for joining a public game
+  const joinPublicGame = async (gameCode: string) => {
+    const data = await post("/api/joinGame", { gameCode: gameCode });
+    await props.joinRoom(props.passedUserId, gameCode);
+    navigate("/gameconfig");
   };
 
   useEffect(() => {
+    // TODO:: EVENTUALLY, IF THERE IS NOONE IN THE GAME, THEN JUST DONT SHOW THE FUCKING GAME!!
+    // ALSO, MAKE A FUCKING REFRESH BUTTON! LMAO XD! AND ENCODE LOGIC FOR WHAT HAPPENS IF THE GAME IS GONE! HAHA!
     get("/api/getPublicGames").then((data) => {
       setPublicGames(data);
     });
@@ -38,11 +40,12 @@ const Lobby = (props: Props) => {
       <div className="Lobby-container">
         <h3 className="Lobby-header">MINION BATTLE</h3>
         <div>LOBBY</div>
+        <div>{publicGames.length + " Games"}</div>
         <div>
           {publicGames.map((game: { hostName: string; gameCode: string }) => (
-            <div onClick={() => joinPublicGame(game.gameCode)}>
+            <button onClick={() => joinPublicGame(game.gameCode)}>
               {game.hostName + " " + game.gameCode}
-            </div>
+            </button>
           ))}{" "}
         </div>
       </div>
