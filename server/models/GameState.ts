@@ -49,43 +49,6 @@ export const sumPoints = (p1: Point, p2: Point) => {
 };
 
 /** game state */
-export type Tower = {
-  health: number;
-  location: Point;
-  size: Size;
-  enemyMinionIds: Array<number>; // don't emit
-};
-
-export type Minion = {
-  location: Point;
-  targetLocation: Point; // don't emit
-  direction: number;
-  size: Size;
-  targetTowerId: number | null; // don't emit
-  reachedTarget: boolean; // don't emit
-};
-
-export type Player = {
-  gold: number;
-  towerIds: Array<number>;
-  minionIds: Array<number>;
-  clickState: ClickState; // don't emit
-  towerClickedId: number; // don't emit
-  sizeClicked: Size;
-  showInfo: boolean;
-  inGame: boolean;
-};
-
-export type GameState = {
-  timer: Date;
-  winnerId: string | null;
-  towers: Record<number, Tower>; // id to tower
-  maxTowerId: number;
-  minions: Record<number, Minion>; // id to minion
-  maxMinionId: number;
-  players: Record<string, Player>; // id to player
-  playerToTeamId: Record<string, number>; // playerId to teamId
-};
 
 export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
@@ -139,9 +102,30 @@ export const minionConstants: Record<Size, MinionConstants> = {
 
 export const GoldConstants = {
   realRadius: 50,
-}
+};
 
 export const gameState: Record<number, GameState> = {}; // represents all active games
+
+export const getGame = (gameId: number): GameState => {
+  return gameState[gameId];
+};
+
+export const getTeamId = (game: GameState, userId: string): number => {
+  return game.playerToTeamId[userId];
+};
+
+export const getPlayer = (game: GameState, userId: string): Player => {
+  return game.players[userId];
+};
+
+export const getTower = (game: GameState, towerId: number): Tower => {
+  return game.towers[towerId];
+};
+
+export const getMinion = (game: GameState, minionId: number): Minion => {
+  return game.minions[minionId];
+};
+
 // const ID_1 = "61e4e1bf335ba570cd3f5f6a";
 // const TEAM_1 = 0;
 // const START_TOWER_ID_1 = 0;
@@ -198,23 +182,3 @@ export const gameState: Record<number, GameState> = {}; // represents all active
 //   const gameId = gameOfPlayer.get(userId) ?? assert.fail();
 //   return gameState.get(gameId) ?? assert.fail();
 // };
-
-export const getGame = (gameId: number): GameState => {
-  return gameState[gameId];
-};
-
-export const getTeamId = (game: GameState, userId: string): number => {
-  return game.playerToTeamId[userId];
-};
-
-export const getPlayer = (game: GameState, userId: string): Player => {
-  return game.players[userId];
-};
-
-export const getTower = (game: GameState, towerId: number): Tower => {
-  return game.towers[towerId];
-};
-
-export const getMinion = (game: GameState, minionId: number): Minion => {
-  return game.minions[minionId];
-};
