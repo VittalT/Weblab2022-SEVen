@@ -39,7 +39,7 @@ router.get("/whoami", (req, res) => {
 });
 
 router.get("/users", (req: Request, res: Response) => {
-  User.find({}).then((users) => res.send(users));
+  User.find({}).then((users: typeof User) => res.send(users));
 });
 
 router.post("/initsocket", (req: Request, res: Response) => {
