@@ -99,6 +99,10 @@ class Game {
   public getActiveStatus(): string {
     return this.activeStatus;
   }
+
+  public setInactive(): void {
+    this.activeStatus = "false";
+  }
 }
 
 module.exports = {
