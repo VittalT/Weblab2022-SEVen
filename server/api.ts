@@ -107,7 +107,8 @@ router.post("/createMap", (req: Request, res: Response) => {
 });
 
 router.post("/startGame", (req: Request, res: Response) => {
-  logic.startGame(parseInt(req.body.gameCode), req.body.userIds);
+  console.log(req.body.gameCode);
+  logic.createGameState(parseInt(req.body.gameId), req.body.userIds);
   res.send({});
 });
 
