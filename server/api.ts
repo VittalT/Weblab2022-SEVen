@@ -97,9 +97,9 @@ router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
     clients[userId] = {
       gameCode: gameCode,
     };
+    currGame.updateLobbies;
+    res.send({ gameCode: gameCode });
   }
-  currGame.updateLobbies;
-  res.send({ gameCode: gameCode });
 });
 
 router.post("/leaveGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
@@ -133,7 +133,7 @@ router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response)
   const data = new Array<{ hostName: string; gameCode: string }>();
   for (const gameCode of Object.keys(games)) {
     const game = games[gameCode];
-    if (game.getGameType() === "public" && game.numPlayers.toString() > 0) {
+    if (game.getGameType() === "public" && game.isActive === "true") {
       data.push({ hostName: game.getHostName(), gameCode: game.getGameCode() });
     }
   }
@@ -153,6 +153,19 @@ router.post("/createMap", (req: Request, res: Response) => {
   newMap.save().then(() => {
     res.status(200).send({ msg: "Successfully created map" });
   });
+});
+
+// returns false if game does not exist
+router.post("/getGameActiveStatus", (req: Request, res: Response) => {
+  const gameCode = req.body.gameCode;
+  if (!(gameCode in Object.keys(games))) {
+    res.send({ status: "false" });
+  } else {
+    const currGame = games[gameCode];
+    res.send({
+      status: currGame.getActiveStatus(),
+    });
+  }
 });
 
 router.post("/startGame", (req: Request, res: Response) => {

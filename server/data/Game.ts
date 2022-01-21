@@ -6,6 +6,7 @@ class Game {
   private hostId: string;
   private readonly playerIds: Array<string>;
   private readonly idToName: Map<string, string>;
+  private activeStatus: string;
 
   public constructor(
     gameCode: string,
@@ -20,6 +21,7 @@ class Game {
     this.playerIds = playerIds;
     this.idToName = new Map<string, string>();
     this.idToName.set(hostId, hostName);
+    this.activeStatus = "true";
   }
 
   // updates all frontend playerlobbies to include most recent information
@@ -59,6 +61,7 @@ class Game {
         this.hostId = this.playerIds[0];
       } else {
         this.hostId = "NONE";
+        this.activeStatus = "false";
       }
     }
     return true;
@@ -91,6 +94,10 @@ class Game {
 
   public numPlayers(): string {
     return this.playerIds.length.toString();
+  }
+
+  public getActiveStatus(): string {
+    return this.activeStatus;
   }
 }
 

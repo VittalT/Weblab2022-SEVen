@@ -1,4 +1,4 @@
-// holds the current games
+// holds all games, including inactive ones
 
 const games = {};
 
