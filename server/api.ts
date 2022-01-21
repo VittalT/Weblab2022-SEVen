@@ -144,7 +144,7 @@ router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response)
   const data = new Array<{ hostName: string; gameCode: string }>();
   for (const gameCode of Object.keys(games)) {
     const game = games[gameCode];
-    if (game.getGameType() === "public" && game.isActive === "true") {
+    if (game.getGameType() === "public" && game.getActiveStatus() === "active") {
       data.push({ hostName: game.getHostName(), gameCode: game.getGameCode() });
     }
   }
@@ -166,15 +166,18 @@ router.post("/createMap", (req: Request, res: Response) => {
   });
 });
 
-// returns false if game does not exist
+// returns inactive if game does not exist as well
 router.post("/getGameActiveStatus", (req: Request, res: Response) => {
   const gameCode = req.body.gameCode;
-  if (!(gameCode in Object.keys(games))) {
-    res.send({ status: "false" });
+  console.log(games.toString());
+  console.log(Object.keys(games).toString());
+  if (!Object.keys(games).includes(gameCode)) {
+    res.send({ activeStatus: "inactive" });
   } else {
+    console.log("entered loop here?");
     const currGame = games[gameCode];
     res.send({
-      status: currGame.getActiveStatus(),
+      activeStatus: currGame.getActiveStatus(),
     });
   }
 });

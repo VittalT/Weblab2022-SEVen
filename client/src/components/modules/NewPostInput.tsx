@@ -52,9 +52,12 @@ type Props = RouteComponentProps & {
 
 const PrivateGameInput = (props: Props) => {
   const join = async (gameCode: string) => {
+    console.log("private button pressed, gamecode is " + gameCode);
     if (gameCode.length === 6) {
       const data = await post("/api/getGameActiveStatus", { gameCode: gameCode });
-      if (data.activeStatus === "true") {
+      console.log("active statusis " + data.activeStatus);
+      if (data.activeStatus === "active") {
+        const data = await post("/api/joinGame", { gameCode: gameCode });
         await props.joinRoom(props.passedUserId, gameCode);
         navigate("/gameconfig");
       }
