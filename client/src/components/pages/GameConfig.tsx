@@ -94,14 +94,19 @@ const GameConfig = (props: Props) => {
         <div> GAME CONFIG </div>
         <div> game type: {gameType} </div>
         <div> game code: {gameCode} </div>
-        <div> *game owner: {hostName} </div>
         <div> curent players: {playerNames.toString()} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
-        <div> start game button (TO DO: implement this) </div>
+        <div>---</div>
         {props.passedUserId === hostId ? (
-          <button onClick={startGame}>START</button>
+          <>
+            <div>You are the host</div>
+            <button onClick={startGame}>START</button>
+          </>
         ) : (
-          <div>{"Waiting for " + hostName + " to start the game... "}</div>
+          <>
+            <div>{hostName + " is the host"} </div>
+            <div>{"Waiting for " + hostName + " to start the game... "}</div>
+          </>
         )}
       </div>
     </>
