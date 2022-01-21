@@ -13,7 +13,7 @@ const { clients } = require("./data/clients");
 const { generateGameCode } = require("./util");
 
 import GameModel from "./models/Game";
-import UserModel from "./models/User";
+import { User } from "./models/User";
 import MapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import {
@@ -64,6 +64,13 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   const userName = req.user!.name;
   const gameType = req.body.gameType;
 
+  // if user is currently associated with a room, deassociate it
+  if (userId in clients) {
+    if (getSocketFromUserID[userId] !== undefined) {
+      getSocketFromUserID[userId].leave(clients[userId].gameCode);
+    }
+  }
+
   // do the other stuff
   let gameCode = generateGameCode(6);
   while (gameCode in games) {
@@ -71,10 +78,7 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   }
   const currGame = new Game(gameCode, gameType, userId, userName, [userId]);
   games[gameCode] = currGame;
-  // leave the current game if the user is already in a game
-  if (userId in clients && clients[userId].gameCode !== gameCode) {
-    getSocketFromUserID[userId].leave(clients[userId].gameCode);
-  }
+
   clients[userId] = {
     gameCode: gameCode,
   };
@@ -82,6 +86,7 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   res.send({ gameCode: gameCode });
 });
 
+// joins a game, assumes that the gameCode is legitimate and the game exists and is active
 router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const userId = req.user!._id;
   const userName = req.user!.name;
@@ -109,9 +114,10 @@ router.post("/leaveGame", auth.ensureLoggedIn, (req: Request, res: Response) => 
 
   const currGame = games[gameCode];
   const leftStatus = currGame.leave(userId, userName);
-  if (userId in clients) {
-    delete clients[userId];
-  }
+
+  // if (userId in clients) {
+  //   delete clients[userId];
+  // }
 
   currGame.updateLobbies;
   res.send({ gameCode: gameCode });
