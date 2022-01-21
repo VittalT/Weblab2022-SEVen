@@ -24,25 +24,29 @@ const App = () => {
   const [userId, setUserId] = useState("");
   const [gameCode, setGameCode] = useState("");
 
+  // connects the socket and joins the room (socket oriented), returns whether or not room was joined
   const joinRoom = async (userId: string, gameCode: string) => {
-    socket.emit("joinRoom", { userId: userId, gameCode: gameCode });
+    const user: User = await get("/api/whoami");
+    socket.emit("joinRoom", { user: user, userId: userId, gameCode: gameCode });
     setGameCode(gameCode);
+    return true;
   };
 
   useEffect(() => {
-    get("/api/whoami")
-      .then((user) => {
-        if (user._id) {
-          // they are registed in the database, and currently logged in.
-          setUserId(user._id);
-        }
-      })
-      .then(() =>
-        socket.on("connect", () => {
-          console.log("initailized socket from who am i");
-          post("/api/initsocket", { socketid: socket.id });
-        })
-      );
+    console.log("app was entered or refreshed!");
+    get("/api/whoami").then((user) => {
+      if (user._id) {
+        // they are registed in the database, and currently logged in.
+        setUserId(user._id);
+      }
+    });
+    // });
+    // .then(() =>
+    //   socket.on("connect", () => {
+    //     console.log("initailized socket from who am i");
+    //     // post("/api/initsocket", { socketid: socket.id });
+    //   })
+    // );
   }, []);
 
   const handleLogin = (res: GoogleLoginResponse) => {
@@ -72,8 +76,13 @@ const App = () => {
       />
       <FindGame path="/findgame" passedUserId={userId} joinRoom={joinRoom} />
       <CreateMap path="/createmap" userId={userId} />
-      <GameConfig path="/gameconfig" passedUserId={userId} />
-      <GameWaiting path="/gamewaiting" passedUserId={userId} />
+      <GameConfig
+        path="/gameconfig"
+        passedUserId={userId}
+        joinRoom={joinRoom}
+        gameCode={gameCode}
+      />
+      <GameWaiting path="/gamewaiting" passedUserId={userId} gameCode={gameCode} />
       <Lobby path="/lobby" />
       <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />

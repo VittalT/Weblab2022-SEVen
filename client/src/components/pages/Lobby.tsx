@@ -21,18 +21,16 @@ const loadCurrentPublicGames = async (): Promise<Array<Game>> => {
 };
 
 const Lobby = (props: Props) => {
-  const [publicGames, setPublicGames] = useState<Array<Game>>([]);
+  const [publicGames, setPublicGames] = useState<Array<{ hostName: string; gameCode: string }>>([]);
 
-  const doNothing = () => {};
+  const joinPublicGame = (gameCode: string) => {
+    // code for joining a public game
+  };
 
   useEffect(() => {
-    // borrow stuff from chatbook messageslist, basically get the list of shit
-    async function performThings() {
-      const publicGamesFromDB = await loadCurrentPublicGames();
-      setPublicGames(publicGamesFromDB);
-    }
-
-    performThings();
+    get("/api/getPublicGames").then((data) => {
+      setPublicGames(data);
+    });
   }, []);
 
   return (
@@ -41,13 +39,10 @@ const Lobby = (props: Props) => {
         <h3 className="Lobby-header">MINION BATTLE</h3>
         <div>LOBBY</div>
         <div>
-          {publicGames.map((game: Game) => (
-            <NavigationButton
-              onClickFunction={doNothing}
-              destPath={"/gamewaiting/public/" + game.game_code}
-              text={game.game_code}
-            />
-            //<LobbyGameDisplay gameCode={game.game_code} /> //ownerName.creator_name} />
+          {publicGames.map((game: { hostName: string; gameCode: string }) => (
+            <div onClick={() => joinPublicGame(game.gameCode)}>
+              {game.hostName + " " + game.gameCode}
+            </div>
           ))}{" "}
         </div>
       </div>
