@@ -9,7 +9,9 @@ import { get, post } from "../../utilities";
 import { User } from "../../../../server/models/User";
 import { LeaderboardRecord } from "../modules/LeaderboardRecord";
 
-const Leaderboard = () => {
+import { RouteComponentProps } from "@reach/router";
+
+const Leaderboard = (props: RouteComponentProps) => {
   const peopleToInclude = 5;
   const [bestRatings, setBestRatings] = useState<ReactElement[]>([]);
   const [bestAlltimeRatings, setBestAlltimeRatings] = useState<ReactElement[]>([]);
