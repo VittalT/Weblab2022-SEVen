@@ -47,15 +47,6 @@ const Game = (props: GameProps) => {
     });
   }, []);
 
-  //   useEffect(() => {
-  //     get("/api/gameConstants").then(
-  //       (gameConstants: { minionConstants: MinionConstants; towerConstants: TowerConstants }) => {
-  //         setTowerConstants(gameConstants.towerConstants);
-  //         setMinionConstants(gameConstants.minionConstants);
-  //       }
-  //     );
-  //   }, []);
-
   const processUpdate = (gameState: Record<number, GameState>) => {
     console.log(gameState);
     const game = gameState[props.gameId];

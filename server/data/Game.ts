@@ -6,6 +6,15 @@ class Game {
   private readonly hostId: string;
   private readonly playerIds: Array<string>;
   private readonly idToName: Map<string, string>;
+  private readonly startTime: Date;
+  private readonly winnerId: string | null;
+  private readonly towers: Record<number, Tower>; // id to tower
+  private readonly maxTowerId: number;
+  private readonly minions: Record<number, Minion>; // id to minion
+  private readonly maxMinionId: number;
+  private readonly players: Record<string, Player>; // id to player
+  private readonly playerToTeamId: Record<string, number>; // playerId to teamId
+
 
   public constructor(
     gameCode: string,
@@ -20,6 +29,14 @@ class Game {
     this.playerIds = playerIds;
     this.idToName = new Map<string, string>();
     this.idToName.set(hostId, hostName);
+    this.startTime = new Date();
+    winnerId: string | null;
+    towers: Record<number, Tower>; // id to tower
+    maxTowerId: number;
+    minions: Record<number, Minion>; // id to minion
+    maxMinionId: number;
+    players: Record<string, Player>; // id to player
+    playerToTeamId: Record<string, number>; // playerId to teamId
   }
 
   // updates all frontend playerlobbies to include most recent information
