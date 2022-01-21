@@ -100,6 +100,14 @@ export const init = (server: http.Server): void => {
       console.log("socket " + socket.id + " has left room " + gameCode);
       currGame.updateLobbies();
     });
+    socket.on("startGameTrigger", (data: { gameCode: string }) => {
+      const gameCode = data.gameCode;
+
+      if (gameCode in Object.keys(games)) {
+        const currGame = games[gameCode];
+        currGame.start();
+      }
+    });
   });
 };
 

@@ -22,6 +22,7 @@ type Props = URLProps & {
 };
 
 const GameConfig = (props: Props) => {
+  const [userId, setUserId] = useState<string>("");
   const [gameType, setGameType] = useState<string>("bop");
   const [gameCode, setGameCode] = useState<string>("");
   const [hostName, setHostName] = useState<string>("");
@@ -31,10 +32,6 @@ const GameConfig = (props: Props) => {
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
   const [mapId, setmapId] = useState<string>("");
   const [creatorName, setcreatorName] = useState<string>("");
-
-  const startGame = () => {
-    post("/api/startGame", { gameId: gameCode, userIds: playersIds });
-  };
 
   const updateLobbyData = (data: {
     gameType: string;
@@ -46,7 +43,7 @@ const GameConfig = (props: Props) => {
     setGameType(data.gameType);
     setGameCode(data.gameCode);
     setHostName(data.hostName);
-    setHostId(hostId);
+    setHostId(data.hostId);
     setPlayerNames(data.playerNames);
     console.log("function updatelobby data ran");
   };
@@ -58,19 +55,30 @@ const GameConfig = (props: Props) => {
     navigate("/findgame");
   };
 
+  const startGame = () => {
+    socket.emit("startGameTrigger", { gameCode: gameCode });
+  };
+
+  const navToGame = () => {
+    navigate("/game");
+  };
+
   useEffect(() => {
     socket.on("updateLobbies", updateLobbyData);
+    socket.on("startGame", navToGame);
 
     const doThings = async () => {
       // using gamecode associated with app, populate page with lobby info
       const data = await get("/api/getCurrRoomGameCode");
       const currGameCode = data.gameCode;
       setGameCode(data.gameCode);
-      if (currGameCode !== "none") {
+      if (currGameCode !== "NONE") {
         const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
-        post("/api/getLobbyInfo", { gameCode: currGameCode }).then((data) => {
-          updateLobbyData(data);
-        });
+        const data = await post("/api/getLobbyInfo", { gameCode: currGameCode });
+        console.log(data);
+        const lobbyData = await updateLobbyData(data);
+      } else {
+        navigate("/findgame");
       }
     };
 
@@ -90,7 +98,11 @@ const GameConfig = (props: Props) => {
         <div> curent players: {playerNames.toString()} </div>
         <div> current map (TO DO: add option to switch): {mapId} </div>
         <div> start game button (TO DO: implement this) </div>
-        <NavigationButton destPath="/game" text="START" onClickFunction={startGame} />
+        {props.passedUserId === hostId ? (
+          <button onClick={startGame}>START</button>
+        ) : (
+          <div>{"Waiting for " + hostName + " to start the game... "}</div>
+        )}
       </div>
     </>
   );

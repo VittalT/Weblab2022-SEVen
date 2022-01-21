@@ -1,3 +1,5 @@
+import { socket } from "../../client/src/client-socket";
+
 const { getIo } = require("../server-socket");
 
 class Game {
@@ -102,6 +104,10 @@ class Game {
 
   public setInactive(): void {
     this.activeStatus = "inactive";
+  }
+
+  public getHostId(): string {
+    return this.hostId;
   }
 }
 
