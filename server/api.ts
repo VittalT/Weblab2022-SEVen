@@ -13,7 +13,8 @@ const { clients } = require("./data/clients");
 const { generateGameCode } = require("./util");
 
 import GameModel from "./models/Game";
-import { User } from "./models/User";
+import UserModel from "./models/User";
+import User from "./models/User";
 import MapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import {
@@ -35,6 +36,10 @@ router.get("/whoami", (req, res) => {
     return res.send({ msg: "not logged in" });
   }
   res.send(req.user);
+});
+
+router.get("/users", (req: Request, res: Response) => {
+  User.find({}).then((users) => res.send(users));
 });
 
 router.post("/initsocket", (req: Request, res: Response) => {
