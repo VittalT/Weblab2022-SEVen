@@ -21,7 +21,7 @@ class Game {
     this.playerIds = playerIds;
     this.idToName = new Map<string, string>();
     this.idToName.set(hostId, hostName);
-    this.activeStatus = "true";
+    this.activeStatus = "active";
   }
 
   // updates all frontend playerlobbies to include most recent information
@@ -61,7 +61,7 @@ class Game {
         this.hostId = this.playerIds[0];
       } else {
         this.hostId = "NONE";
-        this.activeStatus = "false";
+        this.activeStatus = "inactive";
       }
     }
     return true;
@@ -101,7 +101,7 @@ class Game {
   }
 
   public setInactive(): void {
-    this.activeStatus = "false";
+    this.activeStatus = "inactive";
   }
 }
 
