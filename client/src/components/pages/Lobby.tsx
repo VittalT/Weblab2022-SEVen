@@ -41,8 +41,9 @@ const Lobby = (props: Props) => {
         <h3 className="Lobby-header">MINION BATTLE</h3>
         <div>LOBBY</div>
         <div>
-          {publicGames.map((game: Game) => (
+          {publicGames.map((game: Game, i) => (
             <NavigationButton
+              key={i}
               onClickFunction={doNothing}
               destPath={"/gamewaiting/public/" + game.game_code}
               text={game.game_code}
