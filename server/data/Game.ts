@@ -64,6 +64,7 @@ export class Game {
       this.players[userId] = player;
       this.playerToTeamId[userId] = teamId;
     }
+    getIo().emit("updatePublicLobby");
   }
 
   // updates all frontend playerlobbies to include most recent information
@@ -88,6 +89,7 @@ export class Game {
     }
     this.playerIds.push(userId);
     this.idToName[userId] = userName;
+    getIo().emit("updatePublicLobby");
     return true;
   }
 
@@ -106,6 +108,7 @@ export class Game {
         this.activeStatus = "inactive";
       }
     }
+    getIo().emit("updatePublicLobby");
     return true;
   }
 
@@ -147,6 +150,10 @@ export class Game {
 
   public getTeamId(userId: string): number {
     return this.playerToTeamId[userId];
+  }
+
+  public getHostId(): string {
+    return this.hostId;
   }
 
   public getPlayer(userId: string): Player {
@@ -452,7 +459,7 @@ export class Game {
 
   /** Checks whether a player has won, if a player won, change the game state */
   public checkWin() {
-    // TODO Step 2
+    // TODO
   }
 }
 
