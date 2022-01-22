@@ -44,7 +44,7 @@ const App = () => {
     const data = await get("/api/getCurrRoomGameCode");
     const currGameCode = data.gameCode;
     setGameCode(data.gameCode);
-    if (currGameCode !== "none") {
+    if (currGameCode.length === 6) {
       navigate("/gameconfig");
     }
   };
