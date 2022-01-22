@@ -11,3 +11,5 @@ class Tower {
     this.enemyMinionIds = enemyMinionIds;
   }
 }
+
+module.exports = { Tower };
