@@ -24,6 +24,7 @@ type Game = {
 type Props = RouteComponentProps & {
   passedUserId: string;
   joinRoom: (userId: string, gameCode: string) => void;
+  forceNavigate: () => void;
 };
 
 const FindGame = (props: Props) => {
@@ -51,7 +52,9 @@ const FindGame = (props: Props) => {
     // TO DO
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    props.forceNavigate();
+  }, []);
 
   return (
     <>
