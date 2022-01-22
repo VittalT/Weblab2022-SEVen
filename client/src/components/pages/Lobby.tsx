@@ -12,6 +12,7 @@ import { get, post } from "../../utilities";
 import LobbyGameDisplay from "../modules/LobbyGameDisplay";
 
 import { Game } from "./FindGame";
+import { socket } from "../../client-socket";
 
 type Props = RouteComponentProps & {
   passedUserId: string;
@@ -29,12 +30,18 @@ const Lobby = (props: Props) => {
   };
 
   useEffect(() => {
-    // TODO:: EVENTUALLY, IF THERE IS NOONE IN THE GAME, THEN JUST DONT SHOW THE FUCKING GAME!!
-    // ALSO, MAKE A FUCKING REFRESH BUTTON! LMAO XD! AND ENCODE LOGIC FOR WHAT HAPPENS IF THE GAME IS GONE! HAHA!
+    socket.on("updatePublicLobby", () => {
+      get("/api/getPublicGames").then((data) => {
+        setPublicGames(data);
+      });
+    });
     props.forceNavigate();
     get("/api/getPublicGames").then((data) => {
       setPublicGames(data);
     });
+    return () => {
+      socket.off("updatePublicLobby");
+    };
   }, []);
 
   return (

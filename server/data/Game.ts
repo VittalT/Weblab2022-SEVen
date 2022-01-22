@@ -24,6 +24,7 @@ class Game {
     this.idToName = new Map<string, string>();
     this.idToName.set(hostId, hostName);
     this.activeStatus = "active";
+    getIo().emit("updatePublicLobby");
   }
 
   // updates all frontend playerlobbies to include most recent information
@@ -48,6 +49,7 @@ class Game {
     }
     this.playerIds.push(userId);
     this.idToName.set(userId, userName);
+    getIo().emit("updatePublicLobby");
     return true;
   }
 
@@ -66,6 +68,7 @@ class Game {
         this.activeStatus = "inactive";
       }
     }
+    getIo().emit("updatePublicLobby");
     return true;
   }
 

@@ -83,6 +83,11 @@ const GameConfig = (props: Props) => {
     };
 
     doThings();
+
+    return () => {
+      socket.off("updateLobbies");
+      socket.off("startGame");
+    };
   }, []);
 
   // *either you are the host or waiting to start
