@@ -2,7 +2,7 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 import UserModel from "./models/User";
-
+import ClickState from "../shared/types";
 import { games } from "./data/games";
 
 let io: Server;
