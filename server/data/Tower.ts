@@ -1,4 +1,4 @@
-export class Tower {
+class Tower {
   public health: number;
   public location: Point;
   public size: Size;

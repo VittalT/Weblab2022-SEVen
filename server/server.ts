@@ -8,6 +8,10 @@ import path from "path"; // Allows us to retrieve file paths
 import auth from "./auth"; // weblab authentication helper
 import socketManager from "./server-socket"; // websockets
 import api from "./api";
+
+// cookies
+const cookieParser = require("cookie-parser");
+
 require("dotenv").config();
 // Loads environmental variables
 dotenv.config({});
@@ -39,6 +43,7 @@ const sessionSecret = process.env.SESSION_SECRET;
 if (sessionSecret === undefined) {
   throw new Error("Please add a session secret as 'SESSION_SECRET'");
 }
+
 app.use(
   session({
     secret: sessionSecret,
@@ -46,6 +51,9 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+//cookie parser
+app.use(cookieParser());
 app.use(auth.populateCurrentUser);
 app.use("/api", api);
 
@@ -56,8 +64,8 @@ app.use(express.static(reactPath));
 // Fallbacks
 
 // For any other route, let index.html and react router handle it.
-app.get("*", (_, res) => {
-  res.send({ msg: "hello world." });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(reactPath, "index.html"));
 });
 
 // TODO(johancc) - Add an error interface.

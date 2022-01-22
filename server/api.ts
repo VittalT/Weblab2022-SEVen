@@ -14,6 +14,7 @@ const { generateGameCode } = require("./util");
 
 import GameModel from "./models/Game";
 import UserModel from "./models/User";
+import User from "./models/User";
 import MapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import {
@@ -21,7 +22,6 @@ import {
   isAssertionExpression,
   isShorthandPropertyAssignment,
 } from "typescript";
-import { minionConstants, towerConstants } from "./models/GameState";
 import assert from "assert";
 const logic = require("./logic");
 
@@ -37,6 +37,10 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
+router.get("/users", (req: Request, res: Response) => {
+  User.find({}).then((users: typeof User) => res.send(users));
+});
+
 router.post("/initsocket", (req: Request, res: Response) => {
   // do nothing if user not logged in
   if (req.user) {
@@ -44,6 +48,16 @@ router.post("/initsocket", (req: Request, res: Response) => {
     if (socket !== undefined) socketManager.addUser(req.user, socket);
   }
   res.send({});
+});
+
+router.get("/getCurrRoomGameCode", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const userId = req.user!._id;
+
+  if (userId in clients) {
+    res.send({ gameCode: clients[userId].gameCode });
+  } else {
+    res.send({ gameCode: "none" });
+  }
 });
 
 // req has only paramter public vs private
@@ -54,23 +68,29 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   const userName = req.user!.name;
   const gameType = req.body.gameType;
 
+  // if user is currently associated with a room, deassociate it
+  if (userId in clients) {
+    if (getSocketFromUserID[userId] !== undefined) {
+      getSocketFromUserID[userId].leave(clients[userId].gameCode);
+    }
+  }
+
+  // do the other stuff
   let gameCode = generateGameCode(6);
   while (gameCode in games) {
     gameCode = generateGameCode(6);
   }
   const currGame = new Game(gameCode, gameType, userId, userName, [userId]);
   games[gameCode] = currGame;
-  // leave the current game if the user is already in a game
-  if (userId in clients && clients[userId].room !== gameCode) {
-    getSocketFromUserID[userId].leave(clients[userId].room);
-  }
+
   clients[userId] = {
-    room: gameCode,
+    gameCode: gameCode,
   };
   currGame.updateLobbies;
   res.send({ gameCode: gameCode });
 });
 
+// joins a game, assumes that the gameCode is legitimate and the game exists and is active
 router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const userId = req.user!._id;
   const userName = req.user!.name;
@@ -80,15 +100,54 @@ router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const joinedStatus = currGame.join(userId, userName);
   if (joinedStatus) {
     // leave the current game if the user is already in a game
-    if (userId in clients && clients[userId].room !== gameCode) {
-      getSocketFromUserID[userId].leave(clients[userId].room);
-    }
+    // if (userId in clients && clients[userId].gameCode !== gameCode) {
+    //   getSocketFromUserID[userId].leave(clients[userId].gameCode);
+    // }
     clients[userId] = {
-      room: gameCode,
+      gameCode: gameCode,
     };
+    currGame.updateLobbies;
+    res.send({ gameCode: gameCode });
   }
+});
+
+router.post("/leaveGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const userId = req.user!._id;
+  const userName = req.user!.name;
+  const gameCode = req.body.gameCode;
+
+  const currGame = games[gameCode];
+  const leftStatus = currGame.leave(userId, userName);
+
+  // if (userId in clients) {
+  //   delete clients[userId];
+  // }
+
   currGame.updateLobbies;
   res.send({ gameCode: gameCode });
+});
+
+router.post("/getLobbyInfo", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const userId = req.user!._id;
+  const gameCode: string = clients[userId].gameCode;
+  const currGame = games[gameCode];
+  res.send({
+    gameType: currGame.getGameType(),
+    gameCode: currGame.getGameCode(),
+    hostName: currGame.getHostName(),
+    playerNames: currGame.getPlayerNames(),
+  });
+});
+
+router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response) => {
+  const data = new Array<{ hostName: string; gameCode: string }>();
+  for (const gameCode of Object.keys(games)) {
+    const game = games[gameCode];
+    if (game.getGameType() === "public" && game.getActiveStatus() === "active") {
+      data.push({ hostName: game.getHostName(), gameCode: game.getGameCode() });
+    }
+  }
+  res.send(data);
 });
 
 router.post("/createMap", (req: Request, res: Response) => {
@@ -104,6 +163,22 @@ router.post("/createMap", (req: Request, res: Response) => {
   newMap.save().then(() => {
     res.status(200).send({ msg: "Successfully created map" });
   });
+});
+
+// returns inactive if game does not exist as well
+router.post("/getGameActiveStatus", (req: Request, res: Response) => {
+  const gameCode = req.body.gameCode;
+  console.log(games.toString());
+  console.log(Object.keys(games).toString());
+  if (!Object.keys(games).includes(gameCode)) {
+    res.send({ activeStatus: "inactive" });
+  } else {
+    console.log("entered loop here?");
+    const currGame = games[gameCode];
+    res.send({
+      activeStatus: currGame.getActiveStatus(),
+    });
+  }
 });
 
 router.post("/startGame", (req: Request, res: Response) => {

@@ -1,19 +1,4 @@
 import assert from "assert";
-import {
-  Size,
-  Point,
-  Tower,
-  Minion,
-  Player,
-  GameState,
-  towerConstants,
-  minionConstants,
-  gameState,
-  getTeamId,
-  getPlayer,
-  getTower,
-  getMinion,
-} from "../../server/models/GameState";
 
 let canvas: HTMLCanvasElement;
 /** utils */
@@ -52,10 +37,7 @@ type Polar = {
 };
 
 const polarToCartesian = (point: Polar): Point => {
-  return {
-    x: point.radius * Math.cos(point.angle),
-    y: point.radius * Math.sin(point.angle),
-  };
+  return new Point(point.radius * Math.cos(point.angle), point.radius * Math.sin(point.angle));
 };
 
 // fills a circle at a given x, y canvas coord with radius and color
@@ -116,7 +98,7 @@ const drawMinion = (context: CanvasRenderingContext2D, minion: Minion, teamId: n
 };
 
 /** main draw */
-export const drawCanvas = (gameState: GameState) => {
+export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // get the canvas element
   canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   if (!canvas) return;
@@ -127,14 +109,14 @@ export const drawCanvas = (gameState: GameState) => {
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   // display all towers and minions
-  for (const [userId, player] of Object.entries(gameState.players)) {
-    const teamId = getTeamId(gameState, userId);
+  for (const [userId, player] of Object.entries(gameUpdateData.players)) {
+    const teamId = gameUpdateData.playerToTeamId[userId];
     for (const towerId of player.towerIds) {
-      const tower = getTower(gameState, towerId);
+      const tower = gameUpdateData.towers[towerId];
       drawTower(context, tower, teamId);
     }
     for (const minionId of player.minionIds) {
-      const minion = getMinion(gameState, minionId);
+      const minion = gameUpdateData.minions[minionId];
       drawMinion(context, minion, teamId);
     }
   }

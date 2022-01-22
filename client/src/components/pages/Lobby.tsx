@@ -4,35 +4,35 @@ import "./Lobby.css";
 
 import NavigationButton from "../modules/NavigationButton";
 
-import { Router, RouteComponentProps } from "@reach/router";
+import { Router, RouteComponentProps, navigate } from "@reach/router";
 
 import BackButton from "../modules/BackButton";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 import LobbyGameDisplay from "../modules/LobbyGameDisplay";
 
 import { Game } from "./FindGame";
 
-type Props = RouteComponentProps & {};
-
-const loadCurrentPublicGames = async (): Promise<Array<Game>> => {
-  const publicGames: Array<Game> = await get("/api/getPublicGames");
-  return publicGames;
+type Props = RouteComponentProps & {
+  passedUserId: string;
+  joinRoom: (userId: string, gameCode: string) => void;
 };
 
 const Lobby = (props: Props) => {
-  const [publicGames, setPublicGames] = useState<Array<Game>>([]);
+  const [publicGames, setPublicGames] = useState<Array<{ hostName: string; gameCode: string }>>([]);
 
-  const doNothing = () => {};
+  const joinPublicGame = async (gameCode: string) => {
+    const data = await post("/api/joinGame", { gameCode: gameCode });
+    await props.joinRoom(props.passedUserId, gameCode);
+    navigate("/gameconfig");
+  };
 
   useEffect(() => {
-    // borrow stuff from chatbook messageslist, basically get the list of shit
-    async function performThings() {
-      const publicGamesFromDB = await loadCurrentPublicGames();
-      setPublicGames(publicGamesFromDB);
-    }
-
-    performThings();
+    // TODO:: EVENTUALLY, IF THERE IS NOONE IN THE GAME, THEN JUST DONT SHOW THE FUCKING GAME!!
+    // ALSO, MAKE A FUCKING REFRESH BUTTON! LMAO XD! AND ENCODE LOGIC FOR WHAT HAPPENS IF THE GAME IS GONE! HAHA!
+    get("/api/getPublicGames").then((data) => {
+      setPublicGames(data);
+    });
   }, []);
 
   return (
@@ -40,15 +40,12 @@ const Lobby = (props: Props) => {
       <div className="Lobby-container">
         <h3 className="Lobby-header">MINION BATTLE</h3>
         <div>LOBBY</div>
+        <div>{publicGames.length + " Games"}</div>
         <div>
-          {publicGames.map((game: Game, i) => (
-            <NavigationButton
-              key={i}
-              onClickFunction={doNothing}
-              destPath={"/gamewaiting/public/" + game.game_code}
-              text={game.game_code}
-            />
-            //<LobbyGameDisplay gameCode={game.game_code} /> //ownerName.creator_name} />
+          {publicGames.map((game: { hostName: string; gameCode: string }) => (
+            <button onClick={() => joinPublicGame(game.gameCode)}>
+              {game.hostName + " " + game.gameCode}
+            </button>
           ))}{" "}
         </div>
       </div>

@@ -6,12 +6,6 @@ import "./GameMap.css";
 import { socket, clickGameMap } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
-import {
-  Size,
-  MinionConstants,
-  TowerConstants,
-  GameState,
-} from "../../../../server/models/GameState";
 import assert from "assert";
 
 type GameMapProps = {

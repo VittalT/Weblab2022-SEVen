@@ -16,33 +16,45 @@ import HomeScreen from "./pages/HomeScreen";
 import { FindGame } from "./pages/FindGame";
 import CreateMap from "./pages/CreateMap";
 import GameConfig from "./pages/GameConfig";
-import GameWaiting from "./pages/GameWaiting";
 import Lobby from "./pages/Lobby";
 import HowToPlay from "./pages/HowToPlay";
+import Leaderboard from "./pages/Leaderboard";
 
 const App = () => {
   const [userId, setUserId] = useState("");
   const [gameCode, setGameCode] = useState("");
 
+  // connects the socket and joins the room (socket oriented), returns whether or not room was joined
   const joinRoom = async (userId: string, gameCode: string) => {
-    socket.emit("joinRoom", { userId: userId, gameCode: gameCode });
+    const user: User = await get("/api/whoami");
+    socket.emit("joinRoom", { user: user, userId: userId, gameCode: gameCode });
     setGameCode(gameCode);
+    return true;
+  };
+
+  // leaves the room
+  const leaveRoom = async (userId: string, gameCode: string) => {
+    const user: User = await get("/api/whoami");
+    socket.emit("leaveRoom", { user: user, userId: userId, gameCode: gameCode });
+    setGameCode("");
+    return true;
   };
 
   useEffect(() => {
-    get("/api/whoami")
-      .then((user) => {
-        if (user._id) {
-          // they are registed in the database, and currently logged in.
-          setUserId(user._id);
-        }
-      })
-      .then(() =>
-        socket.on("connect", () => {
-          console.log("initailized socket from who am i");
-          post("/api/initsocket", { socketid: socket.id });
-        })
-      );
+    console.log("app was entered or refreshed!");
+    get("/api/whoami").then((user) => {
+      if (user._id) {
+        // they are registed in the database, and currently logged in.
+        setUserId(user._id);
+      }
+    });
+    // });
+    // .then(() =>
+    //   socket.on("connect", () => {
+    //     console.log("initailized socket from who am i");
+    //     // post("/api/initsocket", { socketid: socket.id });
+    //   })
+    // );
   }, []);
 
   const handleLogin = (res: GoogleLoginResponse) => {
@@ -72,12 +84,18 @@ const App = () => {
       />
       <FindGame path="/findgame" passedUserId={userId} joinRoom={joinRoom} />
       <CreateMap path="/createmap" userId={userId} />
-      <GameConfig path="/gameconfig" passedUserId={userId} />
-      <GameWaiting path="/gamewaiting" passedUserId={userId} />
-      <Lobby path="/lobby" />
+      <GameConfig
+        path="/gameconfig"
+        passedUserId={userId}
+        joinRoom={joinRoom}
+        leaveRoom={leaveRoom}
+        passedGameCode={gameCode}
+      />
+      <Lobby path="/lobby" passedUserId={userId} joinRoom={joinRoom} />
       <Game path="/game" userId={userId} gameId={0} />
       <NotFound default={true} />
       <HowToPlay path="/howtoplay" />
+      <Leaderboard path="/leaderboard" />
     </Router>
   );
 };
