@@ -6,8 +6,10 @@ import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
 
 import { Router, RouteComponentProps, navigate } from "@reach/router";
-import { post } from "../../utilities";
+import { get, post } from "../../utilities";
 import { isPropertySignature } from "typescript";
+
+import { PrivateGameInput } from "../modules/NewPostInput";
 
 type Game = {
   is_private: string;
@@ -45,7 +47,7 @@ const FindGame = (props: Props) => {
     navigate("/lobby");
   };
 
-  const joinPrivateGame = async () => {
+  const joinGame = async () => {
     // TO DO
   };
 
@@ -58,17 +60,17 @@ const FindGame = (props: Props) => {
         <div className="dropdown">
           <button className="dropbtn">CREATE</button>
           <div className="dropdown-content">
-            <div onClick={createPublicGame}>PUBLIC</div>
-            <div onClick={createPrivateGame}>PRIVATE</div>
+            <button onClick={createPublicGame}>PUBLIC</button>
+            <button onClick={createPrivateGame}>PRIVATE</button>
           </div>
         </div>
         <div className="dropdown">
           <button className="dropbtn">JOIN</button>
           <div className="dropdown-content">
-            <div onClick={navToLobby}>PUBLIC</div>
-            <div onClick={joinPrivateGame}>PRIVATE</div>
+            <button onClick={navToLobby}>PUBLIC</button>
           </div>
         </div>
+        <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
       </div>
       <BackButton text="BACK" destPath="/" />
     </>

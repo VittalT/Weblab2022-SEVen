@@ -1,4 +1,4 @@
-export class Minion {
+class Minion {
   public location: Point;
   public targetLocation: Point; // don't emit
   public direction: number;
@@ -12,13 +12,13 @@ export class Minion {
     direction: number,
     size: Size,
     targetTowerId: number | null,
-    reachedTarget: boolean,
+    reachedTarget: boolean
   ) {
-    this.location = location,
-    this.targetLocation = targetLocation,
-    this.direction = direction,
-    this.size = size,
-    this.targetTowerId = targetTowerId,
-    this.reachedTarget = reachedTarget,
+    this.location = location;
+    this.targetLocation = targetLocation;
+    this.direction = direction;
+    this.size = size;
+    this.targetTowerId = targetTowerId;
+    this.reachedTarget = reachedTarget;
   }
 }

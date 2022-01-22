@@ -6,13 +6,6 @@ import "./Game.css";
 import { get, post } from "../../utilities";
 import { socket } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
-import {
-  Size,
-  MinionConstants,
-  TowerConstants,
-  GameState,
-  ClickState,
-} from "../../../../server/models/GameState";
 import { Router, RouteComponentProps } from "@reach/router";
 import assert from "assert";
 import NavigationButton from "../modules/NavigationButton";
@@ -34,8 +27,8 @@ const Game = (props: GameProps) => {
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
-    socket.on("update", (gameState: Record<number, GameState>) => {
-      processUpdate(gameState);
+    socket.on("gameUpdate", (gameUpdateData: GameUpdateData) => {
+      processUpdate(gameUpdateData);
     });
   }, []);
 
@@ -46,17 +39,14 @@ const Game = (props: GameProps) => {
       }
     });
   }, []);
-
-  const processUpdate = (gameState: Record<number, GameState>) => {
-    console.log(gameState);
-    const game = gameState[props.gameId];
-
-    updateDisplayState(game);
-    drawCanvas(game);
+  const processUpdate = (gameUpdateData: GameUpdateData) => {
+    console.log(gameUpdateData);
+    updateDisplayState(gameUpdateData);
+    drawCanvas(gameUpdateData);
   };
 
-  const updateDisplayState = (game: GameState) => {
-    const player = game.players[props.userId];
+  const updateDisplayState = (gameUpdateData: GameUpdateData) => {
+    const player = gameUpdateData.players[props.userId];
     // if (player.clickState !== clickState || player.sizeClicked !== sizeClicked) {
     //   setDisplayText("");
     // }

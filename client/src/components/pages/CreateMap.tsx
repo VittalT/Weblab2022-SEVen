@@ -4,7 +4,6 @@ import "../../utilities.css";
 import "./CreateMap.css";
 
 import BackButton from "../modules/BackButton";
-import { Point, GoldConstants, towerConstants } from "../../../../server/models/GameState";
 
 import { Router, RouteComponentProps } from "@reach/router";
 //import { drawCreateCanvas } from "../../canvasManager";
@@ -47,14 +46,11 @@ const CreateMap = (props: CreateMapProps) => {
     canvas = document.getElementById("create-canvas") ?? assert.fail();
     const handleClick = (event: MouseEvent) => {
       console.log("click");
-      let officialCoordFirst: Point = {
-        x: scaleFactor * event.offsetX,
-        y: scaleFactor * event.offsetY,
-      };
-      let officialCoordSecond: Point = {
-        x: realWidth - scaleFactor * event.offsetX,
-        y: realHeight - scaleFactor * event.offsetY,
-      };
+      let officialCoordFirst = new Point(scaleFactor * event.offsetX, scaleFactor * event.offsetY);
+      let officialCoordSecond = new Point(
+        realWidth - scaleFactor * event.offsetX,
+        realHeight - scaleFactor * event.offsetY
+      );
       if (getDistance(officialCoordFirst, officialCoordSecond) < 2 * GoldConstants.realRadius)
         return;
       for (let i = 0; i < goldMines.length; i++) {
@@ -68,11 +64,8 @@ const CreateMap = (props: CreateMapProps) => {
           return;
       }
       setGoldMines([...goldMines, officialCoordFirst, officialCoordSecond]);
-      let drawCoordFirst: Point = { x: event.offsetX, y: event.offsetY };
-      let drawCoordSecond: Point = {
-        x: canvasWidth - event.offsetX,
-        y: canvasHeight - event.offsetY,
-      };
+      let drawCoordFirst = new Point(event.offsetX, event.offsetY);
+      let drawCoordSecond = new Point(canvasWidth - event.offsetX, canvasHeight - event.offsetY);
       drawGoldMine(drawCoordFirst);
       drawGoldMine(drawCoordSecond);
       console.log(goldMines.length);

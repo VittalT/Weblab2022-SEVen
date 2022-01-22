@@ -6,13 +6,6 @@ import "./GamePanel.css";
 import { socket, clickGamePanelButton } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
-import {
-  ClickState,
-  Size,
-  MinionConstants,
-  TowerConstants,
-  GameState,
-} from "../../../../server/models/GameState";
 import Gold from "./Gold";
 import assert from "assert";
 import { post } from "../../utilities";

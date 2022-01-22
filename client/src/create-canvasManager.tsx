@@ -1,4 +1,3 @@
-import { Point, GoldConstants } from "../../server/models/GameState";
 import assert from "assert";
 import { fillCircle } from "./canvasManager";
 

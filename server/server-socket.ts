@@ -1,9 +1,9 @@
 import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
-import { ClickState, gameState, Size } from "./models/GameState";
+import UserModel from "./models/User";
 
-const { games } = require("./data/games");
+import { games } from "./data/games";
 
 let io: Server;
 const logic = require("./logic");
@@ -32,17 +32,6 @@ export const removeUser = (user: User, socket: Socket): void => {
   socketToUserMap.delete(socket.id);
 };
 
-const DELTA_T_S = 1 / 60;
-
-setInterval(() => {
-  sendGameState();
-}, DELTA_T_S * 1000);
-
-const sendGameState = () => {
-  logic.timeUpdate(DELTA_T_S);
-  io.emit("update", gameState);
-};
-
 export const updateDisplay = (userId: string, message: string) => {
   io.emit("updateDisplay", userId, message);
 };
@@ -69,16 +58,35 @@ export const init = (server: http.Server): void => {
       if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
     });
     // this is the function called by App, when a socket joins a room
-    socket.on("joinRoom", (data: { userId: string; gameCode: string }) => {
-      // connect the socket first
+    socket.on("joinRoom", (data: { user: User; userId: string; gameCode: string }) => {
+      // connect socket
       const gameCode = data.gameCode;
-      const currGame = games[gameCode];
       const userId = data.userId;
+      const user = data.user;
+
+      addUser(user, socket);
+
+      const currGame = games[gameCode];
+
       if (currGame.hasPlayer(userId)) {
         socket.join(gameCode);
         console.log("socket " + socket.id + " has joined room " + gameCode);
         currGame.updateLobbies();
       }
+    });
+    socket.on("leaveRoom", (data: { user: User; userId: string; gameCode: string }) => {
+      // connect socket
+      const gameCode = data.gameCode;
+      const userId = data.userId;
+      const user = data.user;
+
+      removeUser(user, socket);
+
+      const currGame = games[gameCode];
+
+      socket.leave(gameCode);
+      console.log("socket " + socket.id + " has left room " + gameCode);
+      currGame.updateLobbies();
     });
   });
 };
