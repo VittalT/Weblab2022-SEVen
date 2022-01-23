@@ -56,5 +56,5 @@ export const GoldConstants = {
   realRadius: 50,
 };
 
-export const FPS = 60;
+export const FPS = 20;
 export const MAX_GAME_LEN_M = 5;
