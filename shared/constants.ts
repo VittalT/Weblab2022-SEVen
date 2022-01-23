@@ -4,8 +4,8 @@ import { TowerConstants, MinionConstants } from "./types";
 export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
     health: 50,
-    healthRegenRate: 3,
-    goldRate: 3,
+    healthRegenRate: 0.5 / 1000,
+    goldRate: 3 / 1000,
     cost: 50,
     minAdjBuildRadius: 100,
     maxAdjBuildRadius: 150,
@@ -13,8 +13,8 @@ export const towerConstants: Record<Size, TowerConstants> = {
   },
   [Size.Medium]: {
     health: 100,
-    healthRegenRate: 5,
-    goldRate: 5,
+    healthRegenRate: 0.5 / 1000,
+    goldRate: 5 / 1000,
     cost: 100,
     minAdjBuildRadius: 120,
     maxAdjBuildRadius: 200,
@@ -22,8 +22,8 @@ export const towerConstants: Record<Size, TowerConstants> = {
   },
   [Size.Large]: {
     health: 200,
-    healthRegenRate: 10,
-    goldRate: 10,
+    healthRegenRate: 1 / 1000,
+    goldRate: 10 / 1000,
     cost: 200,
     minAdjBuildRadius: 140,
     maxAdjBuildRadius: 250,
@@ -33,22 +33,22 @@ export const towerConstants: Record<Size, TowerConstants> = {
 
 export const minionConstants: Record<Size, MinionConstants> = {
   [Size.Small]: {
-    damageRate: 5,
+    damageRate: 1 / 1000,
     cost: 10,
-    speed: 400,
-    boundingRadius: 10,
+    speed: 40 / 1000,
+    boundingRadius: 5,
   },
   [Size.Medium]: {
-    damageRate: 10,
+    damageRate: 2 / 1000,
     cost: 25,
-    speed: 300,
-    boundingRadius: 20,
+    speed: 30 / 1000,
+    boundingRadius: 10,
   },
   [Size.Large]: {
-    damageRate: 20,
+    damageRate: 4 / 1000,
     cost: 50,
-    speed: 200,
-    boundingRadius: 30,
+    speed: 20 / 1000,
+    boundingRadius: 15,
   },
 };
 
