@@ -53,7 +53,7 @@ export const minionConstants: Record<Size, MinionConstants> = {
 };
 
 export const GoldConstants = {
-  realRadius: 50,
+  realRadius: 25,
 };
 
 export const FPS = 21;
