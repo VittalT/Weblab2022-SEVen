@@ -315,12 +315,13 @@ export class Game {
   }
 
   public gameLoop() {
-    this.timeUpdate(1000 / FPS);
+    const msPerUpdate = 1000 / FPS;
+    this.timeUpdate(msPerUpdate);
     this.sendGameState();
 
     const elapsed = Date.now() - this.startTime;
     if (this.winnerId !== null || elapsed < MAX_GAME_LEN_M * 60 * 1000) {
-      setTimeout(this.gameLoop, 1000 / FPS);
+      setTimeout(this.gameLoop, msPerUpdate);
     } else {
       this.onGameEnd();
     }

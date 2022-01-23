@@ -116,13 +116,17 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // display all towers and minions
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
-    for (const towerId of player.towerIds) {
-      const tower = gameUpdateData.towers[towerId];
-      drawTower(context, tower, teamId);
-    }
     for (const minionId of player.minionIds) {
       const minion = gameUpdateData.minions[minionId];
       drawMinion(context, minion, teamId);
+    }
+  }
+
+  for (const [userId, player] of Object.entries(gameUpdateData.players)) {
+    const teamId = gameUpdateData.playerToTeamId[userId];
+    for (const towerId of player.towerIds) {
+      const tower = gameUpdateData.towers[towerId];
+      drawTower(context, tower, teamId);
     }
   }
 };
