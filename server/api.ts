@@ -54,6 +54,9 @@ router.get("/getCurrRoomStatus", auth.ensureLoggedIn, (req: Request, res: Respon
 
   if (userId in clients) {
     const gameCode = clients[userId].gameCode;
+    if (!Object.keys(games).includes(gameCode)) {
+      res.send({ msg: "this game doesn't exist" });
+    }
     const currGame = games[gameCode];
     const isActive = currGame.getIsActive();
     const isInPlay = currGame.getIsInPlay();

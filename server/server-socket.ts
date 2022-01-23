@@ -4,6 +4,7 @@ import User from "../shared/User";
 import UserModel from "./models/User";
 import { ClickState, Size } from "../shared/enums";
 import { games } from "./data/games";
+import { createImportSpecifier, getPositionOfLineAndCharacter } from "typescript";
 
 let io: Server;
 
@@ -32,7 +33,9 @@ export const removeUser = (user: User, socket: Socket): void => {
 };
 
 export const updateDisplay = (userId: string, message: string) => {
-  io.emit("updateDisplay", userId, message);
+  console.log("Display was updated");
+  const currSocketId = getSocketFromUserID(userId)!.id;
+  io.to(currSocketId).emit("updateDisplay", { message: message });
 };
 
 export const init = (server: http.Server): void => {
@@ -51,10 +54,19 @@ export const init = (server: http.Server): void => {
         const clickType = data.clickType;
         const size = data.size;
 
+        console.log("game panel was clicked!" + clickType.toString());
+
         const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
+        console.log(user);
         const userId = user!._id;
+        console.log(userId);
         const currGame = games[gameCode];
+        console.log(Object.keys(games));
+        console.log(currGame);
+        console.log(currGame !== undefined);
+        console.log(gameCode);
         if (currGame !== undefined) {
+          console.log("here ! LMAO!");
           currGame.updateGamePanelClickState(userId, clickType, size);
         }
       }
@@ -64,10 +76,13 @@ export const init = (server: http.Server): void => {
       const x = data.x;
       const y = data.y;
 
+      console.log("gamemap was clicked ! " + x.toString() + " " + y.toString());
+
       const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
       const userId = user!._id;
       const currGame = games[gameCode];
       if (currGame !== undefined) {
+        console.log("here ! LMAOXD!");
         currGame.updateGameMapClickState(userId, x, y);
       }
     });
@@ -104,8 +119,8 @@ export const init = (server: http.Server): void => {
     });
     socket.on("startGameTrigger", (data: { gameCode: string }) => {
       const gameCode = data.gameCode;
-
-      if (gameCode in Object.keys(games)) {
+      if (Object.keys(games).includes(gameCode)) {
+        console.log("game code is in the keys");
         const currGame = games[gameCode];
         currGame.start();
       }

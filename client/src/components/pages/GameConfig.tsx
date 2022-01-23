@@ -59,6 +59,7 @@ const GameConfig = (props: Props) => {
 
   const startGame = () => {
     socket.emit("startGameTrigger", { gameCode: gameCode });
+    console.log("gameccode sent in parameter to emit is " + gameCode);
   };
 
   const navToGame = () => {

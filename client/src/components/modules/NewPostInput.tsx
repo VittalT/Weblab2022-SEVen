@@ -55,8 +55,7 @@ const PrivateGameInput = (props: Props) => {
     console.log("private button pressed, gamecode is " + gameCode);
     if (gameCode.length === 6) {
       const data = await post("/api/getGameActiveStatus", { gameCode: gameCode });
-      console.log("active statusis " + data.activeStatus);
-      if (data.activeStatus === "active") {
+      if (data.isActive === true) {
         const data = await post("/api/joinGame", { gameCode: gameCode });
         await props.joinRoom(props.passedUserId, gameCode);
         navigate("/gameconfig");

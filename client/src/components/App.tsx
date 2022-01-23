@@ -109,7 +109,7 @@ const App = () => {
         joinRoom={joinRoom}
         forceNavigate={forceNavigate}
       />
-      <Game path="/game" userId={userId} gameCode={""} />
+      <Game path="/game" userId={userId} gameCode={gameCode} />
       <NotFound default={true} />
       <HowToPlay path="/howtoplay" />
       <Leaderboard path="/leaderboard" />
