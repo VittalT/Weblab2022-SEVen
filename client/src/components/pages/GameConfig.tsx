@@ -29,6 +29,8 @@ const GameConfig = (props: Props) => {
   const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
   const [hostId, setHostId] = useState<string>("");
 
+  const [startGameFailedStatus, setStartGameFailedStatus] = useState<boolean>(false);
+
   const [playersIds, setplayersIds] = useState<Array<string>>([""]);
   const [mapId, setmapId] = useState<string>("");
   const [creatorName, setcreatorName] = useState<string>("");
@@ -63,16 +65,21 @@ const GameConfig = (props: Props) => {
     navigate("/game");
   };
 
+  const displayStartGameFailed = () => {
+    setStartGameFailedStatus(true);
+  };
+
   useEffect(() => {
     socket.on("updateLobbies", updateLobbyData);
     socket.on("startGame", navToGame);
+    socket.on("gameStartFailed", displayStartGameFailed);
 
     const doThings = async () => {
       // using gamecode associated with app, populate page with lobby info
-      const data = await get("/api/getCurrRoomGameCode");
+      const data = await get("/api/getCurrRoomStatus");
       const currGameCode = data.gameCode;
       setGameCode(data.gameCode);
-      if (currGameCode !== "NONE") {
+      if (currGameCode.length === 6) {
         const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
         const data = await post("/api/getLobbyInfo", { gameCode: currGameCode });
         console.log(data);
@@ -87,6 +94,7 @@ const GameConfig = (props: Props) => {
     return () => {
       socket.off("updateLobbies");
       socket.off("startGame");
+      socket.off("gameStartFailed");
     };
   }, []);
 
@@ -112,6 +120,11 @@ const GameConfig = (props: Props) => {
             <div>{hostName + " is the host"} </div>
             <div>{"Waiting for " + hostName + " to start the game... "}</div>
           </>
+        )}
+        {startGameFailedStatus ? (
+          <div>Failed to start game, there must be 2, 3, or 4 players in the lobby</div>
+        ) : (
+          <div> </div>
         )}
       </div>
     </>
