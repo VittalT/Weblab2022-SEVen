@@ -49,11 +49,15 @@ router.post("/initsocket", (req: Request, res: Response) => {
   res.send({});
 });
 
-router.get("/getCurrRoomGameCode", auth.ensureLoggedIn, (req: Request, res: Response) => {
+router.get("/getCurrRoomStatus", auth.ensureLoggedIn, (req: Request, res: Response) => {
   const userId = req.user!._id;
 
   if (userId in clients) {
-    res.send({ gameCode: clients[userId].gameCode });
+    const gameCode = clients[userId].gameCode;
+    const currGame = games[gameCode];
+    const isActive = currGame.getIsActive();
+    const isInPlay = currGame.getIsInPlay();
+    res.send({ gameCode: clients[userId].gameCode, isActive: isActive, isInPlay: isInPlay });
   } else {
     res.send({ gameCode: "none" });
   }
