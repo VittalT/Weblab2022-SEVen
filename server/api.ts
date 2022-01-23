@@ -185,7 +185,7 @@ router.post("/startGame", (req: Request, res: Response) => {
   // let the game know that the game has started, then game can force all players to navigate to the game page
   // and then start the game
   const gameCode = req.body.gameCode;
-  games[gameCode].createGameState(parseInt(req.body.gameId), req.body.userIds);
+  games[gameCode].createGameState(parseInt(req.body.gameCode), req.body.userIds);
   res.send({});
 });
 

@@ -15,7 +15,7 @@ import BackButton from "../modules/BackButton";
 
 type GameProps = RouteComponentProps & {
   userId: string;
-  gameCode: number;
+  gameCode: string;
 };
 
 const Game = (props: GameProps) => {
@@ -72,7 +72,7 @@ const Game = (props: GameProps) => {
           width={1600}
           height={200}
           userId={props.userId}
-          gameId={props.gameCode}
+          gameCode={props.gameCode}
           //   towerConstants={towerConstants}
           //   minionConstants={minionConstants}
           gold={gold}
