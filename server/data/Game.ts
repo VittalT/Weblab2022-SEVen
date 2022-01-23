@@ -287,7 +287,7 @@ export class Game {
       const newMinionId = ++this.maxMinionId;
       this.minions[newMinionId] = newMinion;
       player.minionIds.push(newMinionId);
-      // enemyTower.enemyMinionIds.push(newMinionId);- i moved this elsewhere - eric
+      enemyTower.enemyMinionIds.push(newMinionId);
     } else {
       updateDisplay(userId, `${allyTower.location} -> ${enemyTower.location} ; Not enough money`);
     }
@@ -314,7 +314,12 @@ export class Game {
   public explode(userId: string, towerId: number) {
     const tower = this.getTower(towerId);
     for (const enemyMinionId of tower.enemyMinionIds) {
-      this.removeMinion(enemyMinionId);
+      const currMinion = this.getMinion(enemyMinionId);
+      if (currMinion !== undefined) {
+        if (currMinion.reachedTarget === true) {
+          this.removeMinion(enemyMinionId);
+        }
+      }
     }
     tower.enemyMinionIds = [];
   }
@@ -372,8 +377,6 @@ export class Game {
           if ((minion.location.x - minion.targetLocation.x) * xSpeed > 0) {
             minion.location = minion.targetLocation;
             minion.reachedTarget = true;
-            // added ths logic here, but we need a way to track the target tower
-            // enemyTower.enemyMinionIds.push(newMinionId);
           }
         }
       }
