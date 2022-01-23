@@ -53,9 +53,10 @@ export const init = (server: http.Server): void => {
         const size = data.size;
 
         const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
+        const userId = user!._id;
         const currGame = games[gameCode];
         if (currGame !== undefined) {
-          currGame.updateGamePanelClickState(gameCode, clickType, size);
+          currGame.updateGamePanelClickState(userId, clickType, size);
         }
       }
     );
@@ -65,9 +66,10 @@ export const init = (server: http.Server): void => {
       const y = data.y;
 
       const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
+      const userId = user!._id;
       const currGame = games[gameCode];
       if (currGame !== undefined) {
-        currGame.updateGameMapClickState(gameCode, x, y);
+        currGame.updateGameMapClickState(userId, x, y);
       }
     });
     // this is the function called by App, when a socket joins a room
