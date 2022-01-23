@@ -14,7 +14,7 @@ type GameProps = {
   width: number;
   height: number;
   userId: string;
-  gameId: number;
+  gameCode: string;
   gold: number;
   //   towerConstants: TowerConstants;
   //   minionConstants: MinionConstants;
@@ -32,7 +32,7 @@ const GamePanel = (props: GameProps) => {
           <button
             className="GamePanel-button"
             key={i}
-            onClick={() => clickGamePanelButton(props.gameId, ClickState.Tower, size)}
+            onClick={() => clickGamePanelButton(props.gameCode, ClickState.Tower, size)}
           >
             <p className="GamePanel-text"> {size} Tower </p>
           </button>
@@ -41,14 +41,14 @@ const GamePanel = (props: GameProps) => {
           <button
             className="GamePanel-button"
             key={i}
-            onClick={() => clickGamePanelButton(props.gameId, ClickState.Minion, size)}
+            onClick={() => clickGamePanelButton(props.gameCode, ClickState.Minion, size)}
           >
             <p className="GamePanel-text"> {size} Minion </p>
           </button>
         ))}
         <button
           className="GamePanel-button"
-          onClick={() => clickGamePanelButton(props.gameId, ClickState.Explosion, Size.Small)}
+          onClick={() => clickGamePanelButton(props.gameCode, ClickState.Explosion, Size.Small)}
         >
           <p className="GamePanel-text"> Explosion </p>
         </button>

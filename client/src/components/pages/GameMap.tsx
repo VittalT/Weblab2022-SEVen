@@ -11,7 +11,7 @@ import assert from "assert";
 type GameMapProps = {
   width: number;
   height: number;
-  gameCode: number;
+  gameCode: string;
 };
 
 const GameMap = (props: GameMapProps) => {
