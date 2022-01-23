@@ -2,7 +2,6 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 import UserModel from "./models/User";
-
 import { games } from "./data/games";
 
 let io: Server;
@@ -44,17 +43,32 @@ export const init = (server: http.Server): void => {
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
     });
-    socket.on("GamePanel/click", (click: { gameId: number; clickType: ClickState; size: Size }) => {
-      // console.log(`C ${click.clickType} ${click.size}`);
-      const user = getUserFromSocketID(socket.id);
-      if (user) {
-        games[click.gameId].updateGamePanelClickState(user._id, click.clickType, click.size);
+    socket.on(
+      "GamePanel/click",
+      (data: { gameCode: string; clickType: ClickState; size: Size }) => {
+        const gameCode = data.gameCode;
+        const clickType = data.clickType;
+        const size = data.size;
+
+        const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
+        const userId = user!._id;
+        const currGame = games[gameCode];
+        if (currGame !== undefined) {
+          currGame.updateGamePanelClickState(userId, clickType, size);
+        }
       }
-    });
-    socket.on("GameMap/click", (click: { gameId: number; x: number; y: number }) => {
-      // console.log(`C ${click.x} ${click.y}`);
-      const user = getUserFromSocketID(socket.id);
-      if (user) games[click.gameId].updateGameMapClickState(user._id, click.x, click.y);
+    );
+    socket.on("GameMap/click", (data: { gameCode: string; x: number; y: number }) => {
+      const gameCode = data.gameCode;
+      const x = data.x;
+      const y = data.y;
+
+      const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
+      const userId = user!._id;
+      const currGame = games[gameCode];
+      if (currGame !== undefined) {
+        currGame.updateGameMapClickState(userId, x, y);
+      }
     });
     // this is the function called by App, when a socket joins a room
     socket.on("joinRoom", (data: { user: User; userId: string; gameCode: string }) => {
