@@ -18,12 +18,12 @@ export class Game {
 
   private readonly startTime: number;
   private winnerId: string | null;
-  private readonly towers: Record<number, Tower>; // id to tower
+  private readonly towers: Record<number, Tower>; // maps tower ID to tower object
   private maxTowerId: number;
-  private readonly minions: Record<number, Minion>; // id to minion
+  private readonly minions: Record<number, Minion>; // maps minion ID to minion object
   private maxMinionId: number;
-  private readonly players: Record<string, Player>; // id to player
-  private readonly playerToTeamId: Record<string, number>; // playerId to teamId
+  private readonly players: Record<string, Player>; // maps layerId to player object
+  private readonly playerToTeamId: Record<string, number>; // maps userId to teamId
 
   public constructor(
     gameCode: string,
@@ -164,7 +164,6 @@ export class Game {
   }
 
   public start() {
-    console.log("start triggered in game side code");
     const numPlayers = this.playerIds.length;
     const angle = (2 * Math.PI) / numPlayers;
     if (numPlayers < 1 || numPlayers > 4) {
@@ -173,6 +172,7 @@ export class Game {
       return;
     }
     for (let teamId = 0; teamId < numPlayers; teamId++) {
+      console.log(teamId);
       const userId = this.playerIds[teamId];
       const startTowerId = teamId;
       const dir = angle * teamId;
@@ -183,7 +183,7 @@ export class Game {
         [startTowerId],
         [],
         ClickState.Tower,
-        teamId,
+        startTowerId,
         Size.Small,
         false,
         true
@@ -207,30 +207,31 @@ export class Game {
     return false;
   }
 
-  public farEnough(userId: string, loc: Point, minDist: number): boolean {
-    const player = this.getPlayer(userId);
-    for (const towerId of player.towerIds) {
-      const tower = this.getTower(towerId);
-      if (tower.location.distanceTo(loc) < minDist) {
-        return false;
+  // i changed this function to check for all towers, and ensure that non overlap
+  public farEnough(userId: string, loc: Point, size: Size): boolean {
+    const currTowerRadius = towerConstants[size].hitRadius;
+    for (const player of Object.values(this.players)) {
+      for (const towerId of player.towerIds) {
+        const otherTower = this.getTower(towerId);
+        const otherSize = otherTower.size;
+        const otherRadius = towerConstants[otherSize].hitRadius;
+        if (otherTower.location.distanceTo(loc) < currTowerRadius + otherRadius + 10) {
+          return false;
+        }
       }
     }
     return true;
   }
 
   public addTower(userId: string, towerSize: Size, loc: Point) {
-    console.log("tried to add tower here");
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
     if (towerSizeConstants.cost > player.gold) {
-      console.log("not enough money");
       updateDisplay(userId, `${loc} ; Not enough money`);
     } else if (!this.closeEnough(userId, loc, towerSizeConstants.maxAdjBuildRadius)) {
-      console.log("not close enough");
       updateDisplay(userId, `${loc} ; Not close enough to an ally tower`);
-    } else if (!this.farEnough(userId, loc, towerSizeConstants.minAdjBuildRadius)) {
-      console.log("too close");
-      updateDisplay(userId, `${loc} ; Too close to an ally tower`);
+    } else if (!this.farEnough(userId, loc, towerSize)) {
+      updateDisplay(userId, `${loc} ; Too close to an existing tower`);
     } else {
       player.gold -= towerSizeConstants.cost;
       const newTower: Tower = {
@@ -249,7 +250,7 @@ export class Game {
     const tower = this.getTower(towerId);
     for (const minionId of tower.enemyMinionIds) {
       const minion = this.getMinion(minionId);
-      minion.targetTowerId = null;
+      minion.targetTowerId = null; //-------------------------EITHER DELETE MINION OR REDIRECT IT!
     }
     for (const player of Object.values(this.players)) {
       const idx = player.towerIds.indexOf(towerId);
@@ -260,6 +261,7 @@ export class Game {
     delete this.towers[towerId];
   }
 
+  // i skimmed this one lol - eric
   public addMinion(userId: string, minionSize: Size, allyTowerId: number, enemyTowerId: number) {
     const player = this.getPlayer(userId);
 
@@ -379,10 +381,12 @@ export class Game {
         const minion = this.getMinion(minionId);
         if (minion.targetTowerId && minion.reachedTarget) {
           const targetTower = this.getTower(minion.targetTowerId);
-          targetTower.health = Math.max(
-            targetTower.health - minionConstants[minion.size].damageRate * delta_t_s,
-            -1
-          );
+          if (targetTower !== undefined) {
+            targetTower.health = Math.max(
+              targetTower.health - minionConstants[minion.size].damageRate * delta_t_s,
+              -1
+            );
+          }
         }
       }
     }
@@ -392,11 +396,15 @@ export class Game {
     for (const player of Object.values(this.players)) {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
-        const maxHealth = towerConstants[tower.size].health;
-        tower.health = Math.min(
-          tower.health + towerConstants[tower.size].healthRegenRate * delta_t_s,
-          maxHealth
-        );
+        if (tower !== undefined) {
+          if (tower.enemyMinionIds.length === 0) {
+            const maxHealth = towerConstants[tower.size].health;
+            tower.health = Math.min(
+              tower.health + towerConstants[tower.size].healthRegenRate * delta_t_s,
+              maxHealth
+            );
+          }
+        }
       }
     }
   }
@@ -413,16 +421,18 @@ export class Game {
   }
 
   public updateGold(delta_t_s: number) {
+    // think this function was bugged earlier
     for (const player of Object.values(this.players)) {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
-        player.gold += towerConstants[tower.size].goldRate * delta_t_s;
+        if (tower !== undefined) {
+          player.gold += towerConstants[tower.size].goldRate * delta_t_s;
+        }
       }
     }
   }
 
   public updateGamePanelClickState(userId: string, clickType: ClickState, size: Size) {
-    console.log("client: update panel was clicked");
     console.log(`D ${clickType} ${size}`);
     const player = this.getPlayer(userId);
     player.clickState = clickType;
@@ -440,6 +450,7 @@ export class Game {
     return -1;
   }
 
+  // returns -1 if none, otherwise the enemy tower ID if it was clicked
   public getClickedEnemyTowerId(userId: string, loc: Point) {
     for (const otherId of Object.keys(this.players)) {
       if (otherId !== userId) {
@@ -453,7 +464,6 @@ export class Game {
   }
 
   public updateGameMapClickState(userId: string, x: number, y: number) {
-    console.log("client: update game map was clicked");
     console.log(`D ${x} ${y}`);
     const player = this.getPlayer(userId);
     const loc = new Point(x, y);
