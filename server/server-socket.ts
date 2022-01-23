@@ -54,19 +54,10 @@ export const init = (server: http.Server): void => {
         const clickType = data.clickType;
         const size = data.size;
 
-        console.log("game panel was clicked!" + clickType.toString());
-
         const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
-        console.log(user);
         const userId = user!._id;
-        console.log(userId);
         const currGame = games[gameCode];
-        console.log(Object.keys(games));
-        console.log(currGame);
-        console.log(currGame !== undefined);
-        console.log(gameCode);
         if (currGame !== undefined) {
-          console.log("here ! LMAO!");
           currGame.updateGamePanelClickState(userId, clickType, size);
         }
       }
@@ -76,13 +67,10 @@ export const init = (server: http.Server): void => {
       const x = data.x;
       const y = data.y;
 
-      console.log("gamemap was clicked ! " + x.toString() + " " + y.toString());
-
       const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
       const userId = user!._id;
       const currGame = games[gameCode];
       if (currGame !== undefined) {
-        console.log("here ! LMAOXD!");
         currGame.updateGameMapClickState(userId, x, y);
       }
     });
