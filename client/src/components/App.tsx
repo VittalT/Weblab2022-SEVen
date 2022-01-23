@@ -41,7 +41,7 @@ const App = () => {
   };
 
   const forceNavigate = async () => {
-    const data = await get("/api/getCurrRoomGameCode");
+    const data = await get("/api/getCurrRoomStatus");
     const currGameCode = data.gameCode;
     setGameCode(data.gameCode);
     if (currGameCode.length === 6) {
