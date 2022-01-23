@@ -12,6 +12,8 @@ import NavigationButton from "../modules/NavigationButton";
 import GameMap from "./GameMap";
 import GamePanel from "./GamePanel";
 import BackButton from "../modules/BackButton";
+import { ClickState, Size } from "../../../../shared/enums";
+import { GameUpdateData } from "../../../../shared/types";
 
 type GameProps = RouteComponentProps & {
   userId: string;

@@ -1,5 +1,6 @@
 import socketIOClient from "socket.io-client";
 import { post } from "./utilities";
+import { ClickState, Size } from "../../shared/enums";
 const endpoint = `${window.location.hostname}:${window.location.port}`;
 export const socket = socketIOClient.io(endpoint);
 

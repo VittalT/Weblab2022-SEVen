@@ -12,6 +12,10 @@ import { isNonNullChain } from "typescript";
 import assert from "assert";
 import { drawCreateCanvas, drawGoldMine } from "../../create-canvasManager";
 import { off } from "process";
+import Point from "../../../../shared/Point";
+import Minion from "../../../../shared/Minion";
+import Tower from "../../../../shared/Tower";
+import { towerConstants, GoldConstants } from "../../../../shared/constants";
 
 type CreateMapProps = RouteComponentProps & {
   userId: string;

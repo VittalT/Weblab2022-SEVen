@@ -9,6 +9,7 @@ import { Router, RouteComponentProps } from "@reach/router";
 import Gold from "./Gold";
 import assert from "assert";
 import { post } from "../../utilities";
+import { ClickState, Size } from "../../../../shared/enums";
 
 type GameProps = {
   width: number;

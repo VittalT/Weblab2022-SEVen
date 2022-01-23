@@ -1,5 +1,11 @@
 import assert, { throws } from "assert";
 import { updateDisplay, getIo } from "../server-socket";
+import { ClickState, Size } from "../../shared/enums";
+import Point from "../../shared/Point";
+import Minion from "../../shared/Minion";
+import Tower from "../../shared/Tower";
+import Player from "../../shared/Player";
+import { towerConstants, minionConstants, FPS, MAX_GAME_LEN_M } from "../../shared/constants";
 
 export class Game {
   private readonly gameCode: string;
@@ -306,7 +312,7 @@ export class Game {
   }
 
   public sendGameState() {
-    const gameUpdateData: GameUpdateData = {
+    const gameUpdateData = {
       time: Date.now(),
       hostId: this.hostId,
       idToName: this.idToName,

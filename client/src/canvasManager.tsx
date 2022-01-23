@@ -1,4 +1,9 @@
 import assert from "assert";
+import Point from "../../shared/Point";
+import Minion from "../../shared/Minion";
+import Tower from "../../shared/Tower";
+import { towerConstants, minionConstants } from "../../shared/constants";
+import { GameUpdateData } from "../../shared/types";
 
 let canvas: HTMLCanvasElement;
 /** utils */
