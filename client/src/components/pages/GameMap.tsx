@@ -11,7 +11,7 @@ import assert from "assert";
 type GameMapProps = {
   width: number;
   height: number;
-  gameId: number;
+  gameCode: number;
 };
 
 const GameMap = (props: GameMapProps) => {
@@ -19,7 +19,7 @@ const GameMap = (props: GameMapProps) => {
     const canvas = document.getElementById("game-canvas") ?? assert.fail();
     canvas.addEventListener("click", (event: MouseEvent) => {
       // console.log(`A ${event.offsetX} ${event.offsetY}`);
-      clickGameMap(props.gameId, event.offsetX, event.offsetY);
+      clickGameMap(props.gameCode, event.offsetX, event.offsetY);
     });
   }, []);
 
