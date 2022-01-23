@@ -34,7 +34,7 @@ declare global {
     hostId: string;
     idToName: Record<string, string>;
     playerToTeamId: Record<string, number>;
-    activeStatus: string;
+    isActive: boolean;
     winnerId: string | null;
     players: Record<string, Player>;
     towers: Record<number, Tower>;

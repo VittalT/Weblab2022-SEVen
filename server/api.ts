@@ -144,7 +144,7 @@ router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response)
   const data = new Array<{ hostName: string; gameCode: string }>();
   for (const gameCode of Object.keys(games)) {
     const game = games[gameCode];
-    if (game.getGameType() === "public" && game.getActiveStatus() === "active") {
+    if (game.getGameType() === "public" && game.getIsActive() === true) {
       data.push({ hostName: game.getHostName(), gameCode: game.getGameCode() });
     }
   }
@@ -172,12 +172,12 @@ router.post("/getGameActiveStatus", (req: Request, res: Response) => {
   console.log(games.toString());
   console.log(Object.keys(games).toString());
   if (!Object.keys(games).includes(gameCode)) {
-    res.send({ activeStatus: "inactive" });
+    res.send({ isActive: false });
   } else {
     console.log("entered loop here?");
     const currGame = games[gameCode];
     res.send({
-      activeStatus: currGame.getActiveStatus(),
+      isActive: currGame.getIsActive(),
     });
   }
 });

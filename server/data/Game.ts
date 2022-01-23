@@ -7,7 +7,8 @@ export class Game {
   private hostId: string;
   private readonly playerIds: Array<string>;
   private readonly idToName: Record<string, string>;
-  private activeStatus: string;
+  private isActive: boolean;
+  private isInPlay: boolean;
 
   private readonly startTime: number;
   private winnerId: string | null;
@@ -31,7 +32,8 @@ export class Game {
     this.playerIds = playerIds;
     this.idToName = {};
     this.idToName[hostId] = hostName;
-    this.activeStatus = "active";
+    this.isActive = true;
+    this.isInPlay = false;
 
     this.startTime = Date.now();
     this.winnerId = null;
@@ -105,7 +107,7 @@ export class Game {
         this.hostId = this.playerIds[0];
       } else {
         this.hostId = "NONE";
-        this.activeStatus = "inactive";
+        this.isActive = false;
       }
     }
     getIo().emit("updatePublicLobby");
@@ -140,12 +142,12 @@ export class Game {
     return this.playerIds.length.toString();
   }
 
-  public getActiveStatus(): string {
-    return this.activeStatus;
+  public getIsActive(): boolean {
+    return this.isActive;
   }
 
-  public setInactive(): void {
-    this.activeStatus = "inactive";
+  public setInActive(): void {
+    this.isActive = false;
   }
 
   public getTeamId(userId: string): number {
@@ -309,7 +311,7 @@ export class Game {
       hostId: this.hostId,
       idToName: this.idToName,
       playerToTeamId: this.playerToTeamId,
-      activeStatus: this.activeStatus,
+      isActive: this.isActive,
       winnerId: this.winnerId,
       players: this.players,
       towers: this.towers,
@@ -319,7 +321,7 @@ export class Game {
   }
 
   public onGameEnd() {
-    this.activeStatus = "inactive";
+    this.isInPlay = false;
   }
 
   public timeUpdate(delta_t_s: number) {
