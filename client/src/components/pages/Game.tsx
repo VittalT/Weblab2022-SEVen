@@ -15,7 +15,7 @@ import BackButton from "../modules/BackButton";
 
 type GameProps = RouteComponentProps & {
   userId: string;
-  gameId: number;
+  gameCode: number;
 };
 
 const Game = (props: GameProps) => {
@@ -39,6 +39,7 @@ const Game = (props: GameProps) => {
       }
     });
   }, []);
+
   const processUpdate = (gameUpdateData: GameUpdateData) => {
     console.log(gameUpdateData);
     updateDisplayState(gameUpdateData);
@@ -64,14 +65,14 @@ const Game = (props: GameProps) => {
         <div>
           <BackButton text="Forfeit" destPath="/" />
           {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
-          <GameMap width={1600} height={750} gameId={props.gameId} />
+          <GameMap width={1600} height={750} gameCode={props.gameCode} />
           <p className="u-displayText">{`${sizeClicked} ${clickState} ; ${displayText}`}</p>
         </div>
         <GamePanel
           width={1600}
           height={200}
           userId={props.userId}
-          gameId={props.gameId}
+          gameId={props.gameCode}
           //   towerConstants={towerConstants}
           //   minionConstants={minionConstants}
           gold={gold}
