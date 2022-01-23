@@ -44,28 +44,6 @@ export class Game {
     this.players = {} as Record<string, Player>;
     this.playerToTeamId = {} as Record<string, number>;
     this.gameLoop = this.gameLoop.bind(this);
-
-    const numPlayers = this.playerIds.length;
-    for (let teamId = 0; teamId < numPlayers; teamId++) {
-      const userId = this.playerIds[teamId];
-      const startTowerId = teamId;
-      const dir = (2 * Math.PI) / numPlayers;
-      const startTowerLoc = new Point(800 + 300 * Math.cos(dir), 375 + 300 * Math.sin(dir));
-      const startTower = new Tower(50, startTowerLoc, Size.Small, []);
-      const player = new Player(
-        50,
-        [startTowerId],
-        [],
-        ClickState.Tower,
-        teamId,
-        Size.Small,
-        false,
-        true
-      );
-      this.towers[startTowerId] = startTower;
-      this.players[userId] = player;
-      this.playerToTeamId[userId] = teamId;
-    }
     getIo().emit("updatePublicLobby");
   }
 
@@ -150,6 +128,10 @@ export class Game {
     this.isActive = false;
   }
 
+  public getIsInPlay(): boolean {
+    return this.isInPlay;
+  }
+
   public getTeamId(userId: string): number {
     return this.playerToTeamId[userId];
   }
@@ -176,7 +158,33 @@ export class Game {
   }
 
   public start() {
+    const numPlayers = this.playerIds.length;
+    if (numPlayers < 2 || numPlayers > 4) {
+      getIo().in(this.gameCode).emit("gameStartFailed");
+      return;
+    }
+    for (let teamId = 0; teamId < numPlayers; teamId++) {
+      const userId = this.playerIds[teamId];
+      const startTowerId = teamId;
+      const dir = (2 * Math.PI) / numPlayers;
+      const startTowerLoc = new Point(800 + 300 * Math.cos(dir), 375 + 300 * Math.sin(dir));
+      const startTower = new Tower(50, startTowerLoc, Size.Small, []);
+      const player = new Player(
+        50,
+        [startTowerId],
+        [],
+        ClickState.Tower,
+        teamId,
+        Size.Small,
+        false,
+        true
+      );
+      this.towers[startTowerId] = startTower;
+      this.players[userId] = player;
+      this.playerToTeamId[userId] = teamId;
+    }
     getIo().in(this.gameCode).emit("startGame", { gameCode: this.gameCode });
+    this.gameLoop();
   }
 
   public closeEnough(userId: string, loc: Point, maxDist: number): boolean {
