@@ -1,3 +1,5 @@
+import { ClickState, Size } from "../shared/enums";
+import Point from "./Point";
 class Minion {
   public location: Point;
   public targetLocation: Point; // don't emit
@@ -22,3 +24,5 @@ class Minion {
     this.reachedTarget = reachedTarget;
   }
 }
+
+export default Minion;

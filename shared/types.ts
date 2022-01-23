@@ -1,17 +1,8 @@
-enum ClickState {
-  Tower = "Tower",
-  Minion = "Minion",
-  MinionFirstTower = "Minion and Clicked First Tower",
-  Explosion = "Explosion",
-}
+import Minion from "./Minion";
+import Tower from "./Tower";
+import Player from "./Player";
 
-enum Size {
-  Small = "Small",
-  Medium = "Medium",
-  Large = "Large",
-}
-
-type TowerConstants = {
+export type TowerConstants = {
   health: number;
   healthRegenRate: number;
   goldRate: number;
@@ -21,14 +12,14 @@ type TowerConstants = {
   hitRadius: number;
 };
 
-type MinionConstants = {
+export type MinionConstants = {
   damageRate: number;
   cost: number;
   speed: number;
   boundingRadius: number;
 };
 
-type GameUpdateData = {
+export type GameUpdateData = {
   time: number;
   hostId: string;
   idToName: Record<string, string>;

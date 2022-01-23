@@ -1,5 +1,7 @@
 import assert from "assert";
 import { fillCircle } from "./canvasManager";
+import { GoldConstants } from "../../shared/constants";
+import Point from "../../shared/Point";
 
 let canvas: HTMLCanvasElement;
 let scaleFactor: number = 2;

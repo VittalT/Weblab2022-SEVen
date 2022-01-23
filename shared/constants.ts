@@ -1,5 +1,7 @@
 /** game state */
-const towerConstants: Record<Size, TowerConstants> = {
+import { Size } from "./enums";
+import { TowerConstants, MinionConstants } from "./types";
+export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
     health: 50,
     healthRegenRate: 3,
@@ -29,7 +31,7 @@ const towerConstants: Record<Size, TowerConstants> = {
   },
 };
 
-const minionConstants: Record<Size, MinionConstants> = {
+export const minionConstants: Record<Size, MinionConstants> = {
   [Size.Small]: {
     damageRate: 5,
     cost: 10,
@@ -50,9 +52,9 @@ const minionConstants: Record<Size, MinionConstants> = {
   },
 };
 
-const GoldConstants = {
+export const GoldConstants = {
   realRadius: 50,
 };
 
-const FPS = 60;
-const MAX_GAME_LEN_M = 5;
+export const FPS = 60;
+export const MAX_GAME_LEN_M = 5;

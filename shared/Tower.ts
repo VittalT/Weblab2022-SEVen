@@ -1,3 +1,5 @@
+import Point from "./Point";
+import { Size } from "./enums";
 class Tower {
   public health: number;
   public location: Point;
@@ -12,4 +14,4 @@ class Tower {
   }
 }
 
-module.exports = { Tower };
+export default Tower;

@@ -1,3 +1,5 @@
+import { ClickState, Size } from "./enums";
+
 class Player {
   public gold: number;
   public towerIds: Array<number>;
@@ -28,3 +30,5 @@ class Player {
     this.inGame = inGame;
   }
 }
+
+export default Player;
