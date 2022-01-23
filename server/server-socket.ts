@@ -6,7 +6,6 @@ import UserModel from "./models/User";
 import { games } from "./data/games";
 
 let io: Server;
-const logic = require("./logic");
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
@@ -49,13 +48,13 @@ export const init = (server: http.Server): void => {
       // console.log(`C ${click.clickType} ${click.size}`);
       const user = getUserFromSocketID(socket.id);
       if (user) {
-        logic.updateGamePanelClickState(click.gameId, user._id, click.clickType, click.size);
+        games[click.gameId].updateGamePanelClickState(user._id, click.clickType, click.size);
       }
     });
     socket.on("GameMap/click", (click: { gameId: number; x: number; y: number }) => {
       // console.log(`C ${click.x} ${click.y}`);
       const user = getUserFromSocketID(socket.id);
-      if (user) logic.updateGameMapClickState(click.gameId, user._id, click.x, click.y);
+      if (user) games[click.gameId].updateGameMapClickState(user._id, click.x, click.y);
     });
     // this is the function called by App, when a socket joins a room
     socket.on("joinRoom", (data: { user: User; userId: string; gameCode: string }) => {

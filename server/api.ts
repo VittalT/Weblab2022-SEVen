@@ -23,7 +23,6 @@ import {
   isShorthandPropertyAssignment,
 } from "typescript";
 import assert from "assert";
-const logic = require("./logic");
 
 const router = express.Router();
 
@@ -186,7 +185,7 @@ router.post("/startGame", (req: Request, res: Response) => {
   // let the game know that the game has started, then game can force all players to navigate to the game page
   // and then start the game
   const gameCode = req.body.gameCode;
-  logic.createGameState(parseInt(req.body.gameId), req.body.userIds);
+  games[gameCode].createGameState(parseInt(req.body.gameId), req.body.userIds);
   res.send({});
 });
 
