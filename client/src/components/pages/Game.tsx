@@ -26,7 +26,7 @@ const Game = (props: GameProps) => {
   const [sizeClicked, setSizeClicked] = useState(Size.Small);
   //   const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
   //   const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
-  const [displayText, setDisplayText] = useState("");
+  const [displayText, setDisplayText] = useState("Initial");
 
   useEffect(() => {
     socket.on("gameUpdate", (gameUpdateData: GameUpdateData) => {
@@ -35,10 +35,8 @@ const Game = (props: GameProps) => {
   }, []);
 
   useEffect(() => {
-    socket.on("updateDisplay", (userId: string, message: string) => {
-      if (props.userId === userId) {
-        setDisplayText(message);
-      }
+    socket.on("updateDisplay", (data: { message: string }) => {
+      setDisplayText(data.message);
     });
   }, []);
 
@@ -68,7 +66,7 @@ const Game = (props: GameProps) => {
           <BackButton text="Forfeit" destPath="/" />
           {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
           <GameMap width={1600} height={750} gameCode={props.gameCode} />
-          <p className="u-displayText">{`${sizeClicked} ${clickState} ; ${displayText}`}</p>
+          <p className="u-displayText">{`${sizeClicked} ${clickState} : ${displayText}`}</p>
         </div>
         <GamePanel
           width={1600}

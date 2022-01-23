@@ -164,15 +164,18 @@ export class Game {
   }
 
   public start() {
+    console.log("start triggered in game side code");
     const numPlayers = this.playerIds.length;
-    if (numPlayers < 2 || numPlayers > 4) {
+    const angle = (2 * Math.PI) / numPlayers;
+    if (numPlayers < 1 || numPlayers > 4) {
+      // EVENTUALLY, CHANGE TO TWO!!!!!!!!!!!!!!!!
       getIo().in(this.gameCode).emit("gameStartFailed");
       return;
     }
     for (let teamId = 0; teamId < numPlayers; teamId++) {
       const userId = this.playerIds[teamId];
       const startTowerId = teamId;
-      const dir = (2 * Math.PI) / numPlayers;
+      const dir = angle * teamId;
       const startTowerLoc = new Point(800 + 300 * Math.cos(dir), 375 + 300 * Math.sin(dir));
       const startTower = new Tower(50, startTowerLoc, Size.Small, []);
       const player = new Player(
@@ -216,13 +219,17 @@ export class Game {
   }
 
   public addTower(userId: string, towerSize: Size, loc: Point) {
+    console.log("tried to add tower here");
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
     if (towerSizeConstants.cost > player.gold) {
+      console.log("not enough money");
       updateDisplay(userId, `${loc} ; Not enough money`);
     } else if (!this.closeEnough(userId, loc, towerSizeConstants.maxAdjBuildRadius)) {
+      console.log("not close enough");
       updateDisplay(userId, `${loc} ; Not close enough to an ally tower`);
     } else if (!this.farEnough(userId, loc, towerSizeConstants.minAdjBuildRadius)) {
+      console.log("too close");
       updateDisplay(userId, `${loc} ; Too close to an ally tower`);
     } else {
       player.gold -= towerSizeConstants.cost;
@@ -414,6 +421,7 @@ export class Game {
   }
 
   public updateGamePanelClickState(userId: string, clickType: ClickState, size: Size) {
+    console.log("client: update panel was clicked");
     console.log(`D ${clickType} ${size}`);
     const player = this.getPlayer(userId);
     player.clickState = clickType;
@@ -444,6 +452,7 @@ export class Game {
   }
 
   public updateGameMapClickState(userId: string, x: number, y: number) {
+    console.log("client: update game map was clicked");
     console.log(`D ${x} ${y}`);
     const player = this.getPlayer(userId);
     const loc = new Point(x, y);
