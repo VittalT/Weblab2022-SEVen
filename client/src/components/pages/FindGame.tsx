@@ -61,14 +61,14 @@ const FindGame = (props: Props) => {
       <div className="FindGame-container u-gameContainer">
         <h3 className="FindGame-header u-gameHeader">Minion Battle</h3>
         <div className="dropdown">
-          <button className="dropbtn">Create</button>
+          <div className="deadButton">Create</div>
           <div className="dropdown-content">
             <button onClick={createPublicGame}>Public</button>
             <button onClick={createPrivateGame}>Private</button>
           </div>
         </div>
         <div className="dropdown">
-          <button className="dropbtn">Join</button>
+          <div className="deadButton">Join</div>
           <div className="dropdown-content">
             <button onClick={navToLobby}>Public</button>
           </div>
