@@ -1,6 +1,7 @@
 .Game-body {
   display: flex;
-  background-color: #222222;
+  border: 2px black;
+  background-color: white;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -16,4 +17,13 @@
   padding: 40px;
   background-color: #333333;
   color: white;
+}
+
+.Game-displayText {
+  position: fixed;
+  bottom: 5px;
+  font-size: 17px;
+  margin: auto;
+  padding-left: 45%;
+  vertical-align: middle;
 }

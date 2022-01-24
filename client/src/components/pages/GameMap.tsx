@@ -25,7 +25,12 @@ const GameMap = (props: GameMapProps) => {
 
   return (
     <>
-      <canvas id="game-canvas" width={props.width} height={props.height} />
+      <canvas
+        id="game-canvas"
+        className="GameMap-canvas"
+        width={props.width}
+        height={props.height}
+      />
     </>
   );
 };

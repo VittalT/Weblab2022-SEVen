@@ -102,10 +102,9 @@ const Game = (props: GameProps) => {
         <div>
           {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
           <GameMap width={1600} height={750} gameCode={props.gameCode} />
-          <p className="u-displayText">{`${sizeClicked} ${clickState} : ${displayText}`}</p>
         </div>
         <GamePanel
-          width={1600}
+          width={1800}
           height={200}
           userId={props.passedUserId}
           gameCode={props.gameCode}
@@ -115,13 +114,14 @@ const Game = (props: GameProps) => {
         />
       </div>
       {isInPlay ? (
-        <div>Is In Play!</div>
+        <></>
       ) : (
         <>
           <div>{"The winner is " + winnerName}</div>
           <button onClick={navGameConfig}>Return to lobby</button>
         </>
       )}
+      <p className="Game-displayText">{`${sizeClicked} ${clickState} - ${displayText}`}</p>
     </>
   );
 };

@@ -25,7 +25,7 @@ export class Game {
   private isActive: boolean;
   private isInPlay: boolean;
 
-  private readonly startTime: number;
+  private startTime: number;
   private winnerId: string | null;
   private readonly towers: Record<number, Tower>; // maps tower ID to tower object
   private maxTowerId: number;
@@ -200,6 +200,7 @@ export class Game {
   }
 
   public start() {
+    this.startTime = Date.now();
     const numPlayers = this.playerIds.length;
     const angle = (2 * Math.PI) / numPlayers;
     if (numPlayers < 2 || numPlayers > 4) {
@@ -262,19 +263,35 @@ export class Game {
     return true;
   }
 
+  public isInBounds(userId: string, loc: Point, size: Size): boolean {
+    const gameWidth = 1600;
+    const gameHeight = 750;
+    const currTowerRadius = towerConstants[size].hitRadius;
+    if (loc.x < currTowerRadius || loc.x > gameWidth - currTowerRadius) {
+      return false;
+    }
+    if (loc.y < currTowerRadius || loc.y > gameHeight - currTowerRadius) {
+      return false;
+    }
+    return true;
+  }
+
   public addTower(userId: string, towerSize: Size, loc: Point, isFirstTower: boolean) {
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
     if (!isFirstTower && towerSizeConstants.cost > player.gold) {
-      updateDisplay(userId, `${loc} ; Not enough gold`);
+      updateDisplay(userId, "Not enough gold!");
     } else if (
       !isFirstTower &&
       !this.closeEnough(userId, loc, towerSizeConstants.maxAdjBuildRadius)
     ) {
-      updateDisplay(userId, `${loc} ; Not close enough to an ally tower`);
+      updateDisplay(userId, "Not close enough to an ally tower!");
     } else if (!isFirstTower && !this.farEnough(userId, loc, towerSize)) {
-      updateDisplay(userId, `${loc} ; Too close to an existing tower`);
+      updateDisplay(userId, "Too close to an existing tower!");
+    } else if (!this.isInBounds(userId, loc, towerSize)) {
+      updateDisplay(userId, "Too close to game borders!");
     } else {
+      updateDisplay(userId, "Tower successfuly deployed");
       if (!isFirstTower) player.gold -= towerSizeConstants.cost;
       const newTower: Tower = {
         health: towerSizeConstants.health,
@@ -323,6 +340,7 @@ export class Game {
     const enemyTower = this.getTower(enemyTowerId);
 
     if (minionSizeConstants.cost <= player.gold) {
+      updateDisplay(userId, "Minion successfully deployed");
       player.gold -= minionSizeConstants.cost;
       const dir = allyTower.location.angleTo(enemyTower.location);
       const allyRadius = towerConstants[allyTower.size].hitRadius;
@@ -342,7 +360,7 @@ export class Game {
       player.minionIds.push(newMinionId);
       enemyTower.enemyMinionIds.push(newMinionId);
     } else {
-      updateDisplay(userId, `${allyTower.location} -> ${enemyTower.location} ; Not enough gold`);
+      updateDisplay(userId, "Not enough gold");
     }
   }
 
@@ -381,7 +399,7 @@ export class Game {
         this.removeMinion(enemyMinionId);
       }
     } else {
-      updateDisplay(userId, `Not enough gold to explode tower ${towerId}`);
+      updateDisplay(userId, "Not enough gold to explode this tower");
     }
   }
 
@@ -421,7 +439,9 @@ export class Game {
 
   public onGameEnd(): void {
     this.isInPlay = false;
-    console.log("inside onGameEnd, winner id is " + this.winnerId);
+    if (Date.now() - this.startTime > 10 * 60 * 1000) {
+      this.winnerId = this.playerIds[0];
+    }
     if (this.winnerId !== null) {
       const winnerName = this.idToName[this.winnerId];
       endGame(this.gameCode, winnerName);
@@ -436,38 +456,35 @@ export class Game {
   }
 
   public adjustRatingsAll(): void {
+    console.log(this.playerIds);
     for (const playerId of this.playerIds) {
+      console.log(playerId);
       if (playerId !== this.winnerId) {
+        console.log("at least one is discovered");
         this.adjustRatingsPair(this.winnerId ?? assert.fail("no winner Id"), playerId);
       }
     }
   }
 
   //id1 is the winner here
-  public adjustRatingsPair(id1: string, id2: string): void {
+  public async adjustRatingsPair(id1: string, id2: string): Promise<void> {
     let id1Rating: number = 0;
     let id2Rating: number = 0;
 
-    UserModel.findOne({ _id: id1 }).then((user: User) => {
-      id1Rating = user.rating;
-    });
-    UserModel.findOne({ _id: id2 }).then((user: User) => {
-      id2Rating = user.rating;
-    });
+    const user1 = await UserModel.findOne({ _id: id1 });
+    id1Rating = user1.rating;
+    const user2 = await UserModel.findOne({ _id: id2 });
+    id2Rating = user2.rating;
 
     const user1prob = 1 / (1 + Math.pow(10, (id1Rating - id2Rating) / 400));
     const user2prob = 1 - user1prob;
     id1Rating += 30 * (1 - user1prob);
     id2Rating += 30 * (0 - user2prob);
 
-    UserModel.findOne({ _id: id1 }).then((user: User) => {
-      user.rating = id1Rating;
-      user.save();
-    });
-    UserModel.findOne({ _id: id2 }).then((user: User) => {
-      user.rating = id2Rating;
-      user.save();
-    });
+    user1.rating = Math.round(id1Rating);
+    user1.save();
+    user2.rating = Math.round(id2Rating);
+    user2.save();
   }
 
   public clearGame(): void {
@@ -498,7 +515,7 @@ export class Game {
 
   public sendGameState() {
     const gameUpdateData = {
-      time: Date.now(),
+      time: Date.now() - this.startTime,
       hostId: this.hostId,
       idToName: this.idToName,
       playerToTeamId: this.playerToTeamId,
@@ -676,7 +693,7 @@ export class Game {
           this.explode(userId, allyTowerId);
         }
       } else {
-        updateDisplay(userId, "Must click on an ally tower");
+        updateDisplay(userId, "Please click on an ally tower");
       }
     } else if (player.clickState === ClickState.Tower) {
       this.addTower(userId, player.sizeClicked, loc, false);
@@ -686,7 +703,7 @@ export class Game {
       if (enemyTowerId !== -1) {
         this.addMinion(userId, player.sizeClicked, player.towerClickedId, enemyTowerId);
       } else {
-        updateDisplay(userId, "Must click on an enemy tower");
+        updateDisplay(userId, "Please click on an enemy tower");
       }
     }
   }

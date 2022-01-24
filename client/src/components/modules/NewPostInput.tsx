@@ -19,7 +19,7 @@ const NewPostInput = (props: NewPostInputProps) => {
   };
 
   // called when the user hits "Submit" for a new post
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
     props.onSubmit && props.onSubmit(value);
     setValue("");
@@ -34,14 +34,9 @@ const NewPostInput = (props: NewPostInputProps) => {
         onChange={handleChange}
         className="NewPostInput-input"
       />
-      <button
-        type="submit"
-        className="NewPostInput-button u-pointer"
-        value="Submit"
-        onClick={handleSubmit}
-      >
+      <div className="NewPostInput-button u-pointer" onClick={handleSubmit}>
         Submit
-      </button>
+      </div>
     </div>
   );
 };
@@ -64,7 +59,7 @@ const PrivateGameInput = (props: Props) => {
     }
   };
 
-  return <NewPostInput defaultText="New Message" onSubmit={join} />;
+  return <NewPostInput defaultText="Private Game Code" onSubmit={join} />;
 };
 
 export { NewPostInput, PrivateGameInput };
