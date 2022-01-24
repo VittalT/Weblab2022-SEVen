@@ -11,7 +11,11 @@ import { LeaderboardRecord } from "../modules/LeaderboardRecord";
 
 import { RouteComponentProps } from "@reach/router";
 
-const Leaderboard = (props: RouteComponentProps) => {
+type Props = RouteComponentProps & {
+  forceNavigate: () => void;
+};
+
+const Leaderboard = (props: Props) => {
   const peopleToInclude = 5;
   const [bestRatings, setBestRatings] = useState<ReactElement[]>([]);
   const [bestAlltimeRatings, setBestAlltimeRatings] = useState<ReactElement[]>([]);
@@ -19,6 +23,8 @@ const Leaderboard = (props: RouteComponentProps) => {
   const [highestGamesWon, setHighestGamesWon] = useState<ReactElement[]>([]);
 
   useEffect(() => {
+    props.forceNavigate();
+
     get("/api/users").then((users: User[]) => {
       for (let i = 0; i < users.length; i++) console.log(users[i].rating);
       setBestRatings(

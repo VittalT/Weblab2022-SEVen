@@ -45,7 +45,11 @@ const App = () => {
     const currGameCode = data.gameCode;
     setGameCode(data.gameCode);
     if (currGameCode.length === 6) {
-      navigate("/gameconfig");
+      if (data.isInPlay === false) {
+        navigate("/gameconfig");
+      } else {
+        navigate("/game");
+      }
     }
   };
 
@@ -111,8 +115,8 @@ const App = () => {
       />
       <Game path="/game" userId={userId} gameCode={gameCode} />
       <NotFound default={true} />
-      <HowToPlay path="/howtoplay" />
-      <Leaderboard path="/leaderboard" />
+      <HowToPlay path="/howtoplay" forceNavigate={forceNavigate} />
+      <Leaderboard path="/leaderboard" forceNavigate={forceNavigate} />
     </Router>
   );
 };
