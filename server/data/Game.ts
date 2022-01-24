@@ -16,6 +16,7 @@ import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
 const GameMap1 = require("../models/Map");
 import { GameMap } from "../models/Map";
+import User from "../models/User";
 
 export class Game {
   private readonly gameCode: string;
@@ -194,7 +195,7 @@ export class Game {
   public start() {
     const numPlayers = this.playerIds.length;
     const angle = (2 * Math.PI) / numPlayers;
-    if (numPlayers < 1 || numPlayers > 4) {
+    if (numPlayers < 2 || numPlayers > 4) {
       // TODO change to 2 eventually!!
       getIo().in(this.gameCode).emit("gameStartFailed");
       return;
@@ -423,8 +424,19 @@ export class Game {
     } else {
       console.log("Error: winnerId is null");
     }
+
     this.clearGame();
   }
+
+  public adjustRatingsAll(): void {
+    for (const playerId of this.playerIds) {
+      if (playerId !== this.winnerId) {
+        this.adjustRatingsPair(this.winnerId ?? assert.fail("no winner Id"), playerId);
+      }
+    }
+  }
+
+  public adjustRatingsPair(id1: string, id2: string): void {}
 
   public clearGame(): void {
     this.winnerId = null;
