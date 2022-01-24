@@ -16,7 +16,7 @@ import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
 const GameMap1 = require("../models/Map");
 import GameMapModel, { GameMap } from "../models/Map";
-import UserModel, {User} from "../models/User";
+import UserModel, { User } from "../models/User";
 
 export class Game {
   private readonly gameCode: string;
@@ -424,7 +424,7 @@ export class Game {
     } else {
       console.log("Error: winnerId is null");
     }
-
+    this.adjustRatingsAll();
     this.clearGame();
   }
 
@@ -436,10 +436,31 @@ export class Game {
     }
   }
 
+  //id1 is the winner here
   public adjustRatingsPair(id1: string, id2: string): void {
-    let id1Rating = 0;
-    let id2Rating = 0;
-    UserModel.findOne({ _id: id1 }).then((user: User))
+    let id1Rating: number = 0;
+    let id2Rating: number = 0;
+
+    UserModel.findOne({ _id: id1 }).then((user: User) => {
+      id1Rating = user.rating;
+    });
+    UserModel.findOne({ _id: id2 }).then((user: User) => {
+      id2Rating = user.rating;
+    });
+
+    const user1prob = 1 / (1 + Math.pow(10, (id1Rating - id2Rating) / 400));
+    const user2prob = 1 - user1prob;
+    id1Rating += 30 * (1 - user1prob);
+    id2Rating += 30 * (0 - user2prob);
+
+    UserModel.findOne({ _id: id1 }).then((user: User) => {
+      user.rating = id1Rating;
+      user.save();
+    });
+    UserModel.findOne({ _id: id2 }).then((user: User) => {
+      user.rating = id2Rating;
+      user.save();
+    });
   }
 
   public clearGame(): void {
