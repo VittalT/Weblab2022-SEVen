@@ -29,6 +29,7 @@ const App = () => {
     const user: User = await get("/api/whoami");
     socket.emit("joinRoom", { user: user, userId: userId, gameCode: gameCode });
     setGameCode(gameCode);
+    console.log("im inside the joinroom function!");
     return true;
   };
 
@@ -113,7 +114,7 @@ const App = () => {
         joinRoom={joinRoom}
         forceNavigate={forceNavigate}
       />
-      <Game path="/game" userId={userId} gameCode={gameCode} />
+      <Game path="/game" gameCode={gameCode} joinRoom={joinRoom} passedUserId={userId} />
       <NotFound default={true} />
       <HowToPlay path="/howtoplay" forceNavigate={forceNavigate} />
       <Leaderboard path="/leaderboard" forceNavigate={forceNavigate} />

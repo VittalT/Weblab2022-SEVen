@@ -66,7 +66,12 @@ const fillTriangle = (
 
 /** drawing functions */
 
-const drawTower = (context: CanvasRenderingContext2D, tower: Tower, teamId: number) => {
+const drawTower = (
+  context: CanvasRenderingContext2D,
+  tower: Tower,
+  teamId: number,
+  initials: string
+) => {
   const drawLoc = tower.location;
   const towerRadius = towerConstants[tower.size].hitRadius;
 
@@ -78,6 +83,11 @@ const drawTower = (context: CanvasRenderingContext2D, tower: Tower, teamId: numb
   const totalHealth = towerConstants[tower.size].health;
   const fracHealth = tower.health / totalHealth;
   fillHealthBar(context, drawLoc, towerRadius, fracHealth);
+
+  context.font = "18px serif";
+  context.textAlign = "center";
+  context.fillStyle = "black";
+  context.fillText(initials, drawLoc.x, drawLoc.y);
 };
 
 const fillHealthBar = (
@@ -113,6 +123,20 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   context.fillStyle = "white";
   context.fillRect(0, 0, canvas.width, canvas.height);
 
+  const idToName = gameUpdateData.idToName;
+
+  const getInitials = (userId: string) => {
+    const userName = idToName[userId];
+    const splitted = userName.split(" ");
+    let initials = "";
+    for (const word of splitted) {
+      if (word.length > 0) {
+        initials += word[0];
+      }
+    }
+    return initials;
+  };
+
   // display all towers and minions
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
@@ -126,7 +150,7 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
     const teamId = gameUpdateData.playerToTeamId[userId];
     for (const towerId of player.towerIds) {
       const tower = gameUpdateData.towers[towerId];
-      drawTower(context, tower, teamId);
+      drawTower(context, tower, teamId, getInitials(userId));
     }
   }
 };

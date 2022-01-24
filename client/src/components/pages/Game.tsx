@@ -14,10 +14,12 @@ import GamePanel from "./GamePanel";
 import BackButton from "../modules/BackButton";
 import { ClickState, Size } from "../../../../shared/enums";
 import { GameUpdateData } from "../../../../shared/types";
+import User from "../../../../shared/User";
 
 type GameProps = RouteComponentProps & {
-  userId: string;
+  passedUserId: string;
   gameCode: string;
+  joinRoom: (userId: string, gameCode: string) => void;
 };
 
 const Game = (props: GameProps) => {
@@ -31,6 +33,24 @@ const Game = (props: GameProps) => {
   const [winnerName, setWinnerName] = useState("");
 
   useEffect(() => {
+    const doThings = async () => {
+      setClickState(ClickState.Tower);
+      setSizeClicked(Size.Small);
+      // using gamecode associated with app, populate page with lobby info
+      // const user: User = await get("/api/whoami");
+      // const userId = user._id;
+      // setUserId(userId);
+      const data = await get("/api/getCurrRoomStatus");
+      const currGameCode = data.gameCode;
+      if (currGameCode.length === 6) {
+        console.log("going to join room soon");
+        if (props.passedUserId === undefined || props.passedUserId.length === 0) {
+          navigate("/"); // PICK UP PROPS
+        }
+        const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
+      }
+    };
+
     socket.on("gameUpdate", (gameUpdateData: GameUpdateData) => {
       processUpdate(gameUpdateData);
     });
@@ -45,10 +65,13 @@ const Game = (props: GameProps) => {
       setIsInplay(true);
     });
 
+    doThings();
+
     return () => {
       socket.off("gameUpdate");
       socket.off("updateDisplay");
       socket.off("endGame");
+      socket.off("startGame");
     };
   }, []);
 
@@ -59,7 +82,7 @@ const Game = (props: GameProps) => {
   };
 
   const updateDisplayState = (gameUpdateData: GameUpdateData) => {
-    const player = gameUpdateData.players[props.userId];
+    const player = gameUpdateData.players[props.passedUserId];
     // if (player.clickState !== clickState || player.sizeClicked !== sizeClicked) {
     //   setDisplayText("");
     // }
@@ -77,7 +100,6 @@ const Game = (props: GameProps) => {
     <>
       <div className="Game-body">
         <div>
-          <BackButton text="Forfeit" destPath="/" />
           {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
           <GameMap width={1600} height={750} gameCode={props.gameCode} />
           <p className="u-displayText">{`${sizeClicked} ${clickState} : ${displayText}`}</p>
@@ -85,7 +107,7 @@ const Game = (props: GameProps) => {
         <GamePanel
           width={1600}
           height={200}
-          userId={props.userId}
+          userId={props.passedUserId}
           gameCode={props.gameCode}
           //   towerConstants={towerConstants}
           //   minionConstants={minionConstants}
