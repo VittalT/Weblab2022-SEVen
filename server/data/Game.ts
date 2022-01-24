@@ -428,38 +428,35 @@ export class Game {
   }
 
   public adjustRatingsAll(): void {
+    console.log(this.playerIds);
     for (const playerId of this.playerIds) {
+      console.log(playerId);
       if (playerId !== this.winnerId) {
+        console.log("at least one is discovered");
         this.adjustRatingsPair(this.winnerId ?? assert.fail("no winner Id"), playerId);
       }
     }
   }
 
   //id1 is the winner here
-  public adjustRatingsPair(id1: string, id2: string): void {
+  public async adjustRatingsPair(id1: string, id2: string): Promise<void> {
     let id1Rating: number = 0;
     let id2Rating: number = 0;
 
-    UserModel.findOne({ _id: id1 }).then((user: User) => {
-      id1Rating = user.rating;
-    });
-    UserModel.findOne({ _id: id2 }).then((user: User) => {
-      id2Rating = user.rating;
-    });
+    const user1 = await UserModel.findOne({ _id: id1 });
+    id1Rating = user1.rating;
+    const user2 = await UserModel.findOne({ _id: id2 });
+    id2Rating = user2.rating;
 
     const user1prob = 1 / (1 + Math.pow(10, (id1Rating - id2Rating) / 400));
     const user2prob = 1 - user1prob;
-    id1Rating += 30 * (1 - user1prob);
-    id2Rating += 30 * (0 - user2prob);
+    id1Rating += Math.round(30 * (1 - user1prob));
+    id2Rating += Math.round(30 * (0 - user2prob));
 
-    UserModel.findOne({ _id: id1 }).then((user: User) => {
-      user.rating = id1Rating;
-      user.save();
-    });
-    UserModel.findOne({ _id: id2 }).then((user: User) => {
-      user.rating = id2Rating;
-      user.save();
-    });
+    user1.rating = id1Rating;
+    user1.save();
+    user2.rating = id2Rating;
+    user2.save();
   }
 
   public clearGame(): void {
