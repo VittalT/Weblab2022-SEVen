@@ -40,7 +40,7 @@ export const updateDisplay = (userId: string, message: string) => {
 };
 
 export const endGame = (gameCode: string, winnerName: string) => {
-  console.log("about to emit!");
+  console.log("about to emit endGame");
   const data = { winnerName: winnerName };
   io.in(gameCode).emit("endGame", data);
 };

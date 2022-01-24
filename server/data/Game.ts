@@ -83,9 +83,11 @@ export class Game {
 
   public leave(userId: string, userName: string): boolean {
     // remove player from playerIds
-    const index = this.playerIds.indexOf(userId, 0);
+    const index = this.playerIds.indexOf(userId);
     if (index !== -1) {
       this.playerIds.splice(index, 1);
+    } else {
+      console.log(`Error: Player ${userId}: ${userName} is not present`);
     }
     if (userId === this.hostId) {
       // if there are still players, select a new host
@@ -145,15 +147,30 @@ export class Game {
   }
 
   public getPlayer(userId: string): Player {
-    return this.players[userId];
+    const ret = this.players[userId];
+    if (ret !== undefined && ret != null) {
+      return ret;
+    } else {
+      assert.fail(`userId ${userId} is ${ret}`);
+    }
   }
 
   public getTower(towerId: number): Tower {
-    return this.towers[towerId];
+    const ret = this.towers[towerId];
+    if (ret !== undefined && ret != null) {
+      return ret;
+    } else {
+      assert.fail(`towerId ${towerId} is ${ret}`);
+    }
   }
 
   public getMinion(minionId: number): Minion {
-    return this.minions[minionId];
+    const ret = this.minions[minionId];
+    if (ret !== undefined && ret != null) {
+      return ret;
+    } else {
+      assert.fail(`minionId ${minionId} is ${ret}`);
+    }
   }
 
   public toggleInfo(userId: string) {
@@ -170,7 +187,7 @@ export class Game {
       return;
     }
     for (let teamId = 0; teamId < numPlayers; teamId++) {
-      console.log(teamId);
+      // console.log(teamId);
       const userId = this.playerIds[teamId];
 
       const player = new Player(50, [], [], ClickState.Tower, -1, Size.Small, false, true);
@@ -260,6 +277,7 @@ export class Game {
       const idx = player.towerIds.indexOf(towerId);
       if (idx !== -1) {
         player.towerIds.splice(idx, 1);
+        console.log(`Player ${player} has tower ${tower}`);
       }
     }
     delete this.towers[towerId];
@@ -306,17 +324,17 @@ export class Game {
       if (idx !== -1) {
         targetTower.enemyMinionIds.splice(idx, 1);
       } else {
-        console.log(`TargetTower ${targetTower} doesn't have minion ${minion}`);
+        console.log(`Error: Target tower ${targetTower} doesn't have enemy minion ${minion}`);
       }
       for (const player of Object.values(this.players)) {
         const idx2 = player.minionIds.indexOf(minionId);
         if (idx2 !== -1) {
           player.minionIds.splice(idx2, 1);
-          console.log(`Player ${player} has have minion ${minion}`);
+          console.log(`Player ${player} has minion ${minion}`);
         }
       }
     } else {
-      console.log(`Minion ${minion} targetTowerId is null`);
+      console.log(`Error: Minion ${minion} targetTowerId is null`);
     }
     delete this.minions[minionId];
   }
@@ -340,7 +358,7 @@ export class Game {
 
     const elapsed = Date.now() - this.startTime;
     if (this.winnerId !== null) {
-      console.log("got here, winner id is " + this.winnerId);
+      console.log("Winner is not null, winner id is " + this.winnerId);
       this.onGameEnd();
     } else {
       setTimeout(this.gameLoop, msPerUpdate);
@@ -362,9 +380,8 @@ export class Game {
       }
     }
     if (remainingPlayers === 1) {
-      console.log("got here");
       this.winnerId = remainingPlayerId; // this will cause game to end on next refresh
-      console.log(this.winnerId);
+      console.log(`1 remaining player: ${this.winnerId}`);
     }
   }
 
@@ -458,12 +475,10 @@ export class Game {
         const minion = this.getMinion(minionId);
         if (minion.targetTowerId && minion.reachedTarget) {
           const targetTower = this.getTower(minion.targetTowerId);
-          if (targetTower !== undefined) {
-            targetTower.health = Math.max(
-              targetTower.health - minionConstants[minion.size].damageRate * delta_t_s,
-              -1
-            );
-          }
+          targetTower.health = Math.max(
+            targetTower.health - minionConstants[minion.size].damageRate * delta_t_s,
+            -1
+          );
         }
       }
     }
@@ -473,14 +488,12 @@ export class Game {
     for (const player of Object.values(this.players)) {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
-        if (tower !== undefined) {
-          if (tower.enemyMinionIds.length === 0) {
-            const maxHealth = towerConstants[tower.size].health;
-            tower.health = Math.min(
-              tower.health + towerConstants[tower.size].healthRegenRate * delta_t_s,
-              maxHealth
-            );
-          }
+        if (tower.enemyMinionIds.length === 0) {
+          const maxHealth = towerConstants[tower.size].health;
+          tower.health = Math.min(
+            tower.health + towerConstants[tower.size].healthRegenRate * delta_t_s,
+            maxHealth
+          );
         }
       }
     }
@@ -503,9 +516,7 @@ export class Game {
     for (const player of Object.values(this.players)) {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
-        if (tower !== undefined) {
-          player.gold += towerConstants[tower.size].goldRate * delta_t_s;
-        }
+        player.gold += towerConstants[tower.size].goldRate * delta_t_s;
       }
     }
   }
@@ -514,7 +525,7 @@ export class Game {
     if (this.isInPlay === false) {
       return;
     }
-    console.log(`D ${clickType} ${size}`);
+    console.log(`Clicked panel ${clickType} ${size}`);
     const player = this.getPlayer(userId);
     player.clickState = clickType;
     player.sizeClicked = size;
@@ -549,7 +560,7 @@ export class Game {
     if (this.isInPlay === false) {
       return;
     }
-    console.log(`D ${loc}`);
+    console.log(`Clicked map ${loc}`);
     const player = this.getPlayer(userId);
     if (player.clickState === ClickState.Minion || player.clickState === ClickState.Explosion) {
       const allyTowerId = this.getClickedAllyTowerId(userId, loc);
