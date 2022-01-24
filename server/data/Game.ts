@@ -14,7 +14,6 @@ import {
 } from "../../shared/constants";
 import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
-const GameMap1 = require("../models/Map");
 import GameMapModel, { GameMap } from "../models/Map";
 import UserModel, {User} from "../models/User";
 
