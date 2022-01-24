@@ -5,7 +5,7 @@ import "../../utilities.css";
 import BackButton from "../modules/BackButton";
 
 type Props = RouteComponentProps & {
-  forceNavigate: () => void;
+  forceNavigate: () => Promise<void>;
 };
 
 const HowToPlay = (props: Props) => {
