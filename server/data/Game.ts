@@ -301,6 +301,7 @@ export class Game {
     }
   }
 
+  // completely removes the minion from
   public removeMinion(minionId: number) {
     for (const player of Object.values(this.players)) {
       const minion = this.getMinion(minionId);
@@ -322,12 +323,7 @@ export class Game {
   public explode(userId: string, towerId: number) {
     const tower = this.getTower(towerId);
     for (const enemyMinionId of tower.enemyMinionIds) {
-      const currMinion = this.getMinion(enemyMinionId);
-      if (currMinion !== undefined) {
-        if (currMinion.reachedTarget === true) {
-          this.removeMinion(enemyMinionId);
-        }
-      }
+      this.removeMinion(enemyMinionId);
     }
     tower.enemyMinionIds = [];
   }
