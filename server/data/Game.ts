@@ -254,19 +254,35 @@ export class Game {
     return true;
   }
 
+  public isInBounds(userId: string, loc: Point, size: Size): boolean {
+    const gameWidth = 1600;
+    const gameHeight = 750;
+    const currTowerRadius = towerConstants[size].hitRadius;
+    if (loc.x < currTowerRadius || loc.x > gameWidth - currTowerRadius) {
+      return false;
+    }
+    if (loc.y < currTowerRadius || loc.y > gameHeight - currTowerRadius) {
+      return false;
+    }
+    return true;
+  }
+
   public addTower(userId: string, towerSize: Size, loc: Point, isFirstTower: boolean) {
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
     if (!isFirstTower && towerSizeConstants.cost > player.gold) {
-      updateDisplay(userId, `${loc} ; Not enough gold`);
+      updateDisplay(userId, "Not enough gold!");
     } else if (
       !isFirstTower &&
       !this.closeEnough(userId, loc, towerSizeConstants.maxAdjBuildRadius)
     ) {
-      updateDisplay(userId, `${loc} ; Not close enough to an ally tower`);
+      updateDisplay(userId, "Not close enough to an ally tower!");
     } else if (!isFirstTower && !this.farEnough(userId, loc, towerSize)) {
-      updateDisplay(userId, `${loc} ; Too close to an existing tower`);
+      updateDisplay(userId, "Too close to an existing tower!");
+    } else if (!this.isInBounds(userId, loc, towerSize)) {
+      updateDisplay(userId, "Too close to game borders!");
     } else {
+      updateDisplay(userId, "Tower successfuly deployed");
       if (!isFirstTower) player.gold -= towerSizeConstants.cost;
       const newTower: Tower = {
         health: towerSizeConstants.health,
@@ -315,6 +331,7 @@ export class Game {
     const enemyTower = this.getTower(enemyTowerId);
 
     if (minionSizeConstants.cost <= player.gold) {
+      updateDisplay(userId, "Minion successfully deployed");
       player.gold -= minionSizeConstants.cost;
       const dir = allyTower.location.angleTo(enemyTower.location);
       const allyRadius = towerConstants[allyTower.size].hitRadius;
@@ -334,7 +351,7 @@ export class Game {
       player.minionIds.push(newMinionId);
       enemyTower.enemyMinionIds.push(newMinionId);
     } else {
-      updateDisplay(userId, `${allyTower.location} -> ${enemyTower.location} ; Not enough gold`);
+      updateDisplay(userId, "Not enough gold");
     }
   }
 
@@ -373,7 +390,7 @@ export class Game {
         this.removeMinion(enemyMinionId);
       }
     } else {
-      updateDisplay(userId, `Not enough gold to explode tower ${towerId}`);
+      updateDisplay(userId, "Not enough gold to explode this tower");
     }
   }
 
@@ -665,7 +682,7 @@ export class Game {
           this.explode(userId, allyTowerId);
         }
       } else {
-        updateDisplay(userId, "Must click on an ally tower");
+        updateDisplay(userId, "Please click on an ally tower");
       }
     } else if (player.clickState === ClickState.Tower) {
       this.addTower(userId, player.sizeClicked, loc, false);
@@ -675,7 +692,7 @@ export class Game {
       if (enemyTowerId !== -1) {
         this.addMinion(userId, player.sizeClicked, player.towerClickedId, enemyTowerId);
       } else {
-        updateDisplay(userId, "Must click on an enemy tower");
+        updateDisplay(userId, "Please click on an enemy tower");
       }
     }
   }

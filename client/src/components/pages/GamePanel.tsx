@@ -31,16 +31,16 @@ const GamePanel = (props: GameProps) => {
         <Gold amount={Math.round(props.gold)} />
         {towerSizes.map((size, i) => (
           <button
-            className="GamePanel-button"
+            className="GamePanel-button GamePanel-towerButton"
             key={i}
             onClick={() => clickGamePanelButton(props.gameCode, ClickState.Tower, size)}
           >
-            <p className="GamePanel-text"> {size} Tower </p>
+            <p className="GamePanel-text">{"" + size + " Tower"}</p>
           </button>
         ))}
         {minionSizes.map((size, i) => (
           <button
-            className="GamePanel-button"
+            className="GamePanel-button GamePanel-minionButton"
             key={i}
             onClick={() => clickGamePanelButton(props.gameCode, ClickState.Minion, size)}
           >
@@ -48,7 +48,7 @@ const GamePanel = (props: GameProps) => {
           </button>
         ))}
         <button
-          className="GamePanel-button"
+          className="GamePanel-button GamePanel-explosionButton"
           onClick={() => clickGamePanelButton(props.gameCode, ClickState.Explosion, Size.Small)}
         >
           <p className="GamePanel-text"> Explosion </p>
