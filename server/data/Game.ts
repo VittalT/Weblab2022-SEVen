@@ -436,7 +436,11 @@ export class Game {
     }
   }
 
-  public adjustRatingsPair(id1: string, id2: string): void {}
+  public adjustRatingsPair(id1: string, id2: string): void {
+    let id1Rating = 0;
+    let id2Rating = 0;
+    User.findOne({ _id: id1 });
+  }
 
   public clearGame(): void {
     this.winnerId = null;
