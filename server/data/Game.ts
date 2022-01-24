@@ -26,7 +26,7 @@ export class Game {
   private isActive: boolean;
   private isInPlay: boolean;
 
-  private readonly startTime: number;
+  private startTime: number;
   private winnerId: string | null;
   private readonly towers: Record<number, Tower>; // maps tower ID to tower object
   private maxTowerId: number;
@@ -192,6 +192,7 @@ export class Game {
   }
 
   public start() {
+    this.startTime = Date.now();
     const numPlayers = this.playerIds.length;
     const angle = (2 * Math.PI) / numPlayers;
     if (numPlayers < 2 || numPlayers > 4) {
@@ -430,7 +431,9 @@ export class Game {
 
   public onGameEnd(): void {
     this.isInPlay = false;
-    console.log("inside onGameEnd, winner id is " + this.winnerId);
+    if (Date.now() - this.startTime > 10 * 60 * 1000) {
+      this.winnerId = this.playerIds[0];
+    }
     if (this.winnerId !== null) {
       const winnerName = this.idToName[this.winnerId];
       endGame(this.gameCode, winnerName);
@@ -467,12 +470,12 @@ export class Game {
 
     const user1prob = 1 / (1 + Math.pow(10, (id1Rating - id2Rating) / 400));
     const user2prob = 1 - user1prob;
-    id1Rating += Math.round(30 * (1 - user1prob));
-    id2Rating += Math.round(30 * (0 - user2prob));
+    id1Rating += 30 * (1 - user1prob);
+    id2Rating += 30 * (0 - user2prob);
 
-    user1.rating = id1Rating;
+    user1.rating = Math.round(id1Rating);
     user1.save();
-    user2.rating = id2Rating;
+    user2.rating = Math.round(id2Rating);
     user2.save();
   }
 
@@ -504,7 +507,7 @@ export class Game {
 
   public sendGameState() {
     const gameUpdateData = {
-      time: Date.now(),
+      time: Date.now() - this.startTime,
       hostId: this.hostId,
       idToName: this.idToName,
       playerToTeamId: this.playerToTeamId,

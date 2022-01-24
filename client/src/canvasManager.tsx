@@ -121,6 +121,21 @@ const drawGoldMine = (context: CanvasRenderingContext2D, goldMineLoc: Point) => 
   fillCircle(context, drawLoc, goldRadius, color);
 };
 
+const drawTimer = (context: CanvasRenderingContext2D, numMilliSeconds: number) => {
+  const rawSeconds = Math.round(numMilliSeconds / 1000);
+  const numMinutes = Math.floor(rawSeconds / 60);
+  const numSeconds = rawSeconds - numMinutes * 60;
+  let numSecondDisplay = numSeconds.toString();
+  if (numSecondDisplay.length === 1) {
+    numSecondDisplay = "0" + numSecondDisplay;
+  }
+  const displayString = numMinutes.toString() + ":" + numSecondDisplay;
+  context.font = "25px serif";
+  context.textAlign = "center";
+  context.fillStyle = "black";
+  context.fillText(displayString, 800, 35);
+};
+
 /** main draw */
 export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // get the canvas element
@@ -155,6 +170,10 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
     }
   }
 
+  for (const goldMineLoc of gameUpdateData.goldMineLocs) {
+    drawGoldMine(context, goldMineLoc);
+  }
+
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
     for (const towerId of player.towerIds) {
@@ -163,7 +182,5 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
     }
   }
 
-  for (const goldMineLoc of gameUpdateData.goldMineLocs) {
-    drawGoldMine(context, goldMineLoc);
-  }
+  drawTimer(context, gameUpdateData.time);
 };
