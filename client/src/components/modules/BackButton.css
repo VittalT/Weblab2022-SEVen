@@ -5,7 +5,6 @@
   width: 300px;
   border: 3px solid #73ad21;
 
-  font-family: serif, sans-serif, Times;
   margin: 20px;
   border: 1px solid black;
   padding: auto;
@@ -22,6 +21,6 @@
 
 .BackButton-text {
   margin: auto;
-  font-size: 24px;
+  font-size: 32px;
   vertical-align: middle;
 }

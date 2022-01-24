@@ -11,7 +11,7 @@ type Props = {
 const BackButton = (props: Props) => {
   return (
     <Link to={props.destPath} className="BackButton-button">
-      <p className="BackButton-text">&lt;-- {props.text}</p>
+      <p className="BackButton-text u-gameText">{props.text}</p>
     </Link>
   );
 };

@@ -58,24 +58,24 @@ const FindGame = (props: Props) => {
 
   return (
     <>
-      <div className="HomeScreen-container">
-        <h3 className="HomeScreen-header">MINION BATTLE</h3>
+      <div className="FindGame-container u-gameContainer">
+        <h3 className="FindGame-header u-gameHeader">Minion Battle</h3>
         <div className="dropdown">
-          <button className="dropbtn">CREATE</button>
+          <button className="dropbtn">Create</button>
           <div className="dropdown-content">
-            <button onClick={createPublicGame}>PUBLIC</button>
-            <button onClick={createPrivateGame}>PRIVATE</button>
+            <button onClick={createPublicGame}>Public</button>
+            <button onClick={createPrivateGame}>Private</button>
           </div>
         </div>
         <div className="dropdown">
-          <button className="dropbtn">JOIN</button>
+          <button className="dropbtn">Join</button>
           <div className="dropdown-content">
-            <button onClick={navToLobby}>PUBLIC</button>
+            <button onClick={navToLobby}>Public</button>
           </div>
         </div>
         <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
       </div>
-      <BackButton text="BACK" destPath="/" />
+      <BackButton text="Back" destPath="/" />
     </>
   );
 };

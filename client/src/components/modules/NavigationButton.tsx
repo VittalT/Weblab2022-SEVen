@@ -12,7 +12,7 @@ type Props = {
 const NavigationButton = (props: Props) => {
   return (
     <Link onClick={props.onClickFunction} to={props.destPath} className="NavigationButton-button">
-      <p className="NavigationButton-text">{props.text}</p>
+      <p className="NavigationButton-text u-gameText">{props.text}</p>
     </Link>
   );
 };

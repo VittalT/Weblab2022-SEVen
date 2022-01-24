@@ -25,18 +25,18 @@ const HomeScreen = (props: Props) => {
 
   return (
     <>
-      <div className="HomeScreen-container">
+      <div className="HomeScreen-container u-gameContainer">
         <h3 className="HomeScreen-header">MINION BATTLE</h3>
         {props.userId ? (
           <>
-            <NavigationButton onClickFunction={doNothing} text="FIND GAME" destPath="/findgame" />
-            <NavigationButton onClickFunction={doNothing} text="CREATE MAP" destPath="/createmap" />
+            <NavigationButton onClickFunction={doNothing} text="Find Game" destPath="/findgame" />
+            <NavigationButton onClickFunction={doNothing} text="Create Map" destPath="/createmap" />
             {/* <NavigationButton onClickFunction={doNothing} text="CUSTOMIZATIONS" destPath="/TODO" /> */}
-            <NavigationButton onClickFunction={doNothing} text="HOW TO PLAY" destPath="/TODO" />
+            <NavigationButton onClickFunction={doNothing} text="How to Play" destPath="/TODO" />
             {/* <NavigationButton onClickFunction={doNothing} text="ACHIEVEMENTS" destPath="/TODO" /> */}
             <NavigationButton
               onClickFunction={doNothing}
-              text="LEADERBOARD"
+              text="Leaderboard"
               destPath="/leaderboard"
             />
           </>

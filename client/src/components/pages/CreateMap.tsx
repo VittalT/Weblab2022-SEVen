@@ -105,9 +105,9 @@ const CreateMap = (props: CreateMapProps) => {
 
   return (
     <>
-      <div className="overallDiv">
+      <div className="u-gameContainer">
         <div className="Creation-titleContainer">
-          <h1 className="Creation-gameTitle u-textCenter">Minion Battle</h1>
+          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Minion Battle</h1>
         </div>
         <div className="u-flex">
           <div className="Creation-subContainer">
@@ -152,7 +152,7 @@ const CreateMap = (props: CreateMapProps) => {
             </div>
           </div>
         </div>
-        <BackButton text="BACK" destPath="/" />
+        <BackButton text="Back" destPath="/" />
       </div>
     </>
   );

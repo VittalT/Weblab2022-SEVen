@@ -15,7 +15,7 @@
 */
 
 /* TODO: REPLACE WITH YOUR OWN FONT! */
-@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap");
 
 :root {
   --primary: #396dff;
@@ -34,8 +34,12 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Metal Mania", cursive;
   font-weight: 300;
+}
+
+button {
+  font-family: "Metal Mania", cursive;
 }
 
 form {
@@ -89,8 +93,20 @@ form {
   color: var(--primary--dim);
 }
 
+.u-gameText {
+  font-family: "Metal Mania", cursive;
+}
+
+.u-gameHeader {
+  font-family: "Metal Mania", cursive;
+  font-size: 75px;
+}
+
+.u-gameContainer {
+  background-color: #ef5d3b;
+}
+
 .u-displayText {
-  font-family: serif, sans-serif, Times;
   margin: 20px;
   border: 1px solid black;
   padding: 20px;
