@@ -12,7 +12,7 @@ import { LeaderboardRecord } from "../modules/LeaderboardRecord";
 import { RouteComponentProps } from "@reach/router";
 
 type Props = RouteComponentProps & {
-  forceNavigate: () => void;
+  forceNavigate: () => Promise<void>;
 };
 
 const Leaderboard = (props: Props) => {
