@@ -15,8 +15,8 @@ import {
 import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
 const GameMap1 = require("../models/Map");
-import { GameMap } from "../models/Map";
-import User from "../models/User";
+import GameMapModel, { GameMap } from "../models/Map";
+import UserModel, {User} from "../models/User";
 
 export class Game {
   private readonly gameCode: string;
@@ -439,7 +439,7 @@ export class Game {
   public adjustRatingsPair(id1: string, id2: string): void {
     let id1Rating = 0;
     let id2Rating = 0;
-    User.findOne({ _id: id1 });
+    UserModel.findOne({ _id: id1 }).then((user: User))
   }
 
   public clearGame(): void {
