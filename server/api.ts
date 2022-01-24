@@ -12,9 +12,7 @@ const { clients } = require("./data/clients");
 // util
 const { generateGameCode } = require("./util");
 
-import GameModel from "./models/Game";
-import UserModel from "./models/User";
-import User from "./models/User";
+import UserModel, { User } from "./models/User";
 import GameMapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import {
@@ -37,7 +35,7 @@ router.get("/whoami", (req, res) => {
 });
 
 router.get("/users", (req: Request, res: Response) => {
-  User.find({}).then((users: typeof User) => res.send(users));
+  UserModel.find({}).then((users: User[]) => res.send(users));
 });
 
 router.post("/initsocket", (req: Request, res: Response) => {

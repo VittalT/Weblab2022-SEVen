@@ -14,8 +14,7 @@ import {
 } from "../../shared/constants";
 import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
-const GameMap1 = require("../models/Map");
-import { GameMap } from "../models/Map";
+import GameMapModel, { GameMap } from "../models/Map";
 
 export class Game {
   private readonly gameCode: string;
@@ -219,7 +218,7 @@ export class Game {
   }
 
   public setGoldMineLocs() {
-    GameMap1.findOne({ _id: this.gameMapId }).then((map: GameMap) => {
+    GameMapModel.findOne({ _id: this.gameMapId }).then((map: GameMap) => {
       for (const goldMine of map.gold_mines) {
         const goldMineLoc = new Point(goldMine.x, goldMine.y);
         this.goldMineLocs.push(goldMineLoc);
