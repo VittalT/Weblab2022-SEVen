@@ -509,6 +509,9 @@ export class Game {
   }
 
   public updateGamePanelClickState(userId: string, clickType: ClickState, size: Size) {
+    if (this.isInPlay === false) {
+      return;
+    }
     console.log(`D ${clickType} ${size}`);
     const player = this.getPlayer(userId);
     player.clickState = clickType;
@@ -540,6 +543,9 @@ export class Game {
   }
 
   public updateGameMapClickState(userId: string, x: number, y: number) {
+    if (this.isInPlay === false) {
+      return;
+    }
     console.log(`D ${x} ${y}`);
     const player = this.getPlayer(userId);
     const loc = new Point(x, y);
