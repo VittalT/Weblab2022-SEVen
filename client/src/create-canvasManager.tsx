@@ -6,7 +6,6 @@ import Point from "../../shared/Point";
 let canvas: HTMLCanvasElement;
 let scaleFactor: number = 2;
 
-let goldDrawRadius: number = GoldConstants.realRadius / 2;
 let goldColor: string = "#FFFF00";
 
 export const drawGoldMine = (coord: Point) => {
@@ -14,7 +13,8 @@ export const drawGoldMine = (coord: Point) => {
   if (!canvas) return;
   console.log("drawing");
   const context = canvas.getContext("2d") ?? assert.fail();
-  fillCircle(context, coord, goldDrawRadius / scaleFactor, goldColor);
+  const goldDrawRadius = GoldConstants.realRadius / scaleFactor;
+  fillCircle(context, coord, goldDrawRadius, goldColor);
 };
 
 export const drawCreateCanvas = () => {

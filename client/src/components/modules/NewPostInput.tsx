@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import "../../utilities.css";
 import "./NewPostInput.css";
 import { get, post } from "../../utilities";
 import { Router, RouteComponentProps, navigate } from "@reach/router";

@@ -12,7 +12,6 @@ import {
   MAX_GAME_LEN_M,
   GoldConstants,
 } from "../../shared/constants";
-import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
 import GameMapModel, { GameMap } from "../models/Map";
 import UserModel, { User } from "../models/User";
@@ -62,7 +61,7 @@ export class Game {
     this.maxMinionId = 0;
     this.players = {} as Record<string, Player>;
     this.playerToTeamId = {} as Record<string, number>;
-    this.gameMapId = "61e85ade287a917458c9e3dc";
+    this.gameMapId = "default";
     this.goldMineLocs = []; // updated when game starts
     this.gameLoop = this.gameLoop.bind(this);
     getIo().emit("updatePublicLobby");
@@ -113,6 +112,15 @@ export class Game {
     }
     getIo().emit("updatePublicLobby");
     return true;
+  }
+
+  public updateGameMap(gameMapId: string, gameMapName: string) {
+    this.gameMapId = gameMapId;
+    getIo().in(this.gameCode).emit("updateGameMap", {
+      gameCode: this.gameCode,
+      gameMapId: gameMapId,
+      gameMapName: gameMapName,
+    });
   }
 
   public hasPlayer(userId: string): boolean {
