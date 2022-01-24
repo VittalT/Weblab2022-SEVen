@@ -22,18 +22,15 @@ type Props = URLProps & {
 };
 
 const GameConfig = (props: Props) => {
-  const [userId, setUserId] = useState<string>("");
-  const [gameType, setGameType] = useState<string>("bop");
+  const [gameType, setGameType] = useState<string>("");
   const [gameCode, setGameCode] = useState<string>("");
+
   const [hostName, setHostName] = useState<string>("");
   const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
   const [hostId, setHostId] = useState<string>("");
 
   const [startGameFailedStatus, setStartGameFailedStatus] = useState<boolean>(false);
-
-  const [playersIds, setplayersIds] = useState<Array<string>>([""]);
   const [mapId, setmapId] = useState<string>("");
-  const [creatorName, setcreatorName] = useState<string>("");
 
   const updateLobbyData = (data: {
     gameType: string;
@@ -66,11 +63,24 @@ const GameConfig = (props: Props) => {
     navigate("/game");
   };
 
+  const gameConfigForceNavigate = async () => {
+    const data = await get("/api/getCurrRoomStatus");
+    const currGameCode = data.gameCode;
+    setGameCode(data.gameCode);
+    if (currGameCode.length === 6) {
+      if (data.isInPlay === true) {
+        navigate("/game");
+      }
+    }
+  };
+
   const displayStartGameFailed = () => {
     setStartGameFailedStatus(true);
   };
 
   useEffect(() => {
+    gameConfigForceNavigate();
+
     socket.on("updateLobbies", updateLobbyData);
     socket.on("startGame", navToGame);
     socket.on("gameStartFailed", displayStartGameFailed);

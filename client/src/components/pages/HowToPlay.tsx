@@ -3,7 +3,15 @@ import { Router, RouteComponentProps } from "@reach/router";
 
 import "../../utilities.css";
 
-const HowToPlay = (props: RouteComponentProps) => {
+type Props = RouteComponentProps & {
+  forceNavigate: () => void;
+};
+
+const HowToPlay = (props: Props) => {
+  useEffect(() => {
+    props.forceNavigate();
+  }, []);
+
   return (
     <div>
       <p>

@@ -38,6 +38,12 @@ export const updateDisplay = (userId: string, message: string) => {
   io.to(currSocketId).emit("updateDisplay", { message: message });
 };
 
+export const endGame = (gameCode: string, winnerName: string) => {
+  console.log("about to emit!");
+  const data = { winnerName: winnerName };
+  io.in(gameCode).emit("endGame", data);
+};
+
 export const init = (server: http.Server): void => {
   io = new Server(server);
   io.on("connection", (socket) => {
@@ -127,4 +133,5 @@ export default {
   getUserFromSocketID,
   getSocketFromUserID,
   updateDisplay,
+  endGame,
 };

@@ -6,7 +6,7 @@ import "./Game.css";
 import { get, post } from "../../utilities";
 import { socket } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
-import { Router, RouteComponentProps } from "@reach/router";
+import { Router, RouteComponentProps, navigate } from "@reach/router";
 import assert from "assert";
 import NavigationButton from "../modules/NavigationButton";
 import GameMap from "./GameMap";
@@ -27,17 +27,29 @@ const Game = (props: GameProps) => {
   //   const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
   //   const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
   const [displayText, setDisplayText] = useState("Initial");
+  const [isInPlay, setIsInplay] = useState(true);
+  const [winnerName, setWinnerName] = useState("");
 
   useEffect(() => {
     socket.on("gameUpdate", (gameUpdateData: GameUpdateData) => {
       processUpdate(gameUpdateData);
     });
-  }, []);
-
-  useEffect(() => {
     socket.on("updateDisplay", (data: { message: string }) => {
       setDisplayText(data.message);
     });
+    socket.on("endGame", (data: { winnerName: string }) => {
+      setIsInplay(false);
+      setWinnerName(data.winnerName);
+    });
+    socket.on("startGame", (data: { gameCode: string }) => {
+      setIsInplay(true);
+    });
+
+    return () => {
+      socket.off("gameUpdate");
+      socket.off("updateDisplay");
+      socket.off("endGame");
+    };
   }, []);
 
   const processUpdate = (gameUpdateData: GameUpdateData) => {
@@ -57,7 +69,9 @@ const Game = (props: GameProps) => {
     setGold(player.gold);
   };
 
-  const doNothing = () => {};
+  const navGameConfig = () => {
+    navigate("/gameconfig");
+  };
 
   return (
     <>
@@ -78,6 +92,14 @@ const Game = (props: GameProps) => {
           gold={gold}
         />
       </div>
+      {isInPlay ? (
+        <div>Is In Play!</div>
+      ) : (
+        <>
+          <div>{"The winner is " + winnerName}</div>
+          <button onClick={navGameConfig}>Return to lobby</button>
+        </>
+      )}
     </>
   );
 };

@@ -1,11 +1,13 @@
 import assert, { throws } from "assert";
-import { updateDisplay, getIo } from "../server-socket";
+import { updateDisplay, getIo, endGame } from "../server-socket";
 import { ClickState, Size } from "../../shared/enums";
 import Point from "../../shared/Point";
 import Minion from "../../shared/Minion";
 import Tower from "../../shared/Tower";
 import Player from "../../shared/Player";
 import { towerConstants, minionConstants, FPS, MAX_GAME_LEN_M } from "../../shared/constants";
+import { socket } from "../../client/src/client-socket";
+import e from "express";
 
 export class Game {
   private readonly gameCode: string;
@@ -193,6 +195,8 @@ export class Game {
       this.playerToTeamId[userId] = teamId;
     }
     getIo().in(this.gameCode).emit("startGame", { gameCode: this.gameCode });
+    this.isInPlay = true;
+    this.winnerId = null;
     this.gameLoop();
   }
 
@@ -330,10 +334,73 @@ export class Game {
     this.sendGameState();
 
     const elapsed = Date.now() - this.startTime;
-    if (this.winnerId !== null || elapsed < MAX_GAME_LEN_M * 60 * 1000) {
-      setTimeout(this.gameLoop, msPerUpdate);
-    } else {
+    if (this.winnerId !== null) {
+      console.log("got here, winner id is " + this.winnerId);
       this.onGameEnd();
+    } else {
+      setTimeout(this.gameLoop, msPerUpdate);
+    }
+  }
+
+  // checks to see if a winner is left
+  public checkWin() {
+    let remainingPlayers = 0;
+    let remainingPlayerId = "";
+    for (const playerId of Object.keys(this.players)) {
+      const player = this.players[playerId];
+      if (player.towerIds.length === 0) {
+        player.inGame = false;
+      }
+      if (player.inGame === true) {
+        remainingPlayers += 1;
+        remainingPlayerId = playerId;
+      }
+    }
+    if (remainingPlayers === 1) {
+      console.log("got here");
+      this.winnerId = remainingPlayerId; // this will cause game to end on next refresh
+      console.log(this.winnerId);
+    }
+  }
+
+  public onGameEnd(): void {
+    this.isInPlay = false;
+    console.log("inside onGameEnd, winner id is " + this.winnerId);
+    if (this.winnerId !== null) {
+      const winnerName = this.idToName[this.winnerId];
+      endGame(this.gameCode, winnerName);
+      setTimeout(() => {
+        endGame(this.gameCode, winnerName); // --- THIS IS A REALLY JANK FIX LOL - eric
+      }, 1000);
+    } else {
+      console.log("Error: winnerId is null");
+    }
+    this.clearGame();
+  }
+
+  public clearGame(): void {
+    this.winnerId = null;
+    for (const key in this.towers) {
+      if (this.towers.hasOwnProperty(key)) {
+        delete this.towers[key];
+      }
+    }
+    this.maxTowerId = 0;
+    for (const key in this.minions) {
+      if (this.minions.hasOwnProperty(key)) {
+        delete this.minions[key];
+      }
+    }
+    this.maxMinionId = 0;
+    for (const key in this.players) {
+      if (this.players.hasOwnProperty(key)) {
+        delete this.players[key];
+      }
+    }
+    for (const key in this.playerToTeamId) {
+      if (this.playerToTeamId.hasOwnProperty(key)) {
+        delete this.playerToTeamId[key];
+      }
     }
   }
 
@@ -352,16 +419,13 @@ export class Game {
     getIo().in(this.gameCode).emit("gameUpdate", gameUpdateData);
   }
 
-  public onGameEnd() {
-    this.isInPlay = false;
-  }
-
   public timeUpdate(delta_t_s: number) {
     this.updateMinionLocs(delta_t_s);
     this.updateMinionDamage(delta_t_s);
     this.updateTowerRegenHealth(delta_t_s);
     this.updateTowerDeath(delta_t_s);
     this.updateGold(delta_t_s);
+    this.checkWin();
   }
 
   public updateMinionLocs(delta_t_s: number) {
@@ -499,11 +563,6 @@ export class Game {
         updateDisplay(userId, "Must click on an enemy tower");
       }
     }
-  }
-
-  /** Checks whether a player has won, if a player won, change the game state */
-  public checkWin() {
-    // TODO
   }
 }
 
