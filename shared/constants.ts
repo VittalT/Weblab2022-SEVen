@@ -9,7 +9,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
     cost: 50,
     minAdjBuildRadius: 100,
     maxAdjBuildRadius: 150,
-    hitRadius: 30,
+    hitRadius: 60,
   },
   [Size.Medium]: {
     health: 100,
@@ -18,7 +18,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
     cost: 100,
     minAdjBuildRadius: 120,
     maxAdjBuildRadius: 200,
-    hitRadius: 45,
+    hitRadius: 75,
   },
   [Size.Large]: {
     health: 200,
@@ -27,7 +27,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
     cost: 200,
     minAdjBuildRadius: 140,
     maxAdjBuildRadius: 250,
-    hitRadius: 60,
+    hitRadius: 90,
   },
 };
 
