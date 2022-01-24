@@ -176,23 +176,14 @@ export class Game {
     for (let teamId = 0; teamId < numPlayers; teamId++) {
       console.log(teamId);
       const userId = this.playerIds[teamId];
-      const startTowerId = teamId;
-      const dir = angle * teamId;
-      const startTowerLoc = new Point(800 + 300 * Math.cos(dir), 375 + 300 * Math.sin(dir));
-      const startTower = new Tower(50, startTowerLoc, Size.Small, []);
-      const player = new Player(
-        50,
-        [startTowerId],
-        [],
-        ClickState.Tower,
-        startTowerId,
-        Size.Small,
-        false,
-        true
-      );
-      this.towers[startTowerId] = startTower;
+
+      const player = new Player(50, [], [], ClickState.Tower, 0, Size.Small, false, true);
       this.players[userId] = player;
       this.playerToTeamId[userId] = teamId;
+
+      const dir = angle * teamId;
+      const startTowerLoc = new Point(800 + 300 * Math.cos(dir), 375 + 300 * Math.sin(dir));
+      this.addFirstTower(userId, Size.Small, startTowerLoc);
     }
     getIo().in(this.gameCode).emit("startGame", { gameCode: this.gameCode });
     this.isInPlay = true;
@@ -227,6 +218,20 @@ export class Game {
     return true;
   }
 
+  public addFirstTower(userId: string, towerSize: Size, loc: Point) {
+    const player = this.getPlayer(userId);
+    const towerSizeConstants = towerConstants[towerSize];
+    const newTower: Tower = {
+      health: towerSizeConstants.health,
+      location: loc,
+      size: towerSize,
+      enemyMinionIds: [],
+    };
+    const newTowerId = ++this.maxTowerId;
+    this.towers[newTowerId] = newTower;
+    player.towerIds.push(newTowerId);
+  }
+
   public addTower(userId: string, towerSize: Size, loc: Point) {
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
@@ -253,8 +258,7 @@ export class Game {
   public removeTower(towerId: number) {
     const tower = this.getTower(towerId);
     for (const minionId of tower.enemyMinionIds) {
-      const minion = this.getMinion(minionId);
-      minion.targetTowerId = null; //-------------------------EITHER DELETE MINION OR REDIRECT IT!
+      this.removeMinion(minionId);
     }
     for (const player of Object.values(this.players)) {
       const idx = player.towerIds.indexOf(towerId);
