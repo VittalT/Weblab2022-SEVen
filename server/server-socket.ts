@@ -5,6 +5,7 @@ import UserModel from "./models/User";
 import { ClickState, Size } from "../shared/enums";
 import { games } from "./data/games";
 import { createImportSpecifier, getPositionOfLineAndCharacter } from "typescript";
+import Point from "../shared/Point";
 
 let io: Server;
 
@@ -77,7 +78,8 @@ export const init = (server: http.Server): void => {
       const userId = user!._id;
       const currGame = games[gameCode];
       if (currGame !== undefined) {
-        currGame.updateGameMapClickState(userId, x, y);
+        const loc = new Point(x, y);
+        currGame.updateGameMapClickState(userId, loc);
       }
     });
     // this is the function called by App, when a socket joins a room
