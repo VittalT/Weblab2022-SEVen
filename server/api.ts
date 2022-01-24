@@ -92,7 +92,7 @@ router.post("/createGame", auth.ensureLoggedIn, (req: Request, res: Response) =>
   clients[userId] = {
     gameCode: gameCode,
   };
-  currGame.updateLobbies;
+  currGame.updateLobbies();
   res.send({ gameCode: gameCode });
 });
 
@@ -112,7 +112,7 @@ router.post("/joinGame", auth.ensureLoggedIn, (req: Request, res: Response) => {
     clients[userId] = {
       gameCode: gameCode,
     };
-    currGame.updateLobbies;
+    currGame.updateLobbies();
     res.send({ gameCode: gameCode });
   }
 });
@@ -129,7 +129,7 @@ router.post("/leaveGame", auth.ensureLoggedIn, (req: Request, res: Response) => 
     delete clients[userId];
   }
 
-  currGame.updateLobbies;
+  currGame.updateLobbies();
   res.send({ gameCode: gameCode });
 });
 
