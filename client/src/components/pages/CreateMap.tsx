@@ -112,12 +112,12 @@ const CreateMap = (props: CreateMapProps) => {
         <div className="u-flex">
           <div className="Creation-subContainer">
             <canvas id="create-canvas" width={canvasWidth} height={canvasHeight} />
-            <div className="Creation-button u-pointer">Add gold</div>
+            <div className="Creation-button">Add gold</div>
           </div>
           <div className="Creation-subContainer">
             <div>
               <div className="configurables">
-                <h1>Creator Name</h1>
+                <h1 className="Creation-configHeader">Creator Name</h1>
                 <input
                   type="text"
                   placeholder={props.userId}
@@ -127,7 +127,7 @@ const CreateMap = (props: CreateMapProps) => {
                 />
               </div>
               <div className="configurables">
-                <h1>Map Name</h1>
+                <h1 className="Creation-configHeader">Map Name</h1>
                 <input
                   type="text"
                   placeholder="New Map"
