@@ -6,7 +6,7 @@ const goldMineSchema = new Schema({
   val: Number,
 });
 
-export interface goldMine extends Document{
+export interface goldMine extends Document {
   x: number;
   y: number;
   val: number;
@@ -24,7 +24,7 @@ export interface tower extends Document {
   _id: string;
 }
 
-const MapSchema = new Schema({
+const GameMapSchema = new Schema({
   name: String,
   creator_id: String,
   creator_name: String,
@@ -35,7 +35,7 @@ const MapSchema = new Schema({
   created: Date, // show in order of most recently created
 });
 
-export interface Map extends Document {
+export interface GameMap extends Document {
   name: string;
   creator_id: string;
   creator_name: string;
@@ -46,6 +46,6 @@ export interface Map extends Document {
   _id: string;
 }
 
-const MapModel = model<Map>("Map", MapSchema);
+const GameMapModel = model<GameMap>("Map", GameMapSchema);
 
-export default MapModel;
+export default GameMapModel;

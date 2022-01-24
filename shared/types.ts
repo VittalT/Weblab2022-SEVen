@@ -1,6 +1,7 @@
 import Minion from "./Minion";
 import Tower from "./Tower";
 import Player from "./Player";
+import Point from "./Point";
 
 export type TowerConstants = {
   health: number;
@@ -29,4 +30,5 @@ export type GameUpdateData = {
   players: Record<string, Player>;
   towers: Record<number, Tower>;
   minions: Record<number, Minion>;
+  goldMineLocs: Array<Point>;
 };

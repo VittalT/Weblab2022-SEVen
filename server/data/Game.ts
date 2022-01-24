@@ -5,9 +5,17 @@ import Point from "../../shared/Point";
 import Minion from "../../shared/Minion";
 import Tower from "../../shared/Tower";
 import Player from "../../shared/Player";
-import { towerConstants, minionConstants, FPS, MAX_GAME_LEN_M } from "../../shared/constants";
+import {
+  towerConstants,
+  minionConstants,
+  FPS,
+  MAX_GAME_LEN_M,
+  GoldConstants,
+} from "../../shared/constants";
 import { socket } from "../../client/src/client-socket";
 import { explosionConstants } from "../../shared/constants";
+const GameMap1 = require("../models/Map");
+import { GameMap } from "../models/Map";
 
 export class Game {
   private readonly gameCode: string;
@@ -26,6 +34,9 @@ export class Game {
   private maxMinionId: number;
   private readonly players: Record<string, Player>; // maps playerId to player object
   private readonly playerToTeamId: Record<string, number>; // maps userId to teamId
+
+  private gameMapId: string;
+  private goldMineLocs: Array<Point>;
 
   public constructor(
     gameCode: string,
@@ -51,6 +62,8 @@ export class Game {
     this.maxMinionId = 0;
     this.players = {} as Record<string, Player>;
     this.playerToTeamId = {} as Record<string, number>;
+    this.gameMapId = "61e85ade287a917458c9e3dc";
+    this.goldMineLocs = []; // updated when game starts
     this.gameLoop = this.gameLoop.bind(this);
     getIo().emit("updatePublicLobby");
   }
@@ -199,9 +212,19 @@ export class Game {
       this.addTower(userId, Size.Small, startTowerLoc, true);
     }
     getIo().in(this.gameCode).emit("startGame", { gameCode: this.gameCode });
+    this.setGoldMineLocs();
     this.isInPlay = true;
     this.winnerId = null;
     this.gameLoop();
+  }
+
+  public setGoldMineLocs() {
+    GameMap1.findOne({ _id: this.gameMapId }).then((map: GameMap) => {
+      for (const goldMine of map.gold_mines) {
+        const goldMineLoc = new Point(goldMine.x, goldMine.y);
+        this.goldMineLocs.push(goldMineLoc);
+      }
+    });
   }
 
   public closeEnough(userId: string, loc: Point, maxDist: number): boolean {
@@ -244,7 +267,7 @@ export class Game {
     } else if (!isFirstTower && !this.farEnough(userId, loc, towerSize)) {
       updateDisplay(userId, `${loc} ; Too close to an existing tower`);
     } else {
-      player.gold -= towerSizeConstants.cost;
+      if (!isFirstTower) player.gold -= towerSizeConstants.cost;
       const newTower: Tower = {
         health: towerSizeConstants.health,
         location: loc,
@@ -440,6 +463,7 @@ export class Game {
       players: this.players,
       towers: this.towers,
       minions: this.minions,
+      goldMineLocs: this.goldMineLocs,
     };
     getIo().in(this.gameCode).emit("gameUpdate", gameUpdateData);
   }
@@ -450,6 +474,7 @@ export class Game {
     this.updateTowerRegenHealth(delta_t_s);
     this.updateTowerDeath(delta_t_s);
     this.updateGold(delta_t_s);
+    this.updateGoldMines(delta_t_s);
     this.checkWin();
   }
 
@@ -520,6 +545,37 @@ export class Game {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
         player.gold += towerConstants[tower.size].goldRate * delta_t_s;
+      }
+    }
+  }
+
+  public updateGoldMines(delta_t_s: number) {
+    const copyGoldMineLocs = [...this.goldMineLocs];
+    for (const [idx, goldMineLoc] of copyGoldMineLocs.entries()) {
+      let goldFound = false;
+      const goldSize = GoldConstants.realRadius;
+      for (const userId of this.playerIds) {
+        const player = this.getPlayer(userId);
+        for (const towerId of player.towerIds) {
+          const tower = this.getTower(towerId);
+          const towerSize = towerConstants[tower.size].hitRadius;
+          if (goldMineLoc.distanceTo(tower.location) <= goldSize + towerSize) {
+            goldFound = true;
+          }
+        }
+        for (const minionId of player.minionIds) {
+          const minion = this.getMinion(minionId);
+          const minionSize = minionConstants[minion.size].boundingRadius;
+          if (goldMineLoc.distanceTo(minion.location) <= goldSize + minionSize) {
+            goldFound = true;
+          }
+        }
+        if (goldFound) {
+          console.log(`Player ${player} found gold ${goldMineLoc}!`);
+          player.gold += GoldConstants.gold;
+          this.goldMineLocs.splice(idx, 1);
+          break;
+        }
       }
     }
   }

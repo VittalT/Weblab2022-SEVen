@@ -2,7 +2,7 @@ import assert from "assert";
 import Point from "../../shared/Point";
 import Minion from "../../shared/Minion";
 import Tower from "../../shared/Tower";
-import { towerConstants, minionConstants } from "../../shared/constants";
+import { towerConstants, minionConstants, GoldConstants } from "../../shared/constants";
 import { GameUpdateData } from "../../shared/types";
 
 let canvas: HTMLCanvasElement;
@@ -112,6 +112,15 @@ const drawMinion = (context: CanvasRenderingContext2D, minion: Minion, teamId: n
   fillTriangle(context, drawLoc, minionRadius, minion.direction, color);
 };
 
+const drawGoldMine = (context: CanvasRenderingContext2D, goldMineLoc: Point) => {
+  const drawLoc = goldMineLoc;
+  const goldRadius = GoldConstants.realRadius;
+
+  // draw circle
+  const color = "#FFD700"; // gold
+  fillCircle(context, drawLoc, goldRadius, color);
+};
+
 /** main draw */
 export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // get the canvas element
@@ -137,7 +146,7 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
     return initials;
   };
 
-  // display all towers and minions
+  // display all towers, minions, and gold
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
     for (const minionId of player.minionIds) {
@@ -152,5 +161,9 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
       const tower = gameUpdateData.towers[towerId];
       drawTower(context, tower, teamId, getInitials(userId));
     }
+  }
+
+  for (const goldMineLoc of gameUpdateData.goldMineLocs) {
+    drawGoldMine(context, goldMineLoc);
   }
 };

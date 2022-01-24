@@ -15,7 +15,7 @@ const { generateGameCode } = require("./util");
 import GameModel from "./models/Game";
 import UserModel from "./models/User";
 import User from "./models/User";
-import MapModel from "./models/Map";
+import GameMapModel from "./models/Map";
 import { Mongoose } from "mongoose";
 import {
   getTokenSourceMapRange,
@@ -158,7 +158,7 @@ router.get("/getPublicGames", auth.ensureLoggedIn, (req: Request, res: Response)
 });
 
 router.post("/createMap", (req: Request, res: Response) => {
-  const newMap = new MapModel({
+  const newGameMap = new GameMapModel({
     name: req.body.name,
     creator_id: req.body.creator_id,
     creator_name: req.body.creator_name,
@@ -167,7 +167,7 @@ router.post("/createMap", (req: Request, res: Response) => {
     towers: req.body.towers,
     created: req.body.created,
   });
-  newMap.save().then(() => {
+  newGameMap.save().then(() => {
     res.status(200).send({ msg: "Successfully created map" });
   });
 });
@@ -188,13 +188,13 @@ router.post("/getGameActiveStatus", (req: Request, res: Response) => {
   }
 });
 
-router.post("/startGame", (req: Request, res: Response) => {
-  // let the game know that the game has started, then game can force all players to navigate to the game page
-  // and then start the game
-  const gameCode = req.body.gameCode;
-  games[gameCode].createGameState(parseInt(req.body.gameCode), req.body.userIds);
-  res.send({});
-});
+// router.post("/startGame", (req: Request, res: Response) => {
+//   // let the game know that the game has started, then game can force all players to navigate to the game page
+//   // and then start the game
+//   const gameCode = req.body.gameCode;
+//   games[gameCode].createGameState(req.body.gameCode, req.body.userIds);
+//   res.send({});
+// });
 
 // router.get("/gameConstants", (req: Request, res: Response) => {
 //   res.send({ minionConstants: minionConstants, towerConstants: towerConstants });

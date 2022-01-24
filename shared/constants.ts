@@ -57,6 +57,7 @@ export const explosionConstants = {
 
 export const GoldConstants = {
   realRadius: 25,
+  gold: 100,
 };
 
 export const FPS = 21;
