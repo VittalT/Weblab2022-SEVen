@@ -7,7 +7,7 @@ import Tower from "../../shared/Tower";
 import Player from "../../shared/Player";
 import { towerConstants, minionConstants, FPS, MAX_GAME_LEN_M } from "../../shared/constants";
 import { socket } from "../../client/src/client-socket";
-import e from "express";
+import { explosionConstants } from "../../shared/constants";
 
 export class Game {
   private readonly gameCode: string;
@@ -182,7 +182,7 @@ export class Game {
     const numPlayers = this.playerIds.length;
     const angle = (2 * Math.PI) / numPlayers;
     if (numPlayers < 1 || numPlayers > 4) {
-      // TODO EVENTUALLY, CHANGE TO TWO!!!!!!!!!!!!!!!!
+      // TODO change to 2 eventually!!
       getIo().in(this.gameCode).emit("gameStartFailed");
       return;
     }
@@ -235,7 +235,7 @@ export class Game {
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
     if (!isFirstTower && towerSizeConstants.cost > player.gold) {
-      updateDisplay(userId, `${loc} ; Not enough money`);
+      updateDisplay(userId, `${loc} ; Not enough gold`);
     } else if (
       !isFirstTower &&
       !this.closeEnough(userId, loc, towerSizeConstants.maxAdjBuildRadius)
@@ -311,7 +311,7 @@ export class Game {
       player.minionIds.push(newMinionId);
       enemyTower.enemyMinionIds.push(newMinionId);
     } else {
-      updateDisplay(userId, `${allyTower.location} -> ${enemyTower.location} ; Not enough money`);
+      updateDisplay(userId, `${allyTower.location} -> ${enemyTower.location} ; Not enough gold`);
     }
   }
 
@@ -342,12 +342,15 @@ export class Game {
   public explode(userId: string, towerId: number) {
     const tower = this.getTower(towerId);
     const player = this.getPlayer(userId);
-    if (player.gold > 100) {
-      player.gold -= 100;
+    const explosionCost = explosionConstants.cost;
+    if (player.gold > explosionCost) {
+      player.gold -= explosionCost;
       const copyEnemyMinionIds = [...tower.enemyMinionIds];
       for (const enemyMinionId of copyEnemyMinionIds) {
         this.removeMinion(enemyMinionId);
       }
+    } else {
+      updateDisplay(userId, `Not enough gold to explode tower ${towerId}`);
     }
   }
 

@@ -51,6 +51,9 @@ export const minionConstants: Record<Size, MinionConstants> = {
     boundingRadius: 10,
   },
 };
+export const explosionConstants = {
+  cost: 100,
+};
 
 export const GoldConstants = {
   realRadius: 25,
