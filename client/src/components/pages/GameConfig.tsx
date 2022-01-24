@@ -23,7 +23,7 @@ type Props = URLProps & {
 
 const GameConfig = (props: Props) => {
   const [gameType, setGameType] = useState<string>("");
-  const [gameCode, setGameCode] = useState<string>("");
+  const [gameCode, setGameCode] = useState<string>("a");
 
   const [hostName, setHostName] = useState<string>("");
   const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
