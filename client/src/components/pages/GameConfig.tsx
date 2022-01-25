@@ -151,9 +151,16 @@ const GameConfig = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    get("/api/getGameMap").then((data) => {
-      console.log("getting cur map");
+    get("/api/getGameMapId", { gameCode: gameCode }).then((data) => {
+      console.log("getting game map id");
       setGameMapId(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    get("/api/getGameIsRated", { gameCode: gameCode }).then((data) => {
+      console.log("getting game isRated");
+      setIsRated(data);
     });
   }, []);
 

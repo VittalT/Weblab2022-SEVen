@@ -149,6 +149,14 @@ export class Game {
     return this.gameCode;
   }
 
+  public getGameMapId(): string {
+    return this.gameMapId;
+  }
+
+  public getGameIsRated(): boolean {
+    return this.isRated;
+  }
+
   public getPlayerNames(): Array<string> {
     return this.playerIds.map((name: string) => this.idToName[name].toString());
   }
