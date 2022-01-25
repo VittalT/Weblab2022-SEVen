@@ -73,8 +73,9 @@ const GameConfig = (props: Props) => {
   };
   useEffect(() => {
     get("/api/users").then((users: User[]) => {
-      const user1 = await UserModel.findById(id1);
-      id1Rating = user1.rating;
+      // const user1 = await UserModel.findById(id1);
+      // id1Rating = user1.rating;
+      users.find((user) => user._id);
     });
   }, []);
 
