@@ -18,6 +18,11 @@
   font-family: serif, sans-serif, Times;
   font-size: 30px;
   margin: 10px;
+  margin-bottom: 20px;
+}
+
+.Lobby-center {
+  align-items: center;
 }
 
 .Lobby-lobbyContainer {
