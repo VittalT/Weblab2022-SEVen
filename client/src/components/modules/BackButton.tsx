@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "@reach/router";
 import "../../utilities.css";
 import "./BackButton.css";
+import Button from "@mui/material/Button";
+import alpha from "@mui/system";
+import { Brightness1, Brightness1Outlined } from "@material-ui/icons";
 
 type Props = {
   destPath: string;
@@ -10,9 +13,26 @@ type Props = {
 
 const BackButton = (props: Props) => {
   return (
-    <Link to={props.destPath} className="BackButton-button">
-      <p className="BackButton-text u-gameText">{props.text}</p>
-    </Link>
+    <Button
+      size="medium"
+      sx={{
+        marginBottom: 10,
+        fontSize: 25,
+        borderRadius: 3,
+        position: "fixed",
+        top: 30,
+        left: 30,
+        backgroundColor: "#98c1d9",
+        "&:hover": {
+          backgroundColor: "#6CB1D9",
+        },
+      }}
+      variant="contained"
+      component={Link}
+      to={props.destPath}
+    >
+      {props.text}
+    </Button>
   );
 };
 
