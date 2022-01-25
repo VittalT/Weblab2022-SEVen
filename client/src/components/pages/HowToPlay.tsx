@@ -18,28 +18,33 @@ const HowToPlay = (props: Props) => {
     <>
       <div>
         <p>
-          Welcome to Minion Battle! The objective of the game is to deploy minions and destroy your
-          enemies' towers.
+          Welcome to Minion Battle! The objective of the game is to deploy minions and destroy all
+          of your enemies' towers.
         </p>
         <p>
-          As you can see in the map layout above, players start with ____-sized towers on different
-          sides/corners of the map depending on how many are in the game. The map will also have
-          pockets of gold that you can collect to deploy more towers or minions. The amount of
-          health that a tower starts with and the cost to deploy it depends on which of the three
-          sizes it is (Small, Medium, Large). Minions can be deployed from any existing tower and
-          targetted to enemy towers. The game will end when there remains only one player with any
-          active towers.
+          At the beginning of the game, each player starts with a single small tower. The map may
+          also have yellow pockets of gold that can be collected by placing a tower on them or
+          deploying a minion through them. Each tower also passively generates gold, which can be
+          used to purchase more towers, more minions, or trigger an explosion. The game ends when
+          only one player has any towers remaining.
         </p>
         <p>
-          To deploy a tower, you simply need to click the type of tower and select where you want to
-          place it on the mpa. Note that you can only place a tower within a certain distance of any
-          your existing towers. See the gif above to learn how to place a tower.
+          To place a tower, select the size of the tower and click on the map where you want it to
+          be spawned. Towers must be spawned a certain distance away from each other and can only be
+          placed within a certain radius of one of your existing towers.
         </p>
         <p>
-          To deploy a minion, you can select the minion buttom from the game panel and click any of
-          your active towers to deploy from. Once you do that, you should also select an enemy tower
-          to attack, and your minion will start moving towards that target. See the gif above to
-          learn how to deploy a minion.
+          To deploy a minion, select the size of the minion you wish to deploy and click one of your
+          own towers (the point from which it will be deployed) and an enemy tower (the tower that
+          it will attack). Each tower has a certain amount of health and each minion does a certain
+          amount of damage per seconds - when a tower's health reaches zero, it and all the minions
+          attacking it are destroyed. Each minion also takes a certain amount of time to reach its
+          destination and begin attacking the tower.
+        </p>
+        <p>
+          To trigger an explosion, simply click the explosion button, then press the tower you wish
+          to explode. This will cause all minions that are currently attacking your tower to be
+          destroyed, and your tower will begin to passively regenerate health.
         </p>
       </div>
       <BackButton text="BACK" destPath="/" />
