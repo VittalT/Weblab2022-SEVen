@@ -5,7 +5,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
     health: 50,
     healthRegenRate: 0.5 / 1000,
-    goldRate: 1 / 1000,
+    goldRate: 2 / 1000,
     cost: 25,
     minAdjBuildRadius: 60,
     maxAdjBuildRadius: 150,
@@ -14,7 +14,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Medium]: {
     health: 150,
     healthRegenRate: 0.5 / 1000,
-    goldRate: 2 / 1000,
+    goldRate: 3 / 1000,
     cost: 100,
     minAdjBuildRadius: 75,
     maxAdjBuildRadius: 180,
