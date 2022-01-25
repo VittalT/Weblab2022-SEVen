@@ -10,6 +10,7 @@ import Gold from "./Gold";
 import assert from "assert";
 import { post } from "../../utilities";
 import { ClickState, Size } from "../../../../shared/enums";
+import { towerConstants, minionConstants, explosionConstants } from "../../../../shared/constants";
 
 type GameProps = {
   width: number;
@@ -30,29 +31,44 @@ const GamePanel = (props: GameProps) => {
       <div className="GamePanel-body">
         <Gold amount={Math.round(props.gold)} />
         {towerSizes.map((size, i) => (
-          <button
+          <div
             className="GamePanel-button GamePanel-towerButton"
             key={i}
             onClick={() => clickGamePanelButton(props.gameCode, ClickState.Tower, size)}
           >
-            <p className="GamePanel-text">{"" + size + " Tower"}</p>
-          </button>
+            <span id="content1">{"" + size + " Tower"}</span>
+            <span id="content2">
+              {towerConstants[size].cost +
+                " G | " +
+                towerConstants[size].health +
+                " H | " +
+                towerConstants[size].goldRate * 1000 +
+                " G/S"}
+            </span>
+          </div>
         ))}
         {minionSizes.map((size, i) => (
-          <button
+          <div
             className="GamePanel-button GamePanel-minionButton"
             key={i}
             onClick={() => clickGamePanelButton(props.gameCode, ClickState.Minion, size)}
           >
-            <p className="GamePanel-text"> {size} Minion </p>
-          </button>
+            <span id="content1">{"" + size + " Minion"}</span>
+            <span id="content2">
+              {minionConstants[size].cost +
+                " G | " +
+                minionConstants[size].damageRate * 1000 +
+                " D/S"}
+            </span>
+          </div>
         ))}
-        <button
+        <div
           className="GamePanel-button GamePanel-explosionButton"
           onClick={() => clickGamePanelButton(props.gameCode, ClickState.Explosion, Size.Small)}
         >
-          <p className="GamePanel-text"> Explosion </p>
-        </button>
+          <span id="content1">{"Explosion"}</span>
+          <span id="content2">{explosionConstants.cost + " G"}</span>
+        </div>
       </div>
     </>
   );
