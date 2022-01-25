@@ -28,7 +28,7 @@ const Game = (props: GameProps) => {
   const [sizeClicked, setSizeClicked] = useState(Size.Small);
   //   const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
   //   const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
-  const [displayText, setDisplayText] = useState("Initial");
+  const [displayText, setDisplayText] = useState("Place or select tower");
   const [isInPlay, setIsInplay] = useState(true);
   const [winnerName, setWinnerName] = useState("");
 
@@ -116,10 +116,12 @@ const Game = (props: GameProps) => {
       {isInPlay ? (
         <></>
       ) : (
-        <>
-          <div>{"The winner is " + winnerName}</div>
-          <button onClick={navGameConfig}>Return to lobby</button>
-        </>
+        <div className="Game-endScreen">
+          <div className="Game-center">{"" + winnerName + " won!"}</div>
+          <button className="Game-center" onClick={navGameConfig}>
+            Return to lobby
+          </button>
+        </div>
       )}
       <p className="Game-displayText">{`${sizeClicked} ${clickState} - ${displayText}`}</p>
     </>

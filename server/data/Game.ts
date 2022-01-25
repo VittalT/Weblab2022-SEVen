@@ -661,6 +661,7 @@ export class Game {
   }
 
   public updateGamePanelClickState(userId: string, clickType: ClickState, size: Size) {
+    updateDisplay(userId, "Place or select tower");
     if (this.isInPlay === false) {
       return;
     }
@@ -696,6 +697,7 @@ export class Game {
   }
 
   public updateGameMapClickState(userId: string, loc: Point) {
+    updateDisplay(userId, "Place or select tower");
     if (this.isInPlay === false) {
       return;
     }
