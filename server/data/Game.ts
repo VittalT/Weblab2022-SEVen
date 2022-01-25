@@ -482,6 +482,18 @@ export class Game {
     }
   }
 
+  public forfeit(playerId: string) {
+    const player: Player = this.getPlayer(playerId);
+    const towerIdsCopy = [...player.towerIds];
+    const playerIdsCopy = [...player.minionIds];
+    for (const towerId of towerIdsCopy) {
+      this.removeTower(towerId);
+    }
+    for (const minionId of playerIdsCopy) {
+      this.removeMinion(minionId);
+    }
+  }
+
   public gameLoop() {
     const msPerUpdate = 1000 / FPS;
     this.timeUpdate(msPerUpdate);

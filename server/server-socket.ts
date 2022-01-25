@@ -57,45 +57,46 @@ export const init = (server: http.Server): void => {
     });
     socket.on(
       "GamePanel/click",
-      (data: { gameCode: string; clickType: ClickState; size: Size }) => {
+      (data: { gameCode: string; clickType: ClickState; size: Size; userId: string }) => {
         const gameCode = data.gameCode;
         const clickType = data.clickType;
         const size = data.size;
 
-        const user = getUserFromSocketID(socket.id) ?? assert.fail(); // NOT THAT RELIABLE!
-        const userId = user._id;
+        // NOT DONE YET
         const currGame = games[gameCode];
         if (currGame !== undefined) {
-          currGame.updateGamePanelClickState(userId, clickType, size);
+          currGame.updateGamePanelClickState(data.userId, clickType, size);
         }
       }
     );
-    socket.on("GameMap/moveCursor", (data: { gameCode: string; x: number; y: number }) => {
-      const gameCode = data.gameCode;
-      const x = data.x;
-      const y = data.y;
+    socket.on(
+      "GameMap/moveCursor",
+      (data: { gameCode: string; x: number; y: number; userId: string }) => {
+        const gameCode = data.gameCode;
+        const x = data.x;
+        const y = data.y;
 
-      const user = getUserFromSocketID(socket.id) ?? assert.fail(); // NOT THAT RELIABLE!
-      const userId = user._id;
-      const currGame = games[gameCode];
-      if (currGame !== undefined) {
-        const loc = new Point(x, y);
-        currGame.updateGameMapCursorLoc(userId, loc);
+        const currGame = games[gameCode];
+        if (currGame !== undefined) {
+          const loc = new Point(x, y);
+          currGame.updateGameMapCursorLoc(data.userId, loc);
+        }
       }
-    });
-    socket.on("GameMap/click", (data: { gameCode: string; x: number; y: number }) => {
-      const gameCode = data.gameCode;
-      const x = data.x;
-      const y = data.y;
+    );
+    socket.on(
+      "GameMap/click",
+      (data: { gameCode: string; x: number; y: number; userId: string }) => {
+        const gameCode = data.gameCode;
+        const x = data.x;
+        const y = data.y;
 
-      const user = getUserFromSocketID(socket.id); // NOT THAT RELIABLE!
-      const userId = user!._id;
-      const currGame = games[gameCode];
-      if (currGame !== undefined) {
-        const loc = new Point(x, y);
-        currGame.updateGameMapClickState(userId, loc);
+        const currGame = games[gameCode];
+        if (currGame !== undefined) {
+          const loc = new Point(x, y);
+          currGame.updateGameMapClickState(data.userId, loc);
+        }
       }
-    });
+    );
     // this is the function called by App, when a socket joins a room
     socket.on("joinRoom", (data: { user: User; userId: string; gameCode: string }) => {
       // connect socket

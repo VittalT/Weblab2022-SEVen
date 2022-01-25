@@ -8,10 +8,11 @@ import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
 import Gold from "./Gold";
 import assert from "assert";
-import { post } from "../../utilities";
+import { get, post } from "../../utilities";
 import { ClickState, Size } from "../../../../shared/enums";
 import { towerConstants, minionConstants, explosionConstants } from "../../../../shared/constants";
 import Switch from "@material-ui/core/Switch";
+import Forfeit from "../modules/Forfeit";
 
 type GameProps = {
   width: number;
@@ -33,15 +34,24 @@ const GamePanel = (props: GameProps) => {
     setShowInfo(!showInfo);
   };
 
+  const forfeit = () => {
+    get("/api/forfeit", { gameCode: props.gameCode });
+  };
+
   return (
     <>
       <div className="GamePanel-body">
+        <div className="GamePanel-smallButton" onClick={forfeit}>
+          Forfeit
+        </div>
         <Gold amount={Math.round(props.gold)} />
         {towerSizes.map((size, i) => (
           <div
             className="GamePanel-button GamePanel-towerButton"
             key={i}
-            onClick={() => clickGamePanelButton(props.gameCode, ClickState.Tower, size)}
+            onClick={() =>
+              clickGamePanelButton(props.gameCode, ClickState.Tower, size, props.userId)
+            }
           >
             {showInfo ? (
               <div>
@@ -66,7 +76,9 @@ const GamePanel = (props: GameProps) => {
           <div
             className="GamePanel-button GamePanel-minionButton"
             key={i}
-            onClick={() => clickGamePanelButton(props.gameCode, ClickState.Minion, size)}
+            onClick={() =>
+              clickGamePanelButton(props.gameCode, ClickState.Minion, size, props.userId)
+            }
           >
             {showInfo ? (
               <div>
@@ -87,7 +99,9 @@ const GamePanel = (props: GameProps) => {
         ))}
         <div
           className="GamePanel-button GamePanel-explosionButton"
-          onClick={() => clickGamePanelButton(props.gameCode, ClickState.Explosion, Size.Small)}
+          onClick={() =>
+            clickGamePanelButton(props.gameCode, ClickState.Explosion, Size.Small, props.userId)
+          }
         >
           {showInfo ? (
             <div>
