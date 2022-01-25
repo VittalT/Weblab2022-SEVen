@@ -7,7 +7,7 @@ import User from "../../../../shared/User";
 import NavigationButton from "../modules/NavigationButton";
 
 import { Router, RouteComponentProps, navigate } from "@reach/router";
-import { Switch } from "antd";
+import Switch from "@material-ui/core/Switch";
 
 import BackButton from "../modules/BackButton";
 import { socket } from "../../client-socket";
