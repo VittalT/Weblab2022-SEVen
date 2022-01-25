@@ -16,6 +16,8 @@ class Player {
   public tombstones: Array<{ time: number; tower: Tower }>;
   public cursorLoc: Point;
   public canPlaceTower: boolean;
+  public canExplode: boolean;
+  public hoverAllyTower: Tower;
 
   public constructor(
     gold: number,
@@ -39,6 +41,8 @@ class Player {
     this.tombstones = [];
     this.cursorLoc = new Point(-1000, -1000);
     this.canPlaceTower = false;
+    this.canExplode = false;
+    this.hoverAllyTower = new Tower(-1, new Point(-1000, -1000), Size.Small, []);
   }
 }
 

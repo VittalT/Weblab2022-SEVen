@@ -8,6 +8,7 @@ import {
   GoldConstants,
   canvasScaleFactors,
   playerConstants,
+  explosionConstants,
 } from "../../shared/constants";
 import { GameUpdateData } from "../../shared/types";
 import { get } from "./utilities";
@@ -186,6 +187,18 @@ export const drawCanvas = (data: { userId: string; gameUpdateData: GameUpdateDat
   };
 
   const scaleFactor = canvasScaleFactors.game;
+  const player = gameUpdateData.players[userId];
+  const teamId = gameUpdateData.playerToTeamId[userId];
+
+  if (player.clickState === ClickState.Explosion && player.canExplode) {
+    // console.log("here");
+    const tower = player.hoverAllyTower;
+    const towerRadius = towerConstants[tower.size].hitRadius;
+    const drawLoc = scaleBy(player.cursorLoc, scaleFactor);
+    const damageRadius = (towerRadius + explosionConstants.range) * scaleFactor;
+    const color = "#E7A89B"; // light red
+    fillCircle(context, tower.location, damageRadius, color);
+  }
 
   // display all towers, minions, and gold
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
@@ -221,8 +234,6 @@ export const drawCanvas = (data: { userId: string; gameUpdateData: GameUpdateDat
   }
 
   // draw hovering tower
-  const player = gameUpdateData.players[userId];
-  const teamId = gameUpdateData.playerToTeamId[userId];
   if (player.clickState === ClickState.Tower) {
     const towerSizeConstants = towerConstants[player.sizeClicked];
     const hoveringTower = new Tower(
