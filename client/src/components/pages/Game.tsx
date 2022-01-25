@@ -27,8 +27,6 @@ const Game = (props: GameProps) => {
   const [gold, setGold] = useState(0);
   const [clickState, setClickState] = useState(ClickState.Tower);
   const [sizeClicked, setSizeClicked] = useState(Size.Small);
-  //   const [towerConstants, setTowerConstants] = useState({} as TowerConstants);
-  //   const [minionConstants, setMinionConstants] = useState({} as MinionConstants);
   const [displayText, setDisplayText] = useState("Place or select tower");
   const [isInPlay, setIsInplay] = useState(true);
   const [winnerName, setWinnerName] = useState("");

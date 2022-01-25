@@ -24,17 +24,17 @@
   border: 2px solid black; /* Green */
 }
 
-#content1::after {
+.GamePanel-buttonTitle::after {
   content: "\a";
   white-space: pre;
 }
 
-#content1 {
+.GamePanel-buttonTitle {
   font-size: 15px;
   font-style: bold;
 }
 
-#content2 {
+.GamePanel-buttonInfo {
   font-size: 12px;
 }
 
@@ -46,8 +46,16 @@
   background-color: rgb(255, 127, 127);
 }
 
+.GamePanel-infoButton {
+  background-color: rgb(198, 194, 194);
+}
+
 .GamePanel-explosionButton {
   background-color: rgb(203, 195, 227);
+}
+
+.GamePanel-hideInfo {
+  font-size: 18px;
 }
 
 .GamePanel-goldwrapper {

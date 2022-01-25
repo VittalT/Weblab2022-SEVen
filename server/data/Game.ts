@@ -213,10 +213,10 @@ export class Game {
     }
   }
 
-  public toggleInfo(userId: string) {
-    const player = this.getPlayer(userId);
-    player.showInfo = !player.showInfo;
-  }
+  // public toggleInfo(userId: string) {
+  //   const player = this.getPlayer(userId);
+  //   player.showInfo = !player.showInfo;
+  // }
 
   public start() {
     this.startTime = Date.now();
