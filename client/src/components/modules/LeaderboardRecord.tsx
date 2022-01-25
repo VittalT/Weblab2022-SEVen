@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
+import "./LeaderboardRecord.css";
 
 type LeaderboardRecordProps = {
   recordholder_id: string;
