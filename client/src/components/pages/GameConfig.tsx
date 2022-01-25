@@ -174,7 +174,7 @@ const GameConfig = (props: Props) => {
       console.log(`game name ${possMap.name}`);
       setGameMapName(possMap.name);
     }
-  }, [gameMapId, maps]);
+  }, [gameMapId, maps]); //
 
   useEffect(() => {
     get("/api/getGameIsRated", { gameCode: gameCode }).then((data) => {
@@ -183,14 +183,14 @@ const GameConfig = (props: Props) => {
         setIsRated(data.isRated);
       }
     });
-  }, [gameCode]);
+  }, [gameCode]); //
 
   const displayPlayers = () => {};
 
   // *either you are the host or waiting to start
   return (
     <>
-      <div className="u-gameContainer">
+      <div className="GameConfig-gameContainer">
         <h3 className="u-gameHeader">Minion Battle</h3>
         <Button
           size="medium"
@@ -202,7 +202,7 @@ const GameConfig = (props: Props) => {
             "&:hover": {
               bgcolor: "#6CB1D9",
             },
-            "& .MuiButtonBase-root-MuiButton-root": {
+            "& .MuiButton-root": {
               borderRadius: "4px",
               bgcolor: "#FFFFFF",
               fontSize: 25,
@@ -216,7 +216,6 @@ const GameConfig = (props: Props) => {
           {props.passedUserId === hostId ? (
             <div className="u-flexColumn">
               <div>You are the host</div>
-              <button onClick={startGame}>START</button>
             </div>
           ) : (
             <div className="u-flexColumn">
