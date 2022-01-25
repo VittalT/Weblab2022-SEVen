@@ -11,6 +11,7 @@ import {
 import { GameUpdateData } from "../../shared/types";
 import { get } from "./utilities";
 import GameMapModel, { GameMap } from "../../server/models/Map";
+import { teamColors } from "../../shared/constants";
 
 /** utils */
 
@@ -21,13 +22,6 @@ import GameMapModel, { GameMap } from "../../server/models/Map";
 //     y: canvas.height - loc.y, // canvas.height / 2 - loc.y,
 //   };
 // };
-
-const colors: Array<string> = [
-  "#EE6C4D", // orange
-  "#98C1D9", // light blue
-  "#08A721", // light green
-  "#CFD215", // brown-ish yellow
-];
 
 // fills a circle at a given x, y canvas coord with radius and color
 export const fillCircle = (
@@ -87,7 +81,7 @@ const drawTower = (
   const towerRadius = towerConstants[tower.size].hitRadius * scaleFactor;
 
   // draw circle
-  const color = colors[teamId];
+  const color = teamColors[teamId];
   fillCircle(context, drawLoc, towerRadius, color);
 
   // draw health bar
@@ -125,7 +119,7 @@ const drawMinion = (
   const minionRadius = minionConstants[minion.size].boundingRadius * scaleFactor;
 
   // draw triangle
-  const color = colors[teamId];
+  const color = teamColors[teamId];
   fillTriangle(context, drawLoc, minionRadius, minion.direction, color);
 };
 

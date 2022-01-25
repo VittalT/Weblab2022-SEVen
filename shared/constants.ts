@@ -4,6 +4,7 @@ import Point from "./Point";
 import { TowerConstants, MinionConstants } from "./types";
 export const playerConstants = {
   startRating: 1200,
+  maxPlayers: 6,
 };
 export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
@@ -75,3 +76,10 @@ export const canvasScaleFactors = {
   createMap: 1 / 2,
   mapPreview: 1 / 2,
 };
+
+export const teamColors: Array<string> = [
+  "#EE6C4D", // orange
+  "#98C1D9", // light blue
+  "#08A721", // light green
+  "#CFD215", // brown-ish yellow
+];

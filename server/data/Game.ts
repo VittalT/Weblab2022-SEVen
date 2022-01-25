@@ -12,6 +12,7 @@ import {
   MAX_GAME_LEN_M,
   GoldConstants,
   canvasDimensions,
+  playerConstants,
 } from "../../shared/constants";
 import { explosionConstants } from "../../shared/constants";
 import GameMapModel, { GameMap } from "../models/Map";
@@ -186,6 +187,16 @@ export class Game {
     return this.hostId;
   }
 
+  public getTeamIdToName(): Record<number, string> {
+    const teamIdToName: Record<number, string> = [];
+    for (const userId in this.playerToTeamId) {
+      const name = this.idToName[userId];
+      const teamId = this.playerToTeamId[userId];
+      teamIdToName[teamId] = name;
+    }
+    return teamIdToName;
+  }
+
   public getPlayer(userId: string): Player {
     const ret = this.players[userId];
     if (ret !== undefined && ret != null) {
@@ -222,8 +233,7 @@ export class Game {
     this.startTime = Date.now();
     const numPlayers = this.playerIds.length;
     const angle = (2 * Math.PI) / numPlayers;
-    if (numPlayers < 2 || numPlayers > 4) {
-      // TODO change to 2 eventually!!
+    if (numPlayers < 2 || numPlayers > playerConstants.maxPlayers) {
       getIo().in(this.gameCode).emit("gameStartFailed");
       return;
     }
