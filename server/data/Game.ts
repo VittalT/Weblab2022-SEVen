@@ -11,6 +11,7 @@ import {
   FPS,
   MAX_GAME_LEN_M,
   GoldConstants,
+  canvasDimensions,
 } from "../../shared/constants";
 import { explosionConstants } from "../../shared/constants";
 import GameMapModel, { GameMap } from "../models/Map";
@@ -281,8 +282,8 @@ export class Game {
   }
 
   public isInBounds(userId: string, loc: Point, size: Size): boolean {
-    const gameWidth = 1600;
-    const gameHeight = 750;
+    const gameWidth = canvasDimensions.x;
+    const gameHeight = canvasDimensions.y;
     const currTowerRadius = towerConstants[size].hitRadius;
     if (loc.x < currTowerRadius || loc.x > gameWidth - currTowerRadius) {
       return false;

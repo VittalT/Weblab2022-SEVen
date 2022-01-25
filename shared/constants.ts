@@ -1,5 +1,6 @@
 /** game state */
 import { Size } from "./enums";
+import Point from "./Point";
 import { TowerConstants, MinionConstants } from "./types";
 export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
@@ -62,3 +63,4 @@ export const GoldConstants = {
 
 export const FPS = 21;
 export const MAX_GAME_LEN_M = 5;
+export const canvasDimensions = new Point(1600, 750);

@@ -15,6 +15,7 @@ import BackButton from "../modules/BackButton";
 import { ClickState, Size } from "../../../../shared/enums";
 import { GameUpdateData } from "../../../../shared/types";
 import User from "../../../../shared/User";
+import { canvasDimensions } from "../../../../shared/constants";
 
 type GameProps = RouteComponentProps & {
   passedUserId: string;
@@ -101,7 +102,11 @@ const Game = (props: GameProps) => {
       <div className="Game-body">
         <div>
           {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
-          <GameMap width={1600} height={750} gameCode={props.gameCode} />
+          <GameMap
+            width={canvasDimensions.x}
+            height={canvasDimensions.y}
+            gameCode={props.gameCode}
+          />
         </div>
         <GamePanel
           width={1800}

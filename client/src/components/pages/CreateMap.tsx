@@ -15,7 +15,7 @@ import { off } from "process";
 import Point from "../../../../shared/Point";
 import Minion from "../../../../shared/Minion";
 import Tower from "../../../../shared/Tower";
-import { towerConstants, GoldConstants } from "../../../../shared/constants";
+import { towerConstants, GoldConstants, canvasDimensions } from "../../../../shared/constants";
 
 type CreateMapProps = RouteComponentProps & {
   userId: string;
@@ -30,8 +30,8 @@ const CreateMap = (props: CreateMapProps) => {
   const [towers, setTowers] = useState<Point[]>([]);
 
   const scaleFactor = 2;
-  const realWidth = 1600;
-  const realHeight = 750;
+  const realWidth = canvasDimensions.x;
+  const realHeight = canvasDimensions.y;
   const canvasWidth = realWidth / scaleFactor;
   const canvasHeight = realHeight / scaleFactor;
 
