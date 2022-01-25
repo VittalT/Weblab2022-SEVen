@@ -24,6 +24,7 @@ type Props = RouteComponentProps & {
 
 const Lobby = (props: Props) => {
   const [publicGames, setPublicGames] = useState<Array<{ hostName: string; gameCode: string }>>([]);
+  const [title, setTitle] = useState<string>("");
 
   const joinPublicGame = async (gameCode: string) => {
     const data = await post("/api/joinGame", { gameCode: gameCode });
@@ -35,11 +36,21 @@ const Lobby = (props: Props) => {
     socket.on("updatePublicLobby", () => {
       get("/api/getPublicGames").then((data) => {
         setPublicGames(data);
+        if (data.length === 0) {
+          setTitle("CURRENTLY NO PUBLIC GAMES");
+        } else {
+          setTitle("PUBLIC GAMES");
+        }
       });
     });
     props.forceNavigate();
     get("/api/getPublicGames").then((data) => {
       setPublicGames(data);
+      if (data.length === 0) {
+        setTitle("CURRENTLY NO PUBLIC GAMES");
+      } else {
+        setTitle("PUBLIC GAMES");
+      }
     });
     return () => {
       socket.off("updatePublicLobby");
@@ -51,7 +62,7 @@ const Lobby = (props: Props) => {
       <div className="Lobby-container">
         <h3 className="Lobby-header">MINION BATTLE</h3>
         <div className="Lobby-lobbyContainer">
-          <div className="Lobby-lobbyTitle">PUBLIC GAMES</div>
+          <div className="Lobby-lobbyTitle">{title}</div>
           <div>
             {publicGames.map((game: { hostName: string; gameCode: string }) => (
               <div className="Lobby-center">
