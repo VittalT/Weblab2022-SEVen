@@ -25,6 +25,7 @@ export class Game {
   private readonly idToName: Record<string, string>;
   private isActive: boolean;
   private isInPlay: boolean;
+  private isRated: boolean;
 
   private startTime: number;
   private winnerId: string | null;
@@ -43,7 +44,8 @@ export class Game {
     gameType: string,
     hostId: string,
     hostName: string,
-    playerIds: Array<string>
+    playerIds: Array<string>,
+    isRated: boolean
   ) {
     this.gameCode = gameCode;
     this.gameType = gameType;
@@ -53,6 +55,7 @@ export class Game {
     this.idToName[hostId] = hostName;
     this.isActive = true;
     this.isInPlay = false;
+    this.isRated = isRated;
 
     this.startTime = Date.now();
     this.winnerId = null;
