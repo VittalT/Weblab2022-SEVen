@@ -533,7 +533,19 @@ export class Game {
     if (this.isRated && this.winnerId !== null) {
       this.adjustRatingsAll();
     }
+    this.updatePlayerStats();
     this.clearGame();
+  }
+
+  public async updatePlayerStats(): Promise<void> {
+    for (const playerId of this.playerIds) {
+      const user = await UserModel.findById(playerId);
+      user.games_played += 1;
+      if (playerId === this.winnerId) {
+        user.games_win += 1;
+      }
+      user.save();
+    }
   }
 
   public adjustRatingsAll(): void {
@@ -563,8 +575,10 @@ export class Game {
     id2Rating += 30 * (0 - user2prob);
 
     user1.rating = Math.round(id1Rating);
+    user1.all_time_rating = Math.max(user1.all_time_rating, user1.rating);
     user1.save();
     user2.rating = Math.round(id2Rating);
+    user2.all_time_rating = Math.max(user2.all_time_rating, user2.rating);
     user2.save();
   }
 
