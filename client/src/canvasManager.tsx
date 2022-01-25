@@ -155,6 +155,7 @@ const drawTimer = (context: CanvasRenderingContext2D, numMilliSeconds: number) =
 /** main draw */
 export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // get the canvas element
+  console.log(gameUpdateData);
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   if (!canvas) return;
   const context = canvas.getContext("2d") ?? assert.fail();
@@ -162,7 +163,6 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // clear the canvas to white
   context.fillStyle = "white";
   context.fillRect(0, 0, canvas.width, canvas.height);
-
   const idToName = gameUpdateData.idToName;
 
   const getInitials = (userId: string) => {
