@@ -192,6 +192,11 @@ router.get("/getMaps", (req: Request, res: Response) => {
   });
 });
 
+router.get("/getGameMap", (req: Request, res: Response) => {
+  const gameCode = req.query.gameCode;
+  const currGame = games[gameCode];
+});
+
 // router.get("/gameConstants", (req: Request, res: Response) => {
 //   res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
 // });

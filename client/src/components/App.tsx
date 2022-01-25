@@ -8,6 +8,7 @@ import User from "../../../shared/User";
 import "../utilities.css";
 import Game from "./pages/Game";
 import assert from "assert";
+import "antd/dist/antd.css";
 
 import { Router, RouteComponentProps, navigate } from "@reach/router";
 

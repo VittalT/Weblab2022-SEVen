@@ -127,6 +127,10 @@ export class Game {
 
   public updateGameIsRated(isRated: boolean) {
     this.isRated = isRated;
+    getIo().in(this.gameCode).emit("updateGameIsRated", {
+      gameCode: this.gameCode,
+      isRated: isRated,
+    });
   }
 
   public hasPlayer(userId: string): boolean {

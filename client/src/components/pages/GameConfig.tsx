@@ -7,6 +7,7 @@ import User from "../../../../shared/User";
 import NavigationButton from "../modules/NavigationButton";
 
 import { Router, RouteComponentProps, navigate } from "@reach/router";
+import { Switch } from "antd";
 
 import BackButton from "../modules/BackButton";
 import { socket } from "../../client-socket";
@@ -28,6 +29,7 @@ const GameConfig = (props: Props) => {
   const [gameCode, setGameCode] = useState<string>("a");
   const [gameMapId, setGameMapId] = useState<string>("");
   const [gameMapName, setGameMapName] = useState<string>("");
+  const [isRated, setIsRated] = useState<boolean>(true);
   const [maps, setMaps] = useState<GameMap[]>([]);
 
   const [hostName, setHostName] = useState<string>("");
@@ -91,6 +93,14 @@ const GameConfig = (props: Props) => {
     setGameMapName(data.gameMapName);
   };
 
+  const toggleIsRated = () => {
+    socket.emit("updateGameIsRated", { gameCode: gameCode, isRated: !isRated });
+  };
+
+  const updateGameIsRated = (data: { gameCode: string; isRated: boolean }) => {
+    setIsRated(data.isRated);
+  };
+
   useEffect(() => {
     gameConfigForceNavigate();
 
@@ -98,6 +108,7 @@ const GameConfig = (props: Props) => {
     socket.on("startGame", navToGame);
     socket.on("gameStartFailed", displayStartGameFailed);
     socket.on("updateGameMap", updateGameMap);
+    socket.on("updateGameIsRated", updateGameIsRated);
 
     const doThings = async () => {
       // using gamecode associated with app, populate page with lobby info
@@ -139,6 +150,13 @@ const GameConfig = (props: Props) => {
     };
   }, []);
 
+  useEffect(() => {
+    get("/api/getGameMap").then((data) => {
+      console.log("getting cur map");
+      setGameMapId(data);
+    });
+  }, []);
+
   // *either you are the host or waiting to start
   return (
     <>
@@ -150,10 +168,14 @@ const GameConfig = (props: Props) => {
         <div> game code: {gameCode} </div>
         <div> curent players: {playerNames.toString()} </div>
         {props.passedUserId === hostId ? (
-          <MapPanel gameMapId={gameMapId} maps={maps} onClickGameMap={onClickGameMap} />
+          <div>
+            <MapPanel gameMapId={gameMapId} maps={maps} onClickGameMap={onClickGameMap} />
+            <Switch defaultChecked onClick={toggleIsRated} />
+          </div>
         ) : (
           <></>
         )}
+        <div> Rating Type: {isRated ? "Rated" : "Unrated"} </div>
         <div> Current Map: {gameMapName} </div>
         <div>---</div>
         {props.passedUserId === hostId ? (
