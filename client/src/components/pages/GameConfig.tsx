@@ -179,6 +179,8 @@ const GameConfig = (props: Props) => {
     });
   }, [gameCode]);
 
+  const displayPlayers = () => {};
+
   // *either you are the host or waiting to start
   return (
     <>
