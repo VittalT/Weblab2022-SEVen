@@ -13,3 +13,27 @@
   font-size: 50px;
   margin: 50px;
 }
+
+.Lobby-lobbyTitle {
+  font-family: serif, sans-serif, Times;
+  font-size: 30px;
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.Lobby-center {
+  align-items: center;
+}
+
+.Lobby-lobbyContainer {
+  border: 2px black solid;
+  outline: 2px black;
+  height: 600px;
+  width: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto;
+}

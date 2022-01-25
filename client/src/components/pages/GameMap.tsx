@@ -13,6 +13,7 @@ type GameMapProps = {
   width: number;
   height: number;
   gameCode: string;
+  userId: string;
 };
 
 const GameMap = (props: GameMapProps) => {
@@ -20,14 +21,14 @@ const GameMap = (props: GameMapProps) => {
     const canvas = document.getElementById("game-canvas") ?? assert.fail();
     canvas.addEventListener("click", (event: MouseEvent) => {
       // console.log(`A ${event.offsetX} ${event.offsetY}`);
-      clickGameMap(props.gameCode, event.offsetX, event.offsetY);
+      clickGameMap(props.gameCode, event.offsetX, event.offsetY, props.userId);
     });
   }, [props.gameCode]);
 
   useEffect(() => {
     const canvas = document.getElementById("game-canvas") ?? assert.fail();
     const handleMouseMove = (event: MouseEvent) => {
-      moveCursor(props.gameCode, event.offsetX, event.offsetY);
+      moveCursor(props.gameCode, event.offsetX, event.offsetY, props.userId);
     };
 
     canvas.addEventListener("mousemove", handleMouseMove);

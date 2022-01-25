@@ -5,6 +5,7 @@
 .Leaderboard-statsContainer {
   display: flex;
   flex-direction: row;
+  overflow-y: auto;
 }
 
 .Leaderboard-column {

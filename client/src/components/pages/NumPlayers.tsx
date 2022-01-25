@@ -17,8 +17,8 @@ const NumPlayers = (props: NumPlayerProps) => {
       <div className="configurables">
         <h1 className="Creation-configHeader">Number of Players</h1>
         <div>
-          <NavigationButton text="2 Players" destPath="/findgame" />
-          <NavigationButton text="4 Players" destPath="/findgame" />
+          <NavigationButton text="2 Players" destPath="/findgame" onClickFunction={() => {}} />
+          <NavigationButton text="4 Players" destPath="/findgame" onClickFunction={() => {}} />
         </div>
       </div>
       ;

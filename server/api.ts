@@ -249,6 +249,17 @@ router.get("/getGameIsRated", (req: Request, res: Response) => {
   }
 });
 
+router.get("/forfeit", (req: Request, res: Response) => {
+  const gameCode = req.query.gameCode as string;
+  const playerId = req.user!._id;
+  if (gameCode in games) {
+    const currGame = games[gameCode];
+    if (currGame !== undefined) {
+      currGame.forfeit(playerId);
+    }
+  }
+});
+
 // router.get("/gameConstants", (req: Request, res: Response) => {
 //   res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
 // });

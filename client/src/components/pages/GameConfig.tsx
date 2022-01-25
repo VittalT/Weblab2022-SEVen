@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "@reach/router";
 import "../../utilities.css";
 import { get, post } from "../../utilities";
 import "./GameConfig.css";
 import User from "../../../../shared/User";
 
 import NavigationButton from "../modules/NavigationButton";
+import Button from "@mui/material/Button";
 
 import { Router, RouteComponentProps, navigate } from "@reach/router";
 import Switch from "@material-ui/core/Switch";
+
+import { ThemeProvider, createTheme } from "@mui/system";
 
 import BackButton from "../modules/BackButton";
 import { socket } from "../../client-socket";
@@ -50,7 +54,6 @@ const GameConfig = (props: Props) => {
     setHostName(data.hostName);
     setHostId(data.hostId);
     setPlayerNames(data.playerNames);
-    console.log("function updatelobby data ran");
   };
 
   const leaveCurrentGame = async () => {
@@ -181,9 +184,28 @@ const GameConfig = (props: Props) => {
   // *either you are the host or waiting to start
   return (
     <>
-      <div className="GameConfig-container">
-        <h3 className="GameConfig-header">MINION BATTLE</h3>
-        <button onClick={leaveCurrentGame}>LEAVE THIS GAME</button>
+      <div className="u-gameContainer">
+        <h3 className="u-gameHeader">Minion Battle</h3>
+        <Button
+          size="medium"
+          onClick={leaveCurrentGame}
+          sx={{
+            marginBottom: 10,
+            width: 300,
+            height: 50,
+            "&:hover": {
+              bgcolor: "#6CB1D9",
+            },
+            "& .MuiButtonBase-root-MuiButton-root": {
+              borderRadius: "4px",
+              bgcolor: "#FFFFFF",
+              fontSize: 25,
+            },
+          }}
+          variant="contained"
+        >
+          Leave this Game
+        </Button>
         <div className="u-flexColumn">
           {props.passedUserId === hostId ? (
             <div className="u-flexColumn">

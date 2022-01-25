@@ -7,9 +7,3 @@
   justify-content: flex-start;
   align-items: center;
 }
-
-.GameConfig-header {
-  font-family: serif, sans-serif, Times;
-  font-size: 50px;
-  margin: 50px;
-}

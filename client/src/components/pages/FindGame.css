@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap");
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
+.FindGame-container {
+  height: 100vh;
+  width: 100%;
   position: relative;
   display: flex;
-  margin-bottom: 60px;
-  justify-content: center;
-  align-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }

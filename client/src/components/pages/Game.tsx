@@ -11,6 +11,7 @@ import assert from "assert";
 import NavigationButton from "../modules/NavigationButton";
 import GameMap from "./GameMap";
 import GamePanel from "./GamePanel";
+import Forfeit from "../modules/Forfeit";
 import BackButton from "../modules/BackButton";
 import { ClickState, Size } from "../../../../shared/enums";
 import { GameUpdateData } from "../../../../shared/types";
@@ -105,8 +106,8 @@ const Game = (props: GameProps) => {
             width={canvasDimensions.width}
             height={canvasDimensions.height}
             gameCode={props.gameCode}
+            userId={props.passedUserId}
           />
-          <ColorLegend gameCode={props.gameCode} />
         </div>
         <GamePanel
           width={1800}
