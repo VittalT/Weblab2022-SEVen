@@ -438,6 +438,9 @@ export class Game {
   public checkWin() {
     let remainingPlayers = 0;
     let remainingPlayerId = "";
+    if (Date.now() - this.startTime > 10 * 60 * 1000) {
+      this.winnerId = this.playerIds[0];
+    }
     for (const playerId of Object.keys(this.players)) {
       const player = this.players[playerId];
       if (player.towerIds.length === 0) {
@@ -456,9 +459,6 @@ export class Game {
 
   public onGameEnd(): void {
     this.isInPlay = false;
-    if (Date.now() - this.startTime > 10 * 60 * 1000) {
-      this.winnerId = this.playerIds[0];
-    }
     if (this.winnerId !== null) {
       const winnerName = this.idToName[this.winnerId];
       endGame(this.gameCode, winnerName);
