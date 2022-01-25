@@ -250,7 +250,7 @@ export class Game {
         canvasDimensions.width / 2 + 300 * Math.cos(dir),
         canvasDimensions.height / 2 + 300 * Math.sin(dir)
       );
-      this.addTower(userId, Size.Small, startTowerLoc, true);
+      this.addTower(userId, Size.Small, startTowerLoc, true, false);
     }
     getIo().in(this.gameCode).emit("startGame", { gameCode: this.gameCode });
     this.setGoldMineLocs();
@@ -322,7 +322,13 @@ export class Game {
     return false;
   }
 
-  public addTower(userId: string, towerSize: Size, loc: Point, isFirstTower: boolean) {
+  public addTower(
+    userId: string,
+    towerSize: Size,
+    loc: Point,
+    isFirstTower: boolean,
+    isTest: boolean
+  ): boolean {
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
     const timeFromLastTower = (Date.now() - player.lastTowerPlacedTime) / 1000;
@@ -349,18 +355,22 @@ export class Game {
       updateDisplay(userId, "Too close to game borders!");
     } else {
       updateDisplay(userId, "Tower successfuly deployed");
-      if (!isFirstTower) player.gold -= towerSizeConstants.cost;
-      const newTower: Tower = {
-        health: towerSizeConstants.health,
-        location: loc,
-        size: towerSize,
-        enemyMinionIds: [],
-      };
-      const newTowerId = ++this.maxTowerId;
-      this.towers[newTowerId] = newTower;
-      player.towerIds.push(newTowerId);
-      player.lastTowerPlacedTime = Date.now();
+      if (!isTest) {
+        if (!isFirstTower) player.gold -= towerSizeConstants.cost;
+        const newTower: Tower = {
+          health: towerSizeConstants.health,
+          location: loc,
+          size: towerSize,
+          enemyMinionIds: [],
+        };
+        const newTowerId = ++this.maxTowerId;
+        this.towers[newTowerId] = newTower;
+        player.towerIds.push(newTowerId);
+        player.lastTowerPlacedTime = Date.now();
+      }
+      return true;
     }
+    return false;
   }
 
   public removeTower(towerId: number) {
@@ -391,7 +401,13 @@ export class Game {
   }
 
   // i skimmed this one lol - eric
-  public addMinion(userId: string, minionSize: Size, allyTowerId: number, enemyTowerId: number) {
+  public addMinion(
+    userId: string,
+    minionSize: Size,
+    allyTowerId: number,
+    enemyTowerId: number,
+    isTest: boolean
+  ): boolean {
     const player = this.getPlayer(userId);
 
     const minionSizeConstants = minionConstants[minionSize];
@@ -399,27 +415,31 @@ export class Game {
     const enemyTower = this.getTower(enemyTowerId);
 
     if (minionSizeConstants.cost <= player.gold) {
-      updateDisplay(userId, "Minion successfully deployed");
-      player.gold -= minionSizeConstants.cost;
-      const dir = allyTower.location.angleTo(enemyTower.location);
-      const allyRadius = towerConstants[allyTower.size].hitRadius;
-      const enemyRadius = towerConstants[enemyTower.size].hitRadius;
-      const startOffset = new Point(allyRadius * Math.cos(dir), allyRadius * Math.sin(dir));
-      const endOffset = new Point(-enemyRadius * Math.cos(dir), -enemyRadius * Math.sin(dir));
-      const newMinion: Minion = {
-        location: allyTower.location.sum(startOffset),
-        targetLocation: enemyTower.location.sum(endOffset),
-        direction: dir,
-        size: minionSize,
-        targetTowerId: enemyTowerId,
-        reachedTarget: false,
-      };
-      const newMinionId = ++this.maxMinionId;
-      this.minions[newMinionId] = newMinion;
-      player.minionIds.push(newMinionId);
-      enemyTower.enemyMinionIds.push(newMinionId);
+      if (!isTest) {
+        updateDisplay(userId, "Minion successfully deployed");
+        player.gold -= minionSizeConstants.cost;
+        const dir = allyTower.location.angleTo(enemyTower.location);
+        const allyRadius = towerConstants[allyTower.size].hitRadius;
+        const enemyRadius = towerConstants[enemyTower.size].hitRadius;
+        const startOffset = new Point(allyRadius * Math.cos(dir), allyRadius * Math.sin(dir));
+        const endOffset = new Point(-enemyRadius * Math.cos(dir), -enemyRadius * Math.sin(dir));
+        const newMinion: Minion = {
+          location: allyTower.location.sum(startOffset),
+          targetLocation: enemyTower.location.sum(endOffset),
+          direction: dir,
+          size: minionSize,
+          targetTowerId: enemyTowerId,
+          reachedTarget: false,
+        };
+        const newMinionId = ++this.maxMinionId;
+        this.minions[newMinionId] = newMinion;
+        player.minionIds.push(newMinionId);
+        enemyTower.enemyMinionIds.push(newMinionId);
+      }
+      return true;
     } else {
       updateDisplay(userId, "Not enough gold");
+      return false;
     }
   }
 
@@ -597,6 +617,7 @@ export class Game {
     this.updateTowerDeath(delta_t_s);
     this.updateGold(delta_t_s);
     this.updateGoldMines(delta_t_s);
+    this.updateCanPlaceTower(delta_t_s);
     this.checkWin();
   }
 
@@ -703,6 +724,19 @@ export class Game {
     }
   }
 
+  public updateCanPlaceTower(delta_t_s: number) {
+    for (const [userId, player] of Object.entries(this.players)) {
+      // check if the location passes all the checks, without actually adding a tower
+      player.canPlaceTower = this.addTower(
+        userId,
+        player.sizeClicked,
+        player.cursorLoc,
+        false,
+        true
+      );
+    }
+  }
+
   public updateGamePanelClickState(userId: string, clickType: ClickState, size: Size) {
     updateDisplay(userId, "Place or select tower");
     if (this.isInPlay === false) {
@@ -760,16 +794,24 @@ export class Game {
         updateDisplay(userId, "Please click on an ally tower");
       }
     } else if (player.clickState === ClickState.Tower) {
-      this.addTower(userId, player.sizeClicked, loc, false);
+      this.addTower(userId, player.sizeClicked, loc, false, false);
     } else {
       // ClickState.MinionFirstTower
       const enemyTowerId = this.getClickedEnemyTowerId(userId, loc);
       if (enemyTowerId !== -1) {
-        this.addMinion(userId, player.sizeClicked, player.towerClickedId, enemyTowerId);
+        this.addMinion(userId, player.sizeClicked, player.towerClickedId, enemyTowerId, false);
       } else {
         updateDisplay(userId, "Please click on an enemy tower");
       }
     }
+  }
+
+  public updateGameMapCursorLoc(userId: string, loc: Point) {
+    if (this.isInPlay === false) {
+      return;
+    }
+    const player = this.getPlayer(userId);
+    player.cursorLoc = loc;
   }
 }
 

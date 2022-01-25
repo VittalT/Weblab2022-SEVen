@@ -13,6 +13,7 @@ import { GameUpdateData } from "../../shared/types";
 import { get } from "./utilities";
 import GameMapModel, { GameMap } from "../../server/models/Map";
 import { teamColors, teamColorsFaded } from "../../shared/constants";
+import { ClickState } from "../../shared/enums";
 
 /** utils */
 
@@ -157,9 +158,12 @@ const drawTimer = (context: CanvasRenderingContext2D, numMilliSeconds: number) =
 };
 
 /** main draw */
-export const drawCanvas = (gameUpdateData: GameUpdateData) => {
+export const drawCanvas = (data: { userId: string; gameUpdateData: GameUpdateData }) => {
   // get the canvas element
   // console.log(gameUpdateData);
+  const userId = data.userId;
+  const gameUpdateData = data.gameUpdateData;
+
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   if (!canvas) return;
   const context = canvas.getContext("2d") ?? assert.fail();
@@ -214,6 +218,27 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
       const tower = gameUpdateData.towers[towerId];
       drawTower(context, tower, teamId, getInitials(userId), scaleFactor, true);
     }
+  }
+
+  // draw hovering tower
+  const player = gameUpdateData.players[userId];
+  const teamId = gameUpdateData.playerToTeamId[userId];
+  if (player.clickState === ClickState.Tower) {
+    const towerSizeConstants = towerConstants[player.sizeClicked];
+    const hoveringTower = new Tower(
+      towerSizeConstants.health,
+      player.cursorLoc,
+      player.sizeClicked,
+      []
+    );
+    drawTower(
+      context,
+      hoveringTower,
+      teamId,
+      getInitials(userId),
+      scaleFactor,
+      player.canPlaceTower
+    );
   }
 
   drawTimer(context, gameUpdateData.time);

@@ -78,7 +78,7 @@ const Game = (props: GameProps) => {
   const processUpdate = (gameUpdateData: GameUpdateData) => {
     // console.log(gameUpdateData);
     updateDisplayState(gameUpdateData);
-    drawCanvas(gameUpdateData);
+    drawCanvas({ userId: props.passedUserId, gameUpdateData: gameUpdateData });
   };
 
   const updateDisplayState = (gameUpdateData: GameUpdateData) => {

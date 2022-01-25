@@ -19,3 +19,8 @@ export const clickGameMap = (gameCode: string, x: number, y: number) => {
   // console.log(`B ${x} ${y}`);
   socket.emit("GameMap/click", { gameCode: gameCode, x: x, y: y });
 };
+
+export const moveCursor = (gameCode: string, x: number, y: number) => {
+  // userId can be inferred from socket
+  socket.emit("GameMap/moveCursor", { gameCode: gameCode, x: x, y: y });
+};

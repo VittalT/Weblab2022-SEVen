@@ -14,6 +14,8 @@ class Player {
   public inGame: boolean;
   public lastTowerPlacedTime: number;
   public tombstones: Array<{ time: number; tower: Tower }>;
+  public cursorLoc: Point;
+  public canPlaceTower: boolean;
 
   public constructor(
     gold: number,
@@ -35,6 +37,8 @@ class Player {
     this.inGame = inGame;
     this.lastTowerPlacedTime = Date.now() - playerConstants.towerCooldown;
     this.tombstones = [];
+    this.cursorLoc = new Point(-1000, -1000);
+    this.canPlaceTower = false;
   }
 }
 

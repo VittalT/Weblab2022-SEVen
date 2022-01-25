@@ -7,6 +7,7 @@ import { socket, clickGameMap } from "../../client-socket";
 import { drawCanvas } from "../../canvasManager";
 import { Router, RouteComponentProps } from "@reach/router";
 import assert from "assert";
+import { moveCursor } from "../../client-socket";
 
 type GameMapProps = {
   width: number;
@@ -21,7 +22,19 @@ const GameMap = (props: GameMapProps) => {
       // console.log(`A ${event.offsetX} ${event.offsetY}`);
       clickGameMap(props.gameCode, event.offsetX, event.offsetY);
     });
-  }, []);
+  }, [props.gameCode]);
+
+  useEffect(() => {
+    const canvas = document.getElementById("game-canvas") ?? assert.fail();
+    const handleMouseMove = (event: MouseEvent) => {
+      moveCursor(props.gameCode, event.offsetX, event.offsetY);
+    };
+
+    canvas.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      canvas.addEventListener("mousemove", handleMouseMove);
+    };
+  }, [props.gameCode]);
 
   return (
     <>
