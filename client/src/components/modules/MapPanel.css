@@ -1,7 +1,7 @@
 .MapPanel-button_selected {
-  background-color: "yellow";
+  background-color: #ffd700;
 }
 
 .MapPanel-button_not_selected {
-  background-color: "white";
+  background-color: white;
 }

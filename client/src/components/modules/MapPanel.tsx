@@ -3,6 +3,7 @@ import { Link } from "@reach/router";
 import "../../utilities.css";
 import "./MapPanel.css";
 import GameMapModel, { GameMap } from "../../../../server/models/Map";
+import { canvasDimensions } from "../../../../shared/constants";
 
 type MapPanelProps = {
   maps: GameMap[];
@@ -11,8 +12,10 @@ type MapPanelProps = {
 };
 
 const MapPanel = (props: MapPanelProps) => {
+  // const mapPreviewDimensions =
   return (
     <div className="GamePanel-body">
+      {/* <canvas id="create-canvas" width={canvasDimensions} height={canvasHeight} /> */}
       {props.maps.map((gameMap: GameMap, i) => (
         <button
           className={`GamePanel-button ${
