@@ -15,7 +15,12 @@ import { off } from "process";
 import Point from "../../../../shared/Point";
 import Minion from "../../../../shared/Minion";
 import Tower from "../../../../shared/Tower";
-import { towerConstants, GoldConstants, canvasDimensions } from "../../../../shared/constants";
+import {
+  towerConstants,
+  GoldConstants,
+  canvasDimensions,
+  canvasScaleFactors,
+} from "../../../../shared/constants";
 
 type CreateMapProps = RouteComponentProps & {
   userId: string;
@@ -29,17 +34,13 @@ const CreateMap = (props: CreateMapProps) => {
   const [goldMines, setGoldMines] = useState<Point[]>([]);
   const [towers, setTowers] = useState<Point[]>([]);
 
-  const scaleFactor = 2;
-  const realWidth = canvasDimensions.x;
-  const realHeight = canvasDimensions.y;
-  const canvasWidth = realWidth / scaleFactor;
-  const canvasHeight = realHeight / scaleFactor;
+  const scaleFactor = canvasScaleFactors.createMap;
+  const realWidth = canvasDimensions.width;
+  const realHeight = canvasDimensions.height;
+  const canvasWidth = realWidth * scaleFactor;
+  const canvasHeight = realHeight * scaleFactor;
 
   let canvas: HTMLElement;
-
-  const getDistance = (a: Point, b: Point) => {
-    return Math.pow(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2), 0.5);
-  };
 
   useEffect(() => {
     if (numPlayers !== 0) {
@@ -55,26 +56,26 @@ const CreateMap = (props: CreateMapProps) => {
       const handleClick = (event: MouseEvent) => {
         console.log("click");
         const newGoldMines: Array<Point> = [];
-        newGoldMines.push(new Point(scaleFactor * event.offsetX, scaleFactor * event.offsetY));
+        newGoldMines.push(new Point(event.offsetX / scaleFactor, event.offsetY / scaleFactor));
         newGoldMines.push(
           new Point(
-            realWidth - scaleFactor * event.offsetX,
-            realHeight - scaleFactor * event.offsetY
+            realWidth - event.offsetX / scaleFactor,
+            realHeight - event.offsetY / scaleFactor
           )
         );
         if (numPlayers === 4) {
           newGoldMines.push(
-            new Point(realWidth - scaleFactor * event.offsetX, scaleFactor * event.offsetY)
+            new Point(realWidth - event.offsetX / scaleFactor, event.offsetY / scaleFactor)
           );
           newGoldMines.push(
-            new Point(scaleFactor * event.offsetX, realHeight - scaleFactor * event.offsetY)
+            new Point(event.offsetX / scaleFactor, realHeight - event.offsetY / scaleFactor)
           );
         }
         for (const newGoldMine of newGoldMines) {
           for (const goldMine of goldMines.concat(newGoldMines)) {
             if (
               newGoldMine !== goldMine &&
-              getDistance(newGoldMine, goldMine) < 2 * GoldConstants.realRadius
+              newGoldMine.distanceTo(goldMine) < 2 * GoldConstants.realRadius
             )
               return;
           }
@@ -88,7 +89,7 @@ const CreateMap = (props: CreateMapProps) => {
         // }
         setGoldMines([...goldMines, ...newGoldMines]);
         for (const newGoldMine of newGoldMines) {
-          const drawLoc = new Point(newGoldMine.x / scaleFactor, newGoldMine.y / scaleFactor);
+          const drawLoc = new Point(newGoldMine.x * scaleFactor, newGoldMine.y * scaleFactor);
           drawGoldMine(drawLoc);
         }
         console.log(goldMines.length);

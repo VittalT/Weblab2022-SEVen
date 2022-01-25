@@ -208,6 +208,15 @@ router.get("/getGameMapId", (req: Request, res: Response) => {
     res.send({ successful: false });
   }
 });
+router.get("/getGameMapFromId", (req: Request, res: Response) => {
+  GameMapModel.findById(req.query.gameMapId)
+    .then((map: GameMap[]) => {
+      res.send({ successful: true, gameMap: map });
+    })
+    .catch((error: unknown) => {
+      res.send({ successful: false });
+    });
+});
 
 // router.get("/getGameMapNameFromId", (req: Request, res: Response) => {
 //   const gameCode = req.query.gameCode as string;

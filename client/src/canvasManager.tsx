@@ -2,10 +2,16 @@ import assert from "assert";
 import Point from "../../shared/Point";
 import Minion from "../../shared/Minion";
 import Tower from "../../shared/Tower";
-import { towerConstants, minionConstants, GoldConstants } from "../../shared/constants";
+import {
+  towerConstants,
+  minionConstants,
+  GoldConstants,
+  canvasScaleFactors,
+} from "../../shared/constants";
 import { GameUpdateData } from "../../shared/types";
+import { get } from "./utilities";
+import GameMapModel, { GameMap } from "../../server/models/Map";
 
-let canvas: HTMLCanvasElement;
 /** utils */
 
 // converts a coordinate in a normal X Y plane to canvas coordinates
@@ -70,10 +76,11 @@ const drawTower = (
   context: CanvasRenderingContext2D,
   tower: Tower,
   teamId: number,
-  initials: string
+  initials: string,
+  scaleFactor: number
 ) => {
-  const drawLoc = tower.location;
-  const towerRadius = towerConstants[tower.size].hitRadius;
+  const drawLoc = tower.location.scale(scaleFactor);
+  const towerRadius = towerConstants[tower.size].hitRadius * scaleFactor;
 
   // draw circle
   const color = colors[teamId];
@@ -103,18 +110,27 @@ const fillHealthBar = (
   context.fillRect(loc.x - 0.5 * size, loc.y + 0.25 * size, fracHealth * size, 0.25 * size);
 };
 
-const drawMinion = (context: CanvasRenderingContext2D, minion: Minion, teamId: number) => {
-  const drawLoc = minion.location;
-  const minionRadius = minionConstants[minion.size].boundingRadius;
+const drawMinion = (
+  context: CanvasRenderingContext2D,
+  minion: Minion,
+  teamId: number,
+  scaleFactor: number
+) => {
+  const drawLoc = minion.location.scale(scaleFactor);
+  const minionRadius = minionConstants[minion.size].boundingRadius * scaleFactor;
 
   // draw triangle
   const color = colors[teamId];
   fillTriangle(context, drawLoc, minionRadius, minion.direction, color);
 };
 
-const drawGoldMine = (context: CanvasRenderingContext2D, goldMineLoc: Point) => {
-  const drawLoc = goldMineLoc;
-  const goldRadius = GoldConstants.realRadius;
+const drawGoldMine = (
+  context: CanvasRenderingContext2D,
+  goldMineLoc: Point,
+  scaleFactor: number
+) => {
+  const drawLoc = goldMineLoc.scale(scaleFactor);
+  const goldRadius = GoldConstants.realRadius * scaleFactor;
 
   // draw circle
   const color = "#FFD700"; // gold
@@ -139,7 +155,7 @@ const drawTimer = (context: CanvasRenderingContext2D, numMilliSeconds: number) =
 /** main draw */
 export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // get the canvas element
-  canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
+  const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   if (!canvas) return;
   const context = canvas.getContext("2d") ?? assert.fail();
 
@@ -161,26 +177,52 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
     return initials;
   };
 
+  const scaleFactor = canvasScaleFactors.game;
+
   // display all towers, minions, and gold
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
     for (const minionId of player.minionIds) {
       const minion = gameUpdateData.minions[minionId];
-      drawMinion(context, minion, teamId);
+      drawMinion(context, minion, teamId, scaleFactor);
     }
   }
-
   for (const goldMineLoc of gameUpdateData.goldMineLocs) {
-    drawGoldMine(context, goldMineLoc);
+    drawGoldMine(context, goldMineLoc, scaleFactor);
   }
 
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
     for (const towerId of player.towerIds) {
       const tower = gameUpdateData.towers[towerId];
-      drawTower(context, tower, teamId, getInitials(userId));
+      drawTower(context, tower, teamId, getInitials(userId), scaleFactor);
     }
   }
 
   drawTimer(context, gameUpdateData.time);
+};
+
+export const drawMapPreview = async (gameMapId: string) => {
+  // get the canvas element
+  const canvas = document.getElementById("preview-canvas") as HTMLCanvasElement;
+  if (!canvas) return;
+  const context = canvas.getContext("2d") ?? assert.fail();
+
+  // clear the canvas to white
+  context.fillStyle = "#d4d4d4";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  const scaleFactor = canvasScaleFactors.mapPreview;
+
+  const data = await get("/api/getGameMapFromId", {
+    gameMapId: gameMapId,
+  });
+  if (data.successful) {
+    const map = data.gameMap;
+    const goldMines = map.gold_mines;
+    for (const goldMine of goldMines) {
+      const goldMineLoc = new Point(goldMine.x, goldMine.y);
+      drawGoldMine(context, goldMineLoc, scaleFactor);
+    }
+  }
 };

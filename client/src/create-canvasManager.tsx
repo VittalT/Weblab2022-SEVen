@@ -1,24 +1,22 @@
 import assert from "assert";
 import { fillCircle } from "./canvasManager";
-import { GoldConstants } from "../../shared/constants";
+import { canvasScaleFactors, GoldConstants } from "../../shared/constants";
 import Point from "../../shared/Point";
 
-let canvas: HTMLCanvasElement;
-let scaleFactor: number = 2;
-
+let scaleFactor = canvasScaleFactors.createMap;
 let goldColor: string = "#FFFF00";
 
 export const drawGoldMine = (coord: Point) => {
-  canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
+  const canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
   if (!canvas) return;
   console.log("drawing");
   const context = canvas.getContext("2d") ?? assert.fail();
-  const goldDrawRadius = GoldConstants.realRadius / scaleFactor;
+  const goldDrawRadius = GoldConstants.realRadius * scaleFactor;
   fillCircle(context, coord, goldDrawRadius, goldColor);
 };
 
 export const drawCreateCanvas = () => {
-  canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
+  const canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
   if (!canvas) return;
   const context = canvas.getContext("2d") ?? assert.fail();
 

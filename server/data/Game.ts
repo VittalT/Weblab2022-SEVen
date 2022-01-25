@@ -235,7 +235,10 @@ export class Game {
       this.playerToTeamId[userId] = teamId;
 
       const dir = angle * teamId;
-      const startTowerLoc = new Point(800 + 300 * Math.cos(dir), 375 + 300 * Math.sin(dir));
+      const startTowerLoc = new Point(
+        canvasDimensions.width / 2 + 300 * Math.cos(dir),
+        canvasDimensions.height / 2 + 300 * Math.sin(dir)
+      );
       this.addTower(userId, Size.Small, startTowerLoc, true);
     }
     getIo().in(this.gameCode).emit("startGame", { gameCode: this.gameCode });
@@ -282,8 +285,8 @@ export class Game {
   }
 
   public isInBounds(userId: string, loc: Point, size: Size): boolean {
-    const gameWidth = canvasDimensions.x;
-    const gameHeight = canvasDimensions.y;
+    const gameWidth = canvasDimensions.width;
+    const gameHeight = canvasDimensions.height;
     const currTowerRadius = towerConstants[size].hitRadius;
     if (loc.x < currTowerRadius || loc.x > gameWidth - currTowerRadius) {
       return false;

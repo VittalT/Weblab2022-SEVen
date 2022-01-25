@@ -1,4 +1,4 @@
-import React, { useState, useEffect, MouseEventHandler } from "react";
+import React, { useState, useEffect } from "react";
 import "../../utilities.css";
 import "./FindGame.css";
 
@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
@@ -36,15 +35,6 @@ type Props = RouteComponentProps & {
 const FindGame = (props: Props) => {
   const doNothing = () => {};
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const createPublicGame = async () => {
     const data = await post("/api/createGame", { gameType: "public" }); // creates backend game
     const gameCode = data.gameCode;
@@ -73,47 +63,56 @@ const FindGame = (props: Props) => {
 
   return (
     <>
-      <div className="u-gameContainer">
-        <h3 className="u-gameHeader">Minion Battle</h3>
+      <div className="FindGame-container u-gameContainer">
+        <h3 className="FindGame-header u-gameHeader">Minion Battle</h3>
         <div className="dropdown">
-          <PopupState variant="popover" popupId="demo-popup-menu">
-            {(popupState) => (
-              <React.Fragment>
-                <Button
-                  size="large"
-                  sx={{ marginBottom: 10, fontSize: 25, borderRadius: 3 }}
-                  variant="contained"
-                  {...bindTrigger(popupState)}
-                >
-                  Create Game
-                </Button>
-                <Menu {...bindMenu(popupState)}>
-                  <MenuItem onClick={createPublicGame}>Public</MenuItem>
-                  <MenuItem onClick={createPrivateGame}>Private</MenuItem>
-                </Menu>
-              </React.Fragment>
-            )}
-          </PopupState>
+          <div className="deadButton u-flexColumn">Create</div>
+          <div className="dropdown-content">
+            <div className="dropdown-button u-goodstuff" onClick={createPublicGame}>
+              Public
+            </div>
+            <div className="dropdown-button u-goodstuff" onClick={createPrivateGame}>
+              Private
+            </div>
+          </div>
         </div>
         <div className="dropdown">
-          <PopupState variant="popover" popupId="demo-popup-menu">
-            {(popupState) => (
-              <React.Fragment>
-                <Button
-                  size="large"
-                  sx={{ marginBottom: 10, fontSize: 25, borderRadius: 3 }}
-                  variant="contained"
-                  {...bindTrigger(popupState)}
-                >
-                  Join Game
-                </Button>
-                <Menu {...bindMenu(popupState)}>
-                  <MenuItem onClick={navToLobby}>Public</MenuItem>
-                  <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
-                </Menu>
-              </React.Fragment>
-            )}
-          </PopupState>
+          <div className="deadButton">Join</div>
+          <div className="dropdown-content">
+            <div className="dropdown-button u-goodstuff" onClick={navToLobby}>
+              Public
+            </div>
+            <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
+          </div>
+        </div>
+      </div>
+      <BackButton text="Back" destPath="/" />
+    </>
+  );
+
+  return (
+    <>
+      <div className="FindGame-container u-gameContainer">
+        <h3 className="FindGame-header u-gameHeader">Minion Battle</h3>
+        <div className="dropdown">
+          <div className="deadButton u-flexColumn">Create</div>
+          <div className="dropdown-content">
+            <div className="dropdown-button u-goodstuff" onClick={createPublicGame}>
+              Public
+            </div>
+            <div className="dropdown-button u-goodstuff" onClick={createPrivateGame}>
+              Private
+            </div>
+          </div>
+        </div>
+        <div className="dropdown">
+          <div className="deadButton">Join</div>
+          <div className="dropdown-content">
+            <div className="dropdown-button u-goodstuff" onClick={navToLobby}>
+              Public
+            </div>
+            <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
+          </div>
         </div>
       </div>
       <BackButton text="Back" destPath="/" />

@@ -103,8 +103,8 @@ const Game = (props: GameProps) => {
         <div>
           {/* <NavigationButton onClickFunction={doNothing} text="Forfeit" destPath="/" /> */}
           <GameMap
-            width={canvasDimensions.x}
-            height={canvasDimensions.y}
+            width={canvasDimensions.width}
+            height={canvasDimensions.height}
             gameCode={props.gameCode}
           />
         </div>

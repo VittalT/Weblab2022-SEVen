@@ -47,7 +47,7 @@ const HomeScreen = (props: Props) => {
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Logout"
               onLogoutSuccess={props.handleLogout}
-              onFailure={() => console.log("Failed to log in")}
+              onFailure={() => console.log("Failed to log out")}
               className="NavBar-link NavBar-login"
             />
           </>

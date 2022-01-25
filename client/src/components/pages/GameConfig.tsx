@@ -182,37 +182,48 @@ const GameConfig = (props: Props) => {
       <div className="GameConfig-container">
         <h3 className="GameConfig-header">MINION BATTLE</h3>
         <button onClick={leaveCurrentGame}>LEAVE THIS GAME</button>
-        <div> GAME CONFIG </div>
-        <div> game type: {gameType} </div>
-        <div> game code: {gameCode} </div>
-        <div> curent players: {playerNames.toString()} </div>
-        {props.passedUserId === hostId ? (
-          <div>
-            <MapPanel gameMapId={gameMapId} maps={maps} onClickGameMap={onClickGameMap} />
-            <Switch defaultChecked onClick={toggleIsRated} />
+        <div className="u-flexColumn">
+          {props.passedUserId === hostId ? (
+            <div className="u-flexColumn">
+              <div>You are the host</div>
+              <button onClick={startGame}>START</button>
+            </div>
+          ) : (
+            <div className="u-flexColumn">
+              <div>{hostName + " is the host"} </div>
+              <div>{"Waiting for " + hostName + " to start the game... "}</div>
+            </div>
+          )}
+          {startGameFailedStatus ? (
+            <div>Failed to start game, there must be 2, 3, or 4 players in the lobby</div>
+          ) : (
+            <div> </div>
+          )}
+          <br />
+          <div> GAME CONFIG </div>
+          <div> Game Type: {gameType} </div>
+          <div> Game Code: {gameCode} </div>
+          <div> Curent Players: {playerNames.toString()} </div>
+          <div className="u-flexColumn">
+            <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
+            <div>
+              {props.passedUserId === hostId ? (
+                <Switch defaultChecked onClick={toggleIsRated} />
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
-        ) : (
-          <></>
-        )}
-        <div> Rating Type: {isRated ? "Rated" : "Unrated"} </div>
-        <div> Current Map: {gameMapName} </div>
-        <div>---</div>
-        {props.passedUserId === hostId ? (
-          <>
-            <div>You are the host</div>
-            <button onClick={startGame}>START</button>
-          </>
-        ) : (
-          <>
-            <div>{hostName + " is the host"} </div>
-            <div>{"Waiting for " + hostName + " to start the game... "}</div>
-          </>
-        )}
-        {startGameFailedStatus ? (
-          <div>Failed to start game, there must be 2, 3, or 4 players in the lobby</div>
-        ) : (
-          <div> </div>
-        )}
+          <div className="u-flexColumn">
+            <div>Current Map: {gameMapName}</div>
+            <MapPanel
+              gameMapId={gameMapId}
+              maps={maps}
+              onClickGameMap={onClickGameMap}
+              isHost={props.passedUserId === hostId}
+            />
+          </div>
+        </div>
       </div>
     </>
   );

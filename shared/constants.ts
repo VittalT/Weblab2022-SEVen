@@ -63,4 +63,12 @@ export const GoldConstants = {
 
 export const FPS = 21;
 export const MAX_GAME_LEN_M = 5;
-export const canvasDimensions = new Point(1600, 750);
+export const canvasDimensions = {
+  width: 1600,
+  height: 750,
+};
+export const canvasScaleFactors = {
+  game: 1,
+  createMap: 1 / 2,
+  mapPreview: 1 / 2,
+};

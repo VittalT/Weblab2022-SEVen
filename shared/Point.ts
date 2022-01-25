@@ -26,6 +26,10 @@ class Point {
   public sum(other: Point) {
     return new Point(this.x + other.x, this.y + other.y);
   }
+
+  public scale(factor: number) {
+    return new Point(this.x * factor, this.y * factor);
+  }
 }
 
 export default Point;
