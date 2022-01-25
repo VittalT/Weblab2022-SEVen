@@ -34,7 +34,7 @@ const NewPostInput = (props: NewPostInputProps) => {
         onChange={handleChange}
         className="NewPostInput-input"
       />
-      <div className="NewPostInput-button u-pointer" onClick={handleSubmit}>
+      <div className="NewPostInput-button u-pointer u-textCenter" onClick={handleSubmit}>
         Submit
       </div>
     </div>

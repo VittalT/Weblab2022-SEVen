@@ -44,6 +44,15 @@ form {
   flex-grow: 1;
 }
 
+.u-goodstuff {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  cursor: pointer;
+  text-align: center;
+}
+
 .u-flex {
   display: flex;
 }
