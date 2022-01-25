@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import "../../utilities.css";
 import "./FindGame.css";
 
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
+
 import NavigationButton from "../modules/NavigationButton";
 import BackButton from "../modules/BackButton";
 
@@ -61,19 +66,54 @@ const FindGame = (props: Props) => {
       <div className="FindGame-container u-gameContainer">
         <h3 className="FindGame-header u-gameHeader">Minion Battle</h3>
         <div className="dropdown">
-          <div className="deadButton">Create</div>
+          <div className="deadButton u-flexColumn">Create</div>
           <div className="dropdown-content">
-            <button onClick={createPublicGame}>Public</button>
-            <button onClick={createPrivateGame}>Private</button>
+            <div className="dropdown-button u-goodstuff" onClick={createPublicGame}>
+              Public
+            </div>
+            <div className="dropdown-button u-goodstuff" onClick={createPrivateGame}>
+              Private
+            </div>
           </div>
         </div>
         <div className="dropdown">
           <div className="deadButton">Join</div>
           <div className="dropdown-content">
-            <button onClick={navToLobby}>Public</button>
+            <div className="dropdown-button u-goodstuff" onClick={navToLobby}>
+              Public
+            </div>
+            <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
           </div>
         </div>
-        <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
+      </div>
+      <BackButton text="Back" destPath="/" />
+    </>
+  );
+
+  return (
+    <>
+      <div className="FindGame-container u-gameContainer">
+        <h3 className="FindGame-header u-gameHeader">Minion Battle</h3>
+        <div className="dropdown">
+          <div className="deadButton u-flexColumn">Create</div>
+          <div className="dropdown-content">
+            <div className="dropdown-button u-goodstuff" onClick={createPublicGame}>
+              Public
+            </div>
+            <div className="dropdown-button u-goodstuff" onClick={createPrivateGame}>
+              Private
+            </div>
+          </div>
+        </div>
+        <div className="dropdown">
+          <div className="deadButton">Join</div>
+          <div className="dropdown-content">
+            <div className="dropdown-button u-goodstuff" onClick={navToLobby}>
+              Public
+            </div>
+            <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
+          </div>
+        </div>
       </div>
       <BackButton text="Back" destPath="/" />
     </>

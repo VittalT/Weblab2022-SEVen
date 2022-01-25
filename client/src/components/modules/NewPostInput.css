@@ -9,6 +9,7 @@
   border: var(--darkgrey) 1px solid;
   border-radius: var(--xs) 0 0 var(--xs);
   transition: box-shadow 0.1s;
+  flex-direction: column;
 }
 
 .NewPostInput-input:focus-within {
