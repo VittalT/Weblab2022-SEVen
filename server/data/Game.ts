@@ -519,7 +519,7 @@ export class Game {
     }
   }
 
-  public onGameEnd(): void {
+  public async onGameEnd(): Promise<void> {
     this.isInPlay = false;
     if (this.winnerId !== null) {
       const winnerName = this.idToName[this.winnerId];
@@ -531,9 +531,9 @@ export class Game {
       console.log("Error: winnerId is null");
     }
     if (this.isRated && this.winnerId !== null) {
-      this.adjustRatingsAll();
+      await this.adjustRatingsAll();
     }
-    this.updatePlayerStats();
+    await this.updatePlayerStats();
     this.clearGame();
   }
 
@@ -542,7 +542,7 @@ export class Game {
       const user = await UserModel.findById(playerId);
       user.games_played += 1;
       if (playerId === this.winnerId) {
-        user.games_win += 1;
+        user.games_won += 1;
       }
       user.save();
     }
