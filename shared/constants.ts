@@ -6,28 +6,28 @@ export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
     health: 50,
     healthRegenRate: 0.5 / 1000,
-    goldRate: 3 / 1000,
-    cost: 50,
+    goldRate: 2 / 1000,
+    cost: 25,
     minAdjBuildRadius: 60,
-    maxAdjBuildRadius: 180,
+    maxAdjBuildRadius: 150,
     hitRadius: 60,
   },
   [Size.Medium]: {
-    health: 100,
+    health: 150,
     healthRegenRate: 0.5 / 1000,
-    goldRate: 5 / 1000,
+    goldRate: 3 / 1000,
     cost: 100,
     minAdjBuildRadius: 75,
-    maxAdjBuildRadius: 225,
+    maxAdjBuildRadius: 180,
     hitRadius: 75,
   },
   [Size.Large]: {
-    health: 200,
+    health: 500,
     healthRegenRate: 1 / 1000,
-    goldRate: 10 / 1000,
-    cost: 200,
+    goldRate: 5 / 1000,
+    cost: 400,
     minAdjBuildRadius: 90,
-    maxAdjBuildRadius: 270,
+    maxAdjBuildRadius: 210,
     hitRadius: 90,
   },
 };
@@ -35,30 +35,30 @@ export const towerConstants: Record<Size, TowerConstants> = {
 export const minionConstants: Record<Size, MinionConstants> = {
   [Size.Small]: {
     damageRate: 1 / 1000,
-    cost: 10,
+    cost: 15,
     speed: 40 / 1000,
     boundingRadius: 5,
   },
   [Size.Medium]: {
-    damageRate: 2 / 1000,
-    cost: 25,
-    speed: 30 / 1000,
+    damageRate: 3 / 1000,
+    cost: 30,
+    speed: 32 / 1000,
     boundingRadius: 8,
   },
   [Size.Large]: {
-    damageRate: 4 / 1000,
-    cost: 50,
-    speed: 20 / 1000,
+    damageRate: 5 / 1000,
+    cost: 45,
+    speed: 24 / 1000,
     boundingRadius: 10,
   },
 };
 export const explosionConstants = {
-  cost: 100,
+  cost: 250,
 };
 
 export const GoldConstants = {
   realRadius: 25,
-  gold: 100,
+  gold: 25,
 };
 
 export const FPS = 21;

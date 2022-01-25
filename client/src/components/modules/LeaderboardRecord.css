@@ -1,0 +1,15 @@
+.Leaderboard-record {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Leaderboard-record-user {
+  font-size: 25px;
+  margin-left: 0;
+}
+
+.Leaderboard-record-value {
+  font-size: 25px;
+  margin-right: 0;
+}

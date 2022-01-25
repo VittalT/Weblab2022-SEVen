@@ -1,3 +1,17 @@
 .Profile-line {
   border-color: var(--grey);
 }
+
+.Leaderboard-statsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.Leaderboard-column {
+  margin-right: 60px;
+}
+
+.Leaderboard-header {
+  font-size: 45px;
+  margin-bottom: 5px;
+}

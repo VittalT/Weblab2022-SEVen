@@ -16,7 +16,10 @@ type Props = RouteComponentProps & {
 };
 
 const Leaderboard = (props: Props) => {
-  const peopleToInclude = 5;
+  let peopleToInclude = 3;
+  get("/api/users").then((users: User[]) => {
+    peopleToInclude = users.length;
+  });
   const [bestRatings, setBestRatings] = useState<ReactElement[]>([]);
   const [bestAlltimeRatings, setBestAlltimeRatings] = useState<ReactElement[]>([]);
   const [highestGamesPlayed, setHighestGamesPlayed] = useState<ReactElement[]>([]);
@@ -80,29 +83,29 @@ const Leaderboard = (props: Props) => {
 
   return (
     <>
-      <div className="overallDiv">
+      <div className="u-gameContainer">
         <div>
-          <h1 className="Leaderboard-header">Leaderboard</h1>
+          <h1 className="u-gameHeader">Leaderboard</h1>
         </div>
         <hr className="Leaderboard-line" />
-        <div>
+        <div className="Leaderboard-statsContainer">
           <div className="Leaderboard-column">
-            <h2>Current Rating</h2>
+            <h2 className="Leaderboard-header">Current Rating</h2>
             <hr className="Leaderboard-line" />
             {bestRatings}
           </div>
           <div className="Leaderboard-column">
-            <h2>All-time Rating</h2>
+            <h2 className="Leaderboard-header">All-time Rating</h2>
             <hr className="Leaderboard-line" />
             {bestAlltimeRatings}
           </div>
           <div className="Leaderboard-column">
-            <h2>Games Played</h2>
+            <h2 className="Leaderboard-header">Games Played</h2>
             <hr className="Leaderboard-line" />
             {highestGamesPlayed}
           </div>
           <div className="Leaderboard-column">
-            <h2>Games Won</h2>
+            <h2 className="Leaderboard-header">Games Won</h2>
             <hr className="Leaderboard-line" />
             {highestGamesWon}
           </div>
