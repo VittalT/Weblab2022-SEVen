@@ -23,7 +23,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Large]: {
     health: 500,
     healthRegenRate: 1 / 1000,
-    goldRate: 5 / 1000,
+    goldRate: 6 / 1000,
     cost: 400,
     minAdjBuildRadius: 90,
     maxAdjBuildRadius: 210,
