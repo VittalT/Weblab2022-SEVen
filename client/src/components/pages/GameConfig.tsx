@@ -194,7 +194,7 @@ const GameConfig = (props: Props) => {
             "&:hover": {
               bgcolor: "#6CB1D9",
             },
-            "& .MuiButtonBase-root-MuiButton-root": {
+            "& .MuiButton-root": {
               borderRadius: "4px",
               bgcolor: "#FFFFFF",
               fontSize: 25,
