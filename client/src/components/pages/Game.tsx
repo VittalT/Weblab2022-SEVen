@@ -117,8 +117,10 @@ const Game = (props: GameProps) => {
         <></>
       ) : (
         <div className="Game-endScreen">
-          <div>{"" + winnerName + " won!"}</div>
-          <button onClick={navGameConfig}>Return to lobby</button>
+          <div className="Game-center">{"" + winnerName + " won!"}</div>
+          <button className="Game-center" onClick={navGameConfig}>
+            Return to lobby
+          </button>
         </div>
       )}
       <p className="Game-displayText">{`${sizeClicked} ${clickState} - ${displayText}`}</p>
