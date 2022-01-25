@@ -63,7 +63,7 @@ export class Game {
     this.maxMinionId = 0;
     this.players = {} as Record<string, Player>;
     this.playerToTeamId = {} as Record<string, number>;
-    this.gameMapId = "default";
+    this.gameMapId = "61ef3fcacd275e74b9034d3e"; // from mongo.db account: "No Gold Mines"
     this.goldMineLocs = []; // updated when game starts
     this.gameLoop = this.gameLoop.bind(this);
     getIo().emit("updatePublicLobby");
@@ -116,12 +116,11 @@ export class Game {
     return true;
   }
 
-  public updateGameMap(gameMapId: string, gameMapName: string) {
+  public updateGameMap(gameMapId: string) {
     this.gameMapId = gameMapId;
     getIo().in(this.gameCode).emit("updateGameMap", {
       gameCode: this.gameCode,
       gameMapId: gameMapId,
-      gameMapName: gameMapName,
     });
   }
 

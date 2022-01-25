@@ -121,19 +121,15 @@ export const init = (server: http.Server): void => {
         currGame.start();
       }
     });
-    socket.on(
-      "updateGameMap",
-      (data: { gameCode: string; gameMapId: string; gameMapName: string }) => {
-        const gameCode = data.gameCode;
-        const gameMapId = data.gameMapId;
-        const gameMapName = data.gameMapName;
-        if (Object.keys(games).includes(gameCode)) {
-          console.log(`update game code ${gameCode} map to id ${gameMapId}`);
-          const currGame = games[gameCode];
-          currGame.updateGameMap(gameMapId, gameMapName);
-        }
+    socket.on("updateGameMap", (data: { gameCode: string; gameMapId: string }) => {
+      const gameCode = data.gameCode;
+      const gameMapId = data.gameMapId;
+      if (Object.keys(games).includes(gameCode)) {
+        console.log(`update game code ${gameCode} map to id ${gameMapId}`);
+        const currGame = games[gameCode];
+        currGame.updateGameMap(gameMapId);
       }
-    );
+    });
     socket.on("updateGameIsRated", (data: { gameCode: string; isRated: boolean }) => {
       const gameCode = data.gameCode;
       const isRated = data.isRated;

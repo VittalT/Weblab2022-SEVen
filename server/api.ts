@@ -178,8 +178,8 @@ router.post("/createMap", (req: Request, res: Response) => {
 // returns inactive if game does not exist as well
 router.post("/getGameActiveStatus", (req: Request, res: Response) => {
   const gameCode = req.body.gameCode;
-  console.log(games.toString());
-  console.log(Object.keys(games).toString());
+  // console.log(games.toString());
+  // console.log(Object.keys(games).toString());
   if (!Object.keys(games).includes(gameCode)) {
     res.send({ isActive: false });
   } else {
@@ -199,14 +199,34 @@ router.get("/getMaps", (req: Request, res: Response) => {
 
 router.get("/getGameMapId", (req: Request, res: Response) => {
   const gameCode = req.query.gameCode as string;
-  const currGame = games[gameCode];
-  res.send(currGame.getGameMapId());
+  // console.log(gameCode);
+  // console.log(games);
+  if (gameCode in games) {
+    const currGame = games[gameCode];
+    res.send({ successful: true, gameMapId: currGame.getGameMapId() });
+  } else {
+    res.send({ successful: false });
+  }
 });
+
+// router.get("/getGameMapNameFromId", (req: Request, res: Response) => {
+//   const gameCode = req.query.gameCode as string;
+//   if (gameCode in games) {
+//     GameMapModel;
+//     res.send({ successful: true, gameMapId: currGame.getGameMapId() });
+//   } else {
+//     res.send({ successful: false });
+//   }
+// });
 
 router.get("/getGameIsRated", (req: Request, res: Response) => {
   const gameCode = req.query.gameCode as string;
-  const currGame = games[gameCode];
-  res.send(currGame.getGameIsRated());
+  if (gameCode in games) {
+    const currGame = games[gameCode];
+    res.send({ successful: true, isRated: currGame.getGameIsRated() });
+  } else {
+    res.send({ successful: false });
+  }
 });
 
 // router.get("/gameConstants", (req: Request, res: Response) => {

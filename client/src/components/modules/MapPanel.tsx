@@ -15,7 +15,11 @@ const MapPanel = (props: MapPanelProps) => {
     <div className="GamePanel-body">
       {props.maps.map((gameMap: GameMap, i) => (
         <button
-          className="GamePanel-button"
+          className={`GamePanel-button ${
+            gameMap._id === props.gameMapId
+              ? "MapPanel-button_selected"
+              : "MapPanel-button_not_selected"
+          }`}
           key={i}
           onClick={() => props.onClickGameMap(gameMap._id, gameMap.name)}
         >

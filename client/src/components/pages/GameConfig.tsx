@@ -27,8 +27,8 @@ type Props = URLProps & {
 const GameConfig = (props: Props) => {
   const [gameType, setGameType] = useState<string>("");
   const [gameCode, setGameCode] = useState<string>("a");
-  const [gameMapId, setGameMapId] = useState<string>("");
-  const [gameMapName, setGameMapName] = useState<string>("");
+  const [gameMapId, setGameMapId] = useState<string>(""); // TODO put 61ef3fcacd275e74b9034d3e
+  const [gameMapName, setGameMapName] = useState<string>(""); // TODO put No Gold Mines
   const [isRated, setIsRated] = useState<boolean>(true);
   const [maps, setMaps] = useState<GameMap[]>([]);
 
@@ -85,12 +85,11 @@ const GameConfig = (props: Props) => {
   };
 
   const onClickGameMap = (id: string, name: string) => {
-    socket.emit("updateGameMap", { gameCode: gameCode, gameMapId: id, gameMapName: name });
+    socket.emit("updateGameMap", { gameCode: gameCode, gameMapId: id });
   };
 
-  const updateGameMap = (data: { gameCode: string; gameMapId: string; gameMapName: string }) => {
+  const updateGameMap = (data: { gameCode: string; gameMapId: string }) => {
     setGameMapId(data.gameMapId);
-    setGameMapName(data.gameMapName);
   };
 
   const toggleIsRated = () => {
@@ -114,11 +113,11 @@ const GameConfig = (props: Props) => {
       // using gamecode associated with app, populate page with lobby info
       const data = await get("/api/getCurrRoomStatus");
       const currGameCode = data.gameCode;
-      setGameCode(data.gameCode);
+      await setGameCode(currGameCode);
       if (currGameCode.length === 6) {
         const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
         const data = await post("/api/getLobbyInfo", { gameCode: currGameCode });
-        console.log(data);
+        // console.log(data);
         const lobbyData = await updateLobbyData(data);
       } else {
         navigate("/findgame");
@@ -135,12 +134,12 @@ const GameConfig = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    get("/api/getMaps").then((data) => {
+    get("/api/getMaps").then((data: GameMap[]) => {
       console.log("getting maps");
       setMaps(data);
     });
     socket.on("updateMaps", () => {
-      get("/api/getMaps").then((data) => {
+      get("/api/getMaps").then((data: GameMap[]) => {
         console.log("updating maps");
         setMaps(data);
       });
@@ -152,17 +151,30 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/getGameMapId", { gameCode: gameCode }).then((data) => {
-      console.log("getting game map id");
-      setGameMapId(data);
+      console.log(`game map id ${data.gameMapId}`);
+      if (data.successful) {
+        setGameMapId(data.gameMapId);
+      }
     });
-  }, []);
+  }, [gameCode]);
+
+  useEffect(() => {
+    const possMap = maps.find((mapObj: GameMap) => mapObj._id === gameMapId);
+    console.log(`N ${gameMapId} ${possMap !== undefined ? possMap.name : "und"}`);
+    if (possMap !== undefined) {
+      console.log(`game name ${possMap.name}`);
+      setGameMapName(possMap.name);
+    }
+  }, [gameMapId, maps]);
 
   useEffect(() => {
     get("/api/getGameIsRated", { gameCode: gameCode }).then((data) => {
-      console.log("getting game isRated");
-      setIsRated(data);
+      console.log(`game isRated ${data.isRated}`);
+      if (data.successful) {
+        setIsRated(data.isRated);
+      }
     });
-  }, []);
+  }, [gameCode]);
 
   // *either you are the host or waiting to start
   return (
