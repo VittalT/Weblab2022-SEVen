@@ -127,7 +127,14 @@ export class Game {
 
   public updateGameIsRated(isRated: boolean) {
     this.isRated = isRated;
+<<<<<<< HEAD
     // have to emit here
+=======
+    getIo().in(this.gameCode).emit("updateGameIsRated", {
+      gameCode: this.gameCode,
+      isRated: isRated,
+    });
+>>>>>>> 408c4c1804978593f6e7fbe9add04c3d30cac978
   }
 
   public hasPlayer(userId: string): boolean {
@@ -144,6 +151,14 @@ export class Game {
 
   public getGameCode(): string {
     return this.gameCode;
+  }
+
+  public getGameMapId(): string {
+    return this.gameMapId;
+  }
+
+  public getGameIsRated(): boolean {
+    return this.isRated;
   }
 
   public getPlayerNames(): Array<string> {

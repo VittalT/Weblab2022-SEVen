@@ -134,6 +134,15 @@ export const init = (server: http.Server): void => {
         }
       }
     );
+    socket.on("updateGameIsRated", (data: { gameCode: string; isRated: boolean }) => {
+      const gameCode = data.gameCode;
+      const isRated = data.isRated;
+      if (Object.keys(games).includes(gameCode)) {
+        console.log(`update game code ${gameCode} isRated to ${isRated}`);
+        const currGame = games[gameCode];
+        currGame.updateGameIsRated(isRated);
+      }
+    });
   });
 };
 

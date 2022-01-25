@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 
 // socket stuff:
 const { getSocketFromUserID } = require("./server-socket");
-import socketManager from "./server-socket";
+import socketManager, { getIo } from "./server-socket";
 import { games } from "./data/games";
 import { Game } from "./data/Game";
 import { clients } from "./data/clients";
@@ -165,9 +165,14 @@ router.post("/createMap", (req: Request, res: Response) => {
     towers: req.body.towers,
     created: req.body.created,
   });
-  newGameMap.save().then(() => {
-    res.status(200).send({ msg: "Successfully created map" });
-  });
+  newGameMap
+    .save()
+    .then(() => {
+      res.status(200).send({ msg: "Successfully created map" });
+    })
+    .then(() => {
+      getIo().emit("updateMaps");
+    });
 });
 
 // returns inactive if game does not exist as well
@@ -190,6 +195,18 @@ router.get("/getMaps", (req: Request, res: Response) => {
   GameMapModel.find({}).then((maps: GameMap[]) => {
     res.send(maps);
   });
+});
+
+router.get("/getGameMapId", (req: Request, res: Response) => {
+  const gameCode = req.query.gameCode as string;
+  const currGame = games[gameCode];
+  res.send(currGame.getGameMapId());
+});
+
+router.get("/getGameIsRated", (req: Request, res: Response) => {
+  const gameCode = req.query.gameCode as string;
+  const currGame = games[gameCode];
+  res.send(currGame.getGameIsRated());
 });
 
 // router.get("/gameConstants", (req: Request, res: Response) => {
