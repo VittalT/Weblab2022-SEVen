@@ -43,8 +43,7 @@ export class Game {
     gameType: string,
     hostId: string,
     hostName: string,
-    playerIds: Array<string>,
-    isRated: boolean
+    playerIds: Array<string>
   ) {
     this.gameCode = gameCode;
     this.gameType = gameType;
@@ -54,7 +53,7 @@ export class Game {
     this.idToName[hostId] = hostName;
     this.isActive = true;
     this.isInPlay = false;
-    this.isRated = isRated;
+    this.isRated = true;
 
     this.startTime = Date.now();
     this.winnerId = null;
@@ -124,6 +123,10 @@ export class Game {
       gameMapId: gameMapId,
       gameMapName: gameMapName,
     });
+  }
+
+  public updateGameIsRated(isRated: boolean) {
+    this.isRated = isRated;
   }
 
   public hasPlayer(userId: string): boolean {
@@ -454,7 +457,9 @@ export class Game {
     } else {
       console.log("Error: winnerId is null");
     }
-    this.adjustRatingsAll();
+    if (this.isRated) {
+      this.adjustRatingsAll();
+    }
     this.clearGame();
   }
 
