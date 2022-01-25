@@ -127,6 +127,7 @@ export class Game {
 
   public updateGameIsRated(isRated: boolean) {
     this.isRated = isRated;
+    // have to emit here
   }
 
   public hasPlayer(userId: string): boolean {
