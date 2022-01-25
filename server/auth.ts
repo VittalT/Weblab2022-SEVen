@@ -2,6 +2,7 @@ import { OAuth2Client, TokenPayload } from "google-auth-library";
 import { NextFunction, Request, Response } from "express";
 import User from "./models/User";
 import UserInterface from "../shared/User";
+import { playerConstants } from "../shared/constants";
 
 // create a new OAuth client used to verify google sign-in
 const CLIENT_ID = "231096273873-qsgaohckiltuehaohhm6up2fk68cg53n.apps.googleusercontent.com";
@@ -24,10 +25,10 @@ const getOrCreateUser = (user: TokenPayload) => {
         name: user.name,
         googleid: user.sub,
         current_game: "",
-        rating: 1200,
-        all_time_rating: 1200,
+        rating: playerConstants.startRating,
+        all_time_rating: playerConstants.startRating,
         games_played: 0,
-        games_won: 0
+        games_won: 0,
       });
       return newUser.save();
     }

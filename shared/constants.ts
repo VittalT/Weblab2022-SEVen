@@ -2,6 +2,9 @@
 import { Size } from "./enums";
 import Point from "./Point";
 import { TowerConstants, MinionConstants } from "./types";
+export const playerConstants = {
+  startRating: 1200,
+};
 export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
     health: 50,

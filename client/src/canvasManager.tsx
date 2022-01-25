@@ -71,6 +71,9 @@ const fillTriangle = (
 };
 
 /** drawing functions */
+const scaleBy = (loc: Point, factor: number) => {
+  return new Point(loc.x * factor, loc.y * factor);
+};
 
 const drawTower = (
   context: CanvasRenderingContext2D,
@@ -79,7 +82,8 @@ const drawTower = (
   initials: string,
   scaleFactor: number
 ) => {
-  const drawLoc = tower.location.scale(scaleFactor);
+  // const drawLoc = tower.location.scaleBy(scaleFactor);
+  const drawLoc = scaleBy(tower.location, scaleFactor);
   const towerRadius = towerConstants[tower.size].hitRadius * scaleFactor;
 
   // draw circle
@@ -116,7 +120,8 @@ const drawMinion = (
   teamId: number,
   scaleFactor: number
 ) => {
-  const drawLoc = minion.location.scale(scaleFactor);
+  // const drawLoc = minion.location.scaleBy(scaleFactor);
+  const drawLoc = scaleBy(minion.location, scaleFactor);
   const minionRadius = minionConstants[minion.size].boundingRadius * scaleFactor;
 
   // draw triangle
@@ -129,7 +134,10 @@ const drawGoldMine = (
   goldMineLoc: Point,
   scaleFactor: number
 ) => {
-  const drawLoc = goldMineLoc.scale(scaleFactor);
+  // console.log(goldMineLoc);
+  // const drawLoc = goldMineLoc.scaleBy(scaleFactor);
+  const drawLoc = scaleBy(goldMineLoc, scaleFactor);
+  // console.log(drawLoc);
   const goldRadius = GoldConstants.realRadius * scaleFactor;
 
   // draw circle
@@ -155,7 +163,7 @@ const drawTimer = (context: CanvasRenderingContext2D, numMilliSeconds: number) =
 /** main draw */
 export const drawCanvas = (gameUpdateData: GameUpdateData) => {
   // get the canvas element
-  console.log(gameUpdateData);
+  // console.log(gameUpdateData);
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   if (!canvas) return;
   const context = canvas.getContext("2d") ?? assert.fail();
@@ -218,7 +226,7 @@ export const drawMapPreview = async (gameMapId: string) => {
     gameMapId: gameMapId,
   });
   if (data.successful) {
-    const map = data.gameMap;
+    const map = data.gameMap as GameMap;
     const goldMines = map.gold_mines;
     for (const goldMine of goldMines) {
       const goldMineLoc = new Point(goldMine.x, goldMine.y);

@@ -16,6 +16,7 @@ import {
 import { explosionConstants } from "../../shared/constants";
 import GameMapModel, { GameMap } from "../models/Map";
 import UserModel, { User } from "../models/User";
+import { GameUpdateData } from "../../shared/types";
 
 export class Game {
   private readonly gameCode: string;
@@ -472,7 +473,7 @@ export class Game {
     } else {
       console.log("Error: winnerId is null");
     }
-    if (this.isRated) {
+    if (this.isRated && this.winnerId !== null) {
       this.adjustRatingsAll();
     }
     this.clearGame();
@@ -494,9 +495,9 @@ export class Game {
     let id1Rating: number = 0;
     let id2Rating: number = 0;
 
-    const user1 = await UserModel.findOne({ _id: id1 });
+    const user1 = await UserModel.findById(id1);
     id1Rating = user1.rating;
-    const user2 = await UserModel.findOne({ _id: id2 });
+    const user2 = await UserModel.findById(id2);
     id2Rating = user2.rating;
 
     const user1prob = 1 / (1 + Math.pow(10, (id1Rating - id2Rating) / 400));
@@ -537,7 +538,7 @@ export class Game {
   }
 
   public sendGameState() {
-    const gameUpdateData = {
+    const gameUpdateData: GameUpdateData = {
       time: Date.now() - this.startTime,
       hostId: this.hostId,
       idToName: this.idToName,
