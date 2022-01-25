@@ -22,7 +22,9 @@ import Leaderboard from "./pages/Leaderboard";
 
 const App = () => {
   const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
   const [gameCode, setGameCode] = useState("");
+  // const [gameMapId, setGameMapId] = useState("");
 
   // connects the socket and joins the room (socket oriented), returns whether or not room was joined
   const joinRoom = async (userId: string, gameCode: string) => {
@@ -62,6 +64,7 @@ const App = () => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
         setUserId(user._id);
+        setUserName(user.name);
       }
     };
     forceNavigate();
@@ -74,6 +77,7 @@ const App = () => {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
       setUserId(user._id);
+      setUserName(user.name);
       // console.log(`User Id: ${user._id}`);
       // console.log(`User Id: ${userId}`);
     });
@@ -81,6 +85,7 @@ const App = () => {
 
   const handleLogout = () => {
     setUserId("");
+    setUserName("");
     post("/api/logout");
   };
 
@@ -100,7 +105,7 @@ const App = () => {
         joinRoom={joinRoom}
         forceNavigate={forceNavigate}
       />
-      <CreateMap path="/createmap" userId={userId} />
+      <CreateMap path="/createmap" userId={userId} userName={userName} />
       <GameConfig
         path="/gameconfig"
         passedUserId={userId}

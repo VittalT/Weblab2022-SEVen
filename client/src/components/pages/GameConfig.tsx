@@ -10,6 +10,8 @@ import { Router, RouteComponentProps, navigate } from "@reach/router";
 
 import BackButton from "../modules/BackButton";
 import { socket } from "../../client-socket";
+import GameMapModel, { GameMap } from "../../../../server/models/Map";
+import MapPanel from "../modules/MapPanel";
 
 interface URLProps extends RouteComponentProps {
   passedGameCode: string;
@@ -24,14 +26,15 @@ type Props = URLProps & {
 const GameConfig = (props: Props) => {
   const [gameType, setGameType] = useState<string>("");
   const [gameCode, setGameCode] = useState<string>("a");
-  const [gameMapId, setGameMapId] = useState<string>("a");
+  const [gameMapId, setGameMapId] = useState<string>("");
+  const [gameMapName, setGameMapName] = useState<string>("");
+  const [maps, setMaps] = useState<GameMap[]>([]);
 
   const [hostName, setHostName] = useState<string>("");
   const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
   const [hostId, setHostId] = useState<string>("");
 
   const [startGameFailedStatus, setStartGameFailedStatus] = useState<boolean>(false);
-  const [mapId, setmapId] = useState<string>("");
 
   const updateLobbyData = (data: {
     gameType: string;
@@ -79,12 +82,22 @@ const GameConfig = (props: Props) => {
     setStartGameFailedStatus(true);
   };
 
+  const onClickGameMap = (id: string, name: string) => {
+    socket.emit("updateGameMap", { gameCode: gameCode, gameMapId: id, gameMapName: name });
+  };
+
+  const updateGameMap = (data: { gameCode: string; gameMapId: string; gameMapName: string }) => {
+    setGameMapId(data.gameMapId);
+    setGameMapName(data.gameMapName);
+  };
+
   useEffect(() => {
     gameConfigForceNavigate();
 
     socket.on("updateLobbies", updateLobbyData);
     socket.on("startGame", navToGame);
     socket.on("gameStartFailed", displayStartGameFailed);
+    socket.on("updateGameMap", updateGameMap);
 
     const doThings = async () => {
       // using gamecode associated with app, populate page with lobby info
@@ -110,6 +123,22 @@ const GameConfig = (props: Props) => {
     };
   }, []);
 
+  useEffect(() => {
+    get("/api/getMaps").then((data) => {
+      console.log("getting maps");
+      setMaps(data);
+    });
+    socket.on("updateMaps", () => {
+      get("/api/getMaps").then((data) => {
+        console.log("updating maps");
+        setMaps(data);
+      });
+    });
+    return () => {
+      socket.off("updateMaps");
+    };
+  }, []);
+
   // *either you are the host or waiting to start
   return (
     <>
@@ -120,7 +149,12 @@ const GameConfig = (props: Props) => {
         <div> game type: {gameType} </div>
         <div> game code: {gameCode} </div>
         <div> curent players: {playerNames.toString()} </div>
-        <div> current map (TO DO: add option to switch): {mapId} </div>
+        {props.passedUserId === hostId ? (
+          <MapPanel gameMapId={gameMapId} maps={maps} onClickGameMap={onClickGameMap} />
+        ) : (
+          <></>
+        )}
+        <div> Current Map: {gameMapName} </div>
         <div>---</div>
         {props.passedUserId === hostId ? (
           <>

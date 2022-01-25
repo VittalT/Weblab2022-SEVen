@@ -19,12 +19,13 @@ import { towerConstants, GoldConstants } from "../../../../shared/constants";
 
 type CreateMapProps = RouteComponentProps & {
   userId: string;
+  userName: string;
 };
 
 const CreateMap = (props: CreateMapProps) => {
   const [mapName, setMapName] = useState<string>("");
-  const [creatorName, setCreatorName] = useState<string>(props.userId);
-  const [numPlayers, setNumPlayers] = useState<number>(2);
+  const [creatorName, setCreatorName] = useState<string>(props.userName);
+  const [numPlayers, setNumPlayers] = useState<number>(0);
   const [goldMines, setGoldMines] = useState<Point[]>([]);
   const [towers, setTowers] = useState<Point[]>([]);
 
@@ -41,44 +42,63 @@ const CreateMap = (props: CreateMapProps) => {
   };
 
   useEffect(() => {
-    canvas = document.getElementById("create-canvas") ?? assert.fail();
-    drawCreateCanvas();
-    console.log("init");
-  }, []);
+    if (numPlayers !== 0) {
+      canvas = document.getElementById("create-canvas") ?? assert.fail();
+      drawCreateCanvas();
+      console.log("init");
+    }
+  }, [numPlayers]);
 
   useEffect(() => {
-    canvas = document.getElementById("create-canvas") ?? assert.fail();
-    const handleClick = (event: MouseEvent) => {
-      console.log("click");
-      let officialCoordFirst = new Point(scaleFactor * event.offsetX, scaleFactor * event.offsetY);
-      let officialCoordSecond = new Point(
-        realWidth - scaleFactor * event.offsetX,
-        realHeight - scaleFactor * event.offsetY
-      );
-      if (getDistance(officialCoordFirst, officialCoordSecond) < 2 * GoldConstants.realRadius)
-        return;
-      for (let i = 0; i < goldMines.length; i++) {
-        if (getDistance(officialCoordFirst, goldMines[i]) < 2 * GoldConstants.realRadius) return;
-      }
-      for (let i = 0; i < towers.length; i++) {
-        if (
-          getDistance(officialCoordFirst, towers[i]) <
-          GoldConstants.realRadius + towerConstants.Medium.minAdjBuildRadius
-        )
-          return;
-      }
-      setGoldMines([...goldMines, officialCoordFirst, officialCoordSecond]);
-      let drawCoordFirst = new Point(event.offsetX, event.offsetY);
-      let drawCoordSecond = new Point(canvasWidth - event.offsetX, canvasHeight - event.offsetY);
-      drawGoldMine(drawCoordFirst);
-      drawGoldMine(drawCoordSecond);
-      console.log(goldMines.length);
-    };
-    canvas.addEventListener("click", handleClick);
-    return () => {
-      canvas.removeEventListener("click", handleClick);
-    };
-  }, [goldMines]);
+    if (numPlayers !== 0) {
+      canvas = document.getElementById("create-canvas") ?? assert.fail();
+      const handleClick = (event: MouseEvent) => {
+        console.log("click");
+        const newGoldMines: Array<Point> = [];
+        newGoldMines.push(new Point(scaleFactor * event.offsetX, scaleFactor * event.offsetY));
+        newGoldMines.push(
+          new Point(
+            realWidth - scaleFactor * event.offsetX,
+            realHeight - scaleFactor * event.offsetY
+          )
+        );
+        if (numPlayers === 4) {
+          newGoldMines.push(
+            new Point(realWidth - scaleFactor * event.offsetX, scaleFactor * event.offsetY)
+          );
+          newGoldMines.push(
+            new Point(scaleFactor * event.offsetX, realHeight - scaleFactor * event.offsetY)
+          );
+        }
+        for (const newGoldMine of newGoldMines) {
+          for (const goldMine of goldMines.concat(newGoldMines)) {
+            if (
+              newGoldMine !== goldMine &&
+              getDistance(newGoldMine, goldMine) < 2 * GoldConstants.realRadius
+            )
+              return;
+          }
+        }
+        // for (let i = 0; i < towers.length; i++) {
+        //   if (
+        //     getDistance(newGoldMineReflected, towers[i]) <
+        //     GoldConstants.realRadius + towerConstants.Medium.minAdjBuildRadius
+        //   )
+        //     return;
+        // }
+        setGoldMines([...goldMines, ...newGoldMines]);
+        for (const newGoldMine of newGoldMines) {
+          const drawLoc = new Point(newGoldMine.x / scaleFactor, newGoldMine.y / scaleFactor);
+          drawGoldMine(drawLoc);
+        }
+        console.log(goldMines.length);
+      };
+      canvas.addEventListener("click", handleClick);
+      return () => {
+        canvas.removeEventListener("click", handleClick);
+      };
+    }
+  }, [numPlayers, goldMines]);
 
   const handleCreatorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCreatorName(event.target.value);
@@ -86,6 +106,10 @@ const CreateMap = (props: CreateMapProps) => {
 
   const handleMapNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMapName(event.target.value);
+  };
+
+  const handleNumPlayerChange = (playerCount: number) => {
+    setNumPlayers(playerCount);
   };
 
   const handleSaveMap = () => {
@@ -109,49 +133,59 @@ const CreateMap = (props: CreateMapProps) => {
         <div className="Creation-titleContainer">
           <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Minion Battle</h1>
         </div>
-        <div className="u-flex">
-          <div className="Creation-subContainer">
-            <canvas id="create-canvas" width={canvasWidth} height={canvasHeight} />
-            <div className="Creation-button">Add gold</div>
-          </div>
-          <div className="Creation-subContainer">
+        {numPlayers === 0 ? (
+          <div className="configurables">
+            <h1 className="Creation-configHeader">Number of Players</h1>
             <div>
-              <div className="configurables">
-                <h1 className="Creation-configHeader">Creator Name</h1>
-                <input
-                  type="text"
-                  placeholder={props.userId}
-                  value={creatorName}
-                  onChange={handleCreatorChange}
-                  className="Creation-input"
-                />
-              </div>
-              <div className="configurables">
-                <h1 className="Creation-configHeader">Map Name</h1>
-                <input
-                  type="text"
-                  placeholder="New Map"
-                  value={mapName}
-                  onChange={handleMapNameChange}
-                  className="Creation-input"
-                />
-              </div>
-              <div className="configurables">
-                <form>
-                  <button
-                    type="submit"
-                    className="Creation-button u-pointer"
-                    value="Save Map"
-                    onClick={handleSaveMap}
-                    formAction="/"
-                  >
-                    Save Map
-                  </button>
-                </form>
+              <button onClick={() => handleNumPlayerChange(2)}>2</button>
+              <button onClick={() => handleNumPlayerChange(4)}>4</button>
+            </div>
+          </div>
+        ) : (
+          <div className="u-flex">
+            <div className="Creation-subContainer">
+              <canvas id="create-canvas" width={canvasWidth} height={canvasHeight} />
+              <div className="Creation-button">Add gold</div>
+            </div>
+            <div className="Creation-subContainer">
+              <div>
+                <div className="configurables">
+                  <h1 className="Creation-configHeader">Creator Name</h1>
+                  <input
+                    type="text"
+                    placeholder={props.userName}
+                    value={creatorName}
+                    onChange={handleCreatorChange}
+                    className="Creation-input"
+                  />
+                </div>
+                <div className="configurables">
+                  <h1 className="Creation-configHeader">Map Name</h1>
+                  <input
+                    type="text"
+                    placeholder="New Map"
+                    value={mapName}
+                    onChange={handleMapNameChange}
+                    className="Creation-input"
+                  />
+                </div>
+                <div className="configurables">
+                  <form>
+                    <button
+                      type="submit"
+                      className="Creation-button u-pointer"
+                      value="Save Map"
+                      onClick={handleSaveMap}
+                      formAction="/"
+                    >
+                      Save Map
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         <BackButton text="Back" destPath="/" />
       </div>
     </>

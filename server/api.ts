@@ -5,15 +5,15 @@ import { Request, Response, NextFunction } from "express";
 // socket stuff:
 const { getSocketFromUserID } = require("./server-socket");
 import socketManager from "./server-socket";
-const { games } = require("./data/games");
-const { Game } = require("./data/Game");
-const { clients } = require("./data/clients");
+import { games } from "./data/games";
+import { Game } from "./data/Game";
+import { clients } from "./data/clients";
 
 // util
 const { generateGameCode } = require("./util");
 
 import UserModel, { User } from "./models/User";
-import GameMapModel from "./models/Map";
+import GameMapModel, { GameMap } from "./models/Map";
 import { Mongoose } from "mongoose";
 import {
   getTokenSourceMapRange,
@@ -186,13 +186,11 @@ router.post("/getGameActiveStatus", (req: Request, res: Response) => {
   }
 });
 
-// router.post("/startGame", (req: Request, res: Response) => {
-//   // let the game know that the game has started, then game can force all players to navigate to the game page
-//   // and then start the game
-//   const gameCode = req.body.gameCode;
-//   games[gameCode].createGameState(req.body.gameCode, req.body.userIds);
-//   res.send({});
-// });
+router.get("/getMaps", (req: Request, res: Response) => {
+  GameMapModel.find({}).then((maps: GameMap[]) => {
+    res.send(maps);
+  });
+});
 
 // router.get("/gameConstants", (req: Request, res: Response) => {
 //   res.send({ minionConstants: minionConstants, towerConstants: towerConstants });
