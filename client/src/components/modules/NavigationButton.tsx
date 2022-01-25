@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 type Props = {
   destPath: string;
   text: string;
+  onClickFunction: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
 const NavigationButton = (props: Props) => {
@@ -24,6 +25,7 @@ const NavigationButton = (props: Props) => {
       }}
       variant="contained"
       component={Link}
+      onClick={props.onClickFunction}
       to={props.destPath}
     >
       {props.text}

@@ -75,13 +75,21 @@ const FindGame = (props: Props) => {
     <>
       <div className="u-gameContainer">
         <h3 className="u-gameHeader">Minion Battle</h3>
-        <div className="dropdown">
+        <div>
           <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
               <React.Fragment>
                 <Button
                   size="large"
-                  sx={{ marginBottom: 10, fontSize: 25, borderRadius: 3 }}
+                  sx={{
+                    marginBottom: 10,
+                    fontSize: 25,
+                    borderRadius: 3,
+                    backgroundColor: "#98c1d9",
+                    "&:hover": {
+                      backgroundColor: "#6CB1D9",
+                    },
+                  }}
                   variant="contained"
                   {...bindTrigger(popupState)}
                 >
@@ -101,7 +109,15 @@ const FindGame = (props: Props) => {
               <React.Fragment>
                 <Button
                   size="large"
-                  sx={{ marginBottom: 10, fontSize: 25, borderRadius: 3 }}
+                  sx={{
+                    marginBottom: 10,
+                    fontSize: 25,
+                    borderRadius: 3,
+                    backgroundColor: "#98c1d9",
+                    "&:hover": {
+                      backgroundColor: "#6CB1D9",
+                    },
+                  }}
                   variant="contained"
                   {...bindTrigger(popupState)}
                 >
