@@ -71,6 +71,12 @@ const GameConfig = (props: Props) => {
   const navToGame = () => {
     navigate("/game");
   };
+  useEffect(() => {
+    get("/api/users").then((users: User[]) => {
+      const user1 = await UserModel.findById(id1);
+      id1Rating = user1.rating;
+    });
+  }, []);
 
   const gameConfigForceNavigate = async () => {
     const data = await get("/api/getCurrRoomStatus");
