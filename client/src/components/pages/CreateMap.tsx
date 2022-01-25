@@ -57,12 +57,14 @@ const CreateMap = (props: CreateMapProps) => {
         console.log("click");
         const newGoldMines: Array<Point> = [];
         newGoldMines.push(new Point(event.offsetX / scaleFactor, event.offsetY / scaleFactor));
-        newGoldMines.push(
-          new Point(
-            realWidth - event.offsetX / scaleFactor,
-            realHeight - event.offsetY / scaleFactor
-          )
-        );
+        if (numPlayers === 2 || numPlayers === 4) {
+          newGoldMines.push(
+            new Point(
+              realWidth - event.offsetX / scaleFactor,
+              realHeight - event.offsetY / scaleFactor
+            )
+          );
+        }
         if (numPlayers === 4) {
           newGoldMines.push(
             new Point(realWidth - event.offsetX / scaleFactor, event.offsetY / scaleFactor)
@@ -71,6 +73,7 @@ const CreateMap = (props: CreateMapProps) => {
             new Point(event.offsetX / scaleFactor, realHeight - event.offsetY / scaleFactor)
           );
         }
+
         for (const newGoldMine of newGoldMines) {
           for (const goldMine of goldMines.concat(newGoldMines)) {
             if (
@@ -138,8 +141,9 @@ const CreateMap = (props: CreateMapProps) => {
           <div className="configurables">
             <h1 className="Creation-configHeader">Number of Players</h1>
             <div>
-              <button onClick={() => handleNumPlayerChange(2)}>2</button>
-              <button onClick={() => handleNumPlayerChange(4)}>4</button>
+              <button onClick={() => handleNumPlayerChange(2)}>2 Player Symmetry</button>
+              <button onClick={() => handleNumPlayerChange(4)}>4 Player Symmetry</button>
+              <button onClick={() => handleNumPlayerChange(3)}>No Symmetry</button>
             </div>
           </div>
         ) : (
