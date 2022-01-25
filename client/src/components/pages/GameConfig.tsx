@@ -179,57 +179,33 @@ const GameConfig = (props: Props) => {
     });
   }, [gameCode]); //
 
+  const displayPlayers = () => {};
+
   // *either you are the host or waiting to start
   return (
     <>
       <div className="GameConfig-gameContainer">
         <h3 className="u-gameHeader">Minion Battle</h3>
-        <div>
-          <Button
-            size="medium"
-            sx={{
-              marginTop: 1,
-              marginBottom: 1,
-              fontSize: 15,
-              borderRadius: 3,
-              backgroundColor: "#98c1d9",
-              "&:hover": {
-                backgroundColor: "#6CB1D9",
-              },
-              // "& .MuiButtonBase-root-MuiButton-root": {
-              //   borderRadius: "4px",
-              //   bgcolor: "#FFFFFF",
-              //   fontSize: 25,
-              // },
-            }}
-            variant="contained"
-            onClick={leaveCurrentGame}
-          >
-            Leave this Game
-          </Button>
-          <Button
-            size="medium"
-            sx={{
-              marginTop: 1,
-              marginBottom: 1,
-              fontSize: 15,
-              borderRadius: 3,
-              backgroundColor: "#98c1d9",
-              "&:hover": {
-                backgroundColor: "#6CB1D9",
-              },
-              // "& .MuiButtonBase-root-MuiButton-root": {
-              //   borderRadius: "4px",
-              //   bgcolor: "#FFFFFF",
-              //   fontSize: 25,
-              // },
-            }}
-            variant="contained"
-            onClick={startGame}
-          >
-            START
-          </Button>
-        </div>
+        <Button
+          size="medium"
+          onClick={leaveCurrentGame}
+          sx={{
+            marginBottom: 10,
+            width: 300,
+            height: 50,
+            "&:hover": {
+              bgcolor: "#6CB1D9",
+            },
+            "& .MuiButton-root": {
+              borderRadius: "4px",
+              bgcolor: "#FFFFFF",
+              fontSize: 25,
+            },
+          }}
+          variant="contained"
+        >
+          Leave this Game
+        </Button>
         <div className="u-flexColumn">
           {props.passedUserId === hostId ? (
             <div className="u-flexColumn">

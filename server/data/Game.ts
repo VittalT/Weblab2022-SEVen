@@ -342,7 +342,7 @@ export class Game {
         userId,
         `${playerConstants.tombstoneCooldown} second cooldown to place near tombstone!`
       );
-    } else if (!isFirstTower && towerSizeConstants.cost > player.gold) {
+    } else if (!isFirstTower && player.gold < towerSizeConstants.cost) {
       updateDisplay(userId, "Not enough gold!");
     } else if (
       !isFirstTower &&
@@ -354,7 +354,7 @@ export class Game {
     } else if (!this.isInBounds(userId, loc, towerSize)) {
       updateDisplay(userId, "Too close to game borders!");
     } else {
-      updateDisplay(userId, "Tower successfuly deployed");
+      updateDisplay(userId, isTest ? "Tower ready to place" : "Tower successfuly deployed");
       if (!isTest) {
         if (!isFirstTower) player.gold -= towerSizeConstants.cost;
         const newTower: Tower = {
@@ -400,6 +400,14 @@ export class Game {
     delete this.towers[towerId];
   }
 
+  public changeTowerHealth(tower: Tower, amount: number) {
+    // would display health bar weird if player.gold was out of range [-1, startRating]
+    tower.health += amount;
+    const maxHealth = towerConstants[tower.size].health;
+    if (tower.health > maxHealth) tower.health = maxHealth;
+    if (tower.health < -1) tower.health = -1;
+  }
+
   // i skimmed this one lol - eric
   public addMinion(
     userId: string,
@@ -414,9 +422,9 @@ export class Game {
     const allyTower = this.getTower(allyTowerId);
     const enemyTower = this.getTower(enemyTowerId);
 
-    if (minionSizeConstants.cost <= player.gold) {
+    if (player.gold >= minionSizeConstants.cost) {
+      updateDisplay(userId, isTest ? "Minion ready to send" : "Minion successfully deployed");
       if (!isTest) {
-        updateDisplay(userId, "Minion successfully deployed");
         player.gold -= minionSizeConstants.cost;
         const dir = allyTower.location.angleTo(enemyTower.location);
         const allyRadius = towerConstants[allyTower.size].hitRadius;
@@ -471,7 +479,7 @@ export class Game {
     const tower = this.getTower(towerId);
     const player = this.getPlayer(userId);
     const explosionCost = explosionConstants.cost;
-    if (player.gold > explosionCost) {
+    if (player.gold >= explosionCost) {
       player.gold -= explosionCost;
       const copyEnemyMinionIds = [...tower.enemyMinionIds];
       for (const enemyMinionId of copyEnemyMinionIds) {
@@ -482,6 +490,35 @@ export class Game {
     }
   }
 
+  public explodeNearby(userId: string, towerId: number) {
+    const tower = this.getTower(towerId);
+    const towerRadius = towerConstants[tower.size].hitRadius;
+    const player = this.getPlayer(userId);
+    if (player.gold > explosionConstants.cost) {
+      player.gold -= explosionConstants.cost;
+      for (const [minionId, minion] of [...Object.entries(this.minions)]) {
+        const minionRadius = minionConstants[minion.size].boundingRadius;
+        if (
+          tower.location.distanceTo(minion.location) <=
+          towerRadius + minionRadius + explosionConstants.range
+        ) {
+          this.removeMinion(parseInt(minionId));
+        }
+      }
+      for (const [tower2Id, tower2] of [...Object.entries(this.towers)]) {
+        const tower2Radius = towerConstants[tower2.size].hitRadius;
+        if (
+          tower.location.distanceTo(tower2.location) <=
+          towerRadius + tower2Radius + explosionConstants.range
+        ) {
+          const damage = -explosionConstants.explosionHealthDamage;
+          this.changeTowerHealth(tower2, damage);
+        }
+      }
+    } else {
+      updateDisplay(userId, "Not enough gold to explode this tower");
+    }
+  }
   public forfeit(playerId: string) {
     const player: Player = this.getPlayer(playerId);
     const towerIdsCopy = [...player.towerIds];
@@ -637,13 +674,14 @@ export class Game {
   }
 
   public timeUpdate(delta_t_s: number) {
-    this.updateMinionLocs(delta_t_s);
-    this.updateMinionDamage(delta_t_s);
-    this.updateTowerRegenHealth(delta_t_s);
-    this.updateTowerDeath(delta_t_s);
     this.updateGold(delta_t_s);
     this.updateGoldMines(delta_t_s);
+    this.updateMinionLocs(delta_t_s);
+    this.updateTowerRegenHealth(delta_t_s);
+    this.updateMinionDamage(delta_t_s);
+    this.updateTowerDeath(delta_t_s);
     this.updateCanPlaceTower(delta_t_s);
+    this.updateCanExplode(delta_t_s);
     this.checkWin();
   }
 
@@ -672,10 +710,8 @@ export class Game {
         const minion = this.getMinion(minionId);
         if (minion.targetTowerId && minion.reachedTarget) {
           const targetTower = this.getTower(minion.targetTowerId);
-          targetTower.health = Math.max(
-            targetTower.health - minionConstants[minion.size].damageRate * delta_t_s,
-            -1
-          );
+          const damage = -minionConstants[minion.size].damageRate * delta_t_s;
+          this.changeTowerHealth(targetTower, damage);
         }
       }
     }
@@ -686,11 +722,8 @@ export class Game {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
         if (tower.enemyMinionIds.length === 0) {
-          const maxHealth = towerConstants[tower.size].health;
-          tower.health = Math.min(
-            tower.health + towerConstants[tower.size].healthRegenRate * delta_t_s,
-            maxHealth
-          );
+          const healthRegen = towerConstants[tower.size].healthRegenRate * delta_t_s;
+          this.changeTowerHealth(tower, healthRegen);
         }
       }
     }
@@ -714,7 +747,8 @@ export class Game {
     for (const player of Object.values(this.players)) {
       for (const towerId of player.towerIds) {
         const tower = this.getTower(towerId);
-        player.gold += towerConstants[tower.size].goldRate * delta_t_s;
+        const genGold = towerConstants[tower.size].goldRate * delta_t_s;
+        player.gold += genGold;
       }
     }
   }
@@ -760,6 +794,19 @@ export class Game {
         false,
         true
       );
+    }
+  }
+
+  public updateCanExplode(delta_t_s: number) {
+    for (const [userId, player] of Object.entries(this.players)) {
+      const allyTowerId = this.getClickedAllyTowerId(userId, player.cursorLoc);
+      // console.log(`ally ${allyTowerId}`);
+      if (allyTowerId !== -1) {
+        player.canExplode = true;
+        player.hoverAllyTower = this.getTower(allyTowerId);
+      } else {
+        player.canExplode = false;
+      }
     }
   }
 
@@ -814,7 +861,7 @@ export class Game {
           player.towerClickedId = allyTowerId;
         } else {
           // ClickState.Explosion
-          this.explode(userId, allyTowerId);
+          this.explodeNearby(userId, allyTowerId);
         }
       } else {
         updateDisplay(userId, "Please click on an ally tower");

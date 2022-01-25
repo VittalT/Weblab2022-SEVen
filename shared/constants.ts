@@ -59,7 +59,9 @@ export const minionConstants: Record<Size, MinionConstants> = {
   },
 };
 export const explosionConstants = {
-  cost: 250,
+  cost: 100,
+  range: 40,
+  explosionHealthDamage: 40,
 };
 
 export const GoldConstants = {
