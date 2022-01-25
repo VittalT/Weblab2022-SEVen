@@ -308,10 +308,35 @@ export class Game {
     return true;
   }
 
+  public closeToTombstone(player: Player, towerSize: Size, loc: Point): boolean {
+    const towerRadius = towerConstants[towerSize].hitRadius;
+    for (const tombstone of player.tombstones) {
+      const tombstoneRadius = towerConstants[tombstone.tower.size].hitRadius;
+      const timeFromDestroyed = (Date.now() - tombstone.time) / 1000;
+      if (
+        timeFromDestroyed < playerConstants.tombstoneCooldown &&
+        loc.distanceTo(tombstone.tower.location) < towerRadius + tombstoneRadius + 10
+      )
+        return true;
+    }
+    return false;
+  }
+
   public addTower(userId: string, towerSize: Size, loc: Point, isFirstTower: boolean) {
     const player = this.getPlayer(userId);
     const towerSizeConstants = towerConstants[towerSize];
-    if (!isFirstTower && towerSizeConstants.cost > player.gold) {
+    const timeFromLastTower = (Date.now() - player.lastTowerPlacedTime) / 1000;
+    if (!isFirstTower && timeFromLastTower < playerConstants.towerCooldown) {
+      updateDisplay(
+        userId,
+        `${playerConstants.towerCooldown} second tower cooldown to place tower!`
+      );
+    } else if (!isFirstTower && this.closeToTombstone(player, towerSize, loc)) {
+      updateDisplay(
+        userId,
+        `${playerConstants.tombstoneCooldown} second cooldown to place near tombstone!`
+      );
+    } else if (!isFirstTower && towerSizeConstants.cost > player.gold) {
       updateDisplay(userId, "Not enough gold!");
     } else if (
       !isFirstTower &&
@@ -334,6 +359,7 @@ export class Game {
       const newTowerId = ++this.maxTowerId;
       this.towers[newTowerId] = newTower;
       player.towerIds.push(newTowerId);
+      player.lastTowerPlacedTime = Date.now();
     }
   }
 
@@ -343,9 +369,10 @@ export class Game {
     // remove clickState so future minions cannot be spawned from this tower
     for (const userId of this.playerIds) {
       const player = this.getPlayer(userId);
-      if (player.towerClickedId === towerId) {
-        player.clickState = ClickState.Tower;
-      }
+      if (player.towerIds)
+        if (player.towerClickedId === towerId) {
+          player.clickState = ClickState.Tower;
+        }
     }
 
     const copyEnemyMinionIds = [...tower.enemyMinionIds];
@@ -629,6 +656,7 @@ export class Game {
         const tower = this.getTower(towerId);
         if (tower.health <= 0) {
           this.removeTower(towerId);
+          player.tombstones.push({ time: Date.now(), tower: tower });
         }
       }
     }

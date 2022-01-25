@@ -1,4 +1,7 @@
+import { playerConstants } from "./constants";
 import { ClickState, Size } from "./enums";
+import Point from "./Point";
+import Tower from "./Tower";
 
 class Player {
   public gold: number;
@@ -9,6 +12,8 @@ class Player {
   public sizeClicked: Size;
   public showInfo: boolean;
   public inGame: boolean;
+  public lastTowerPlacedTime: number;
+  public tombstones: Array<{ time: number; tower: Tower }>;
 
   public constructor(
     gold: number,
@@ -28,6 +33,8 @@ class Player {
     this.sizeClicked = sizeClicked;
     this.showInfo = showInfo;
     this.inGame = inGame;
+    this.lastTowerPlacedTime = Date.now() - playerConstants.towerCooldown;
+    this.tombstones = [];
   }
 }
 

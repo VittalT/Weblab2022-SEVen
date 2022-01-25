@@ -7,11 +7,12 @@ import {
   minionConstants,
   GoldConstants,
   canvasScaleFactors,
+  playerConstants,
 } from "../../shared/constants";
 import { GameUpdateData } from "../../shared/types";
 import { get } from "./utilities";
 import GameMapModel, { GameMap } from "../../server/models/Map";
-import { teamColors } from "../../shared/constants";
+import { teamColors, teamColorsFaded } from "../../shared/constants";
 
 /** utils */
 
@@ -74,14 +75,15 @@ const drawTower = (
   tower: Tower,
   teamId: number,
   initials: string,
-  scaleFactor: number
+  scaleFactor: number,
+  isActive: boolean
 ) => {
   // const drawLoc = tower.location.scaleBy(scaleFactor);
   const drawLoc = scaleBy(tower.location, scaleFactor);
   const towerRadius = towerConstants[tower.size].hitRadius * scaleFactor;
 
   // draw circle
-  const color = teamColors[teamId];
+  const color = isActive ? teamColors[teamId] : teamColorsFaded[teamId];
   fillCircle(context, drawLoc, towerRadius, color);
 
   // draw health bar
@@ -193,11 +195,24 @@ export const drawCanvas = (gameUpdateData: GameUpdateData) => {
     drawGoldMine(context, goldMineLoc, scaleFactor);
   }
 
+  // draw tombstones first so that they are under
+  for (const [userId, player] of Object.entries(gameUpdateData.players)) {
+    const teamId = gameUpdateData.playerToTeamId[userId];
+    for (const [idx, tombstone] of [...player.tombstones.entries()]) {
+      const timeFromDestroyed = (Date.now() - tombstone.time) / 1000;
+      if (timeFromDestroyed < playerConstants.tombstoneCooldown) {
+        drawTower(context, tombstone.tower, teamId, getInitials(userId), scaleFactor, false);
+      } else {
+        player.tombstones.splice(idx, 1);
+      }
+    }
+  }
+
   for (const [userId, player] of Object.entries(gameUpdateData.players)) {
     const teamId = gameUpdateData.playerToTeamId[userId];
     for (const towerId of player.towerIds) {
       const tower = gameUpdateData.towers[towerId];
-      drawTower(context, tower, teamId, getInitials(userId), scaleFactor);
+      drawTower(context, tower, teamId, getInitials(userId), scaleFactor, true);
     }
   }
 

@@ -5,6 +5,8 @@ import { TowerConstants, MinionConstants } from "./types";
 export const playerConstants = {
   startRating: 1200,
   maxPlayers: 6,
+  towerCooldown: 2,
+  tombstoneCooldown: 5,
 };
 export const towerConstants: Record<Size, TowerConstants> = {
   [Size.Small]: {
@@ -79,7 +81,14 @@ export const canvasScaleFactors = {
 
 export const teamColors: Array<string> = [
   "#EE6C4D", // orange
+  "#349CD9", // blue
+  "#3C8C1A", // green
+  "#797A0F", // brown-yellow
+];
+
+export const teamColorsFaded: Array<string> = [
+  "#E6B3A7", // light orange
   "#98C1D9", // light blue
   "#08A721", // light green
-  "#CFD215", // brown-ish yellow
+  "#CACB56", // light brown-yellow
 ];
