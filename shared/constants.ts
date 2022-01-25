@@ -9,7 +9,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
     goldRate: 2 / 1000,
     cost: 25,
     minAdjBuildRadius: 60,
-    maxAdjBuildRadius: 150,
+    maxAdjBuildRadius: 180,
     hitRadius: 60,
   },
   [Size.Medium]: {
@@ -18,7 +18,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
     goldRate: 3 / 1000,
     cost: 100,
     minAdjBuildRadius: 75,
-    maxAdjBuildRadius: 180,
+    maxAdjBuildRadius: 225,
     hitRadius: 75,
   },
   [Size.Large]: {
@@ -27,7 +27,7 @@ export const towerConstants: Record<Size, TowerConstants> = {
     goldRate: 5 / 1000,
     cost: 400,
     minAdjBuildRadius: 90,
-    maxAdjBuildRadius: 210,
+    maxAdjBuildRadius: 270,
     hitRadius: 90,
   },
 };
