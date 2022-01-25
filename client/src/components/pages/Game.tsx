@@ -116,10 +116,10 @@ const Game = (props: GameProps) => {
       {isInPlay ? (
         <></>
       ) : (
-        <>
-          <div>{"The winner is " + winnerName}</div>
+        <div className="Game-endScreen">
+          <div>{"" + winnerName + " won!"}</div>
           <button onClick={navGameConfig}>Return to lobby</button>
-        </>
+        </div>
       )}
       <p className="Game-displayText">{`${sizeClicked} ${clickState} - ${displayText}`}</p>
     </>
