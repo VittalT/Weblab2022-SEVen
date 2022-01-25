@@ -16,6 +16,7 @@ import { ClickState, Size } from "../../../../shared/enums";
 import { GameUpdateData } from "../../../../shared/types";
 import User from "../../../../shared/User";
 import { canvasDimensions } from "../../../../shared/constants";
+import ColorLegend from "../modules/ColorLegend";
 
 type GameProps = RouteComponentProps & {
   passedUserId: string;
@@ -105,6 +106,7 @@ const Game = (props: GameProps) => {
             height={canvasDimensions.height}
             gameCode={props.gameCode}
           />
+          <ColorLegend gameCode={props.gameCode} />
         </div>
         <GamePanel
           width={1800}

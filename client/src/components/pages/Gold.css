@@ -1,0 +1,16 @@
+.Gold-wrapper {
+  /* border: 1px solid black; */
+  width: 250px;
+  line-height: 60px;
+  height: 60px;
+  text-align: right;
+  border-radius: 8px;
+  color: black;
+  background-color: transparent;
+}
+
+.Gold-text {
+  margin: 10px 10px;
+  font-size: 40px;
+  vertical-align: left;
+}

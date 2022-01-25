@@ -57,20 +57,3 @@
 .GamePanel-hideInfo {
   font-size: 18px;
 }
-
-.GamePanel-goldwrapper {
-  /* border: 1px solid black; */
-  width: 250px;
-  line-height: 60px;
-  height: 60px;
-  text-align: left;
-  border-radius: 8px;
-  color: black;
-  background-color: transparent;
-}
-
-.GamePanel-goldtext {
-  margin: 10px 50px;
-  font-size: 40px;
-  vertical-align: left;
-}

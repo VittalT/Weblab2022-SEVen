@@ -19,8 +19,8 @@ const Gold = (props: GoldProps) => {
 
   return (
     <>
-      <div className="GamePanel-goldwrapper">
-        <p className="GamePanel-goldtext">🟡 {props.amount}</p>
+      <div className="Gold-wrapper">
+        <p className="Gold-text">{props.amount} 🟡</p>
       </div>
     </>
   );
