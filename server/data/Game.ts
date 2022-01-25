@@ -500,7 +500,7 @@ export class Game {
     const user2 = await UserModel.findById(id2);
     id2Rating = user2.rating;
 
-    const user1prob = 1 / (1 + Math.pow(10, (id1Rating - id2Rating) / 400));
+    const user1prob = 1 / (1 + Math.pow(10, (id2Rating - id1Rating) / 400));
     const user2prob = 1 - user1prob;
     id1Rating += 30 * (1 - user1prob);
     id2Rating += 30 * (0 - user2prob);
