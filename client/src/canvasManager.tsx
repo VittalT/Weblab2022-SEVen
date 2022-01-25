@@ -92,7 +92,7 @@ const drawTower = (
   context.font = "18px serif";
   context.textAlign = "center";
   context.fillStyle = "black";
-  // context.fillText(initials, drawLoc.x, drawLoc.y);
+  context.fillText(initials, drawLoc.x, drawLoc.y);
 };
 
 const fillHealthBar = (
