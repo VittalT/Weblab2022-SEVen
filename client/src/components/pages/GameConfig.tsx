@@ -214,28 +214,11 @@ const GameConfig = (props: Props) => {
   // *either you are the host or waiting to start
   return (
     <>
-      <div className="GameConfig-gameContainer">
-        <h3 className="u-gameHeader">Minion Battle</h3>
-        <Button
-          size="medium"
-          onClick={leaveCurrentGame}
-          sx={{
-            marginBottom: 10,
-            width: 300,
-            height: 50,
-            "&:hover": {
-              bgcolor: "#6CB1D9",
-            },
-            "& .MuiButton-root": {
-              borderRadius: "4px",
-              bgcolor: "#FFFFFF",
-              fontSize: 25,
-            },
-          }}
-          variant="contained"
-        >
-          Leave this Game
-        </Button>
+      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
+        Leave Game
+      </Button>
+      <div className="u-gameContainer">
+        <h1 className="u-gameHeader">Game Configuration</h1>
         <div className="u-flexColumn">
           {props.passedUserId === hostId ? (
             <div className="u-flexColumn">
