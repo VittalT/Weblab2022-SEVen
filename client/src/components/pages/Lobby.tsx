@@ -72,9 +72,9 @@ const Lobby = (props: Props) => {
 
   return (
     <>
-      <div className="Lobby-container">
-        <h3 className="Lobby-header">MINION BATTLE</h3>
-        <div className="Lobby-lobbyContainer">
+      <div className="u-gameContainer">
+        <h1 className="u-gameHeader">LOBBY</h1>
+        <div className="Lobby-column">
           <div className="Lobby-lobbyTitle">{title}</div>
           <div>
             {publicGames.map((game: { hostName: string; gameCode: string }) => (
@@ -86,9 +86,9 @@ const Lobby = (props: Props) => {
                     marginBottom: 1,
                     fontSize: 15,
                     borderRadius: 3,
-                    backgroundColor: "#98c1d9",
+                    backgroundColor: "#ff8ba0",
                     "&:hover": {
-                      backgroundColor: "#6CB1D9",
+                      backgroundColor: "#e76682",
                     },
                   }}
                   variant="contained"

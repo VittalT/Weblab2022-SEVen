@@ -9,12 +9,19 @@
   padding: 25px;
 }
 
+.Game-endButton {
+  background-color: pink;
+  color: black;
+}
+
 .Game-endScreen {
   position: absolute;
   background-color: white;
   border: 2px black solid;
   outline: 2px black;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 200px;
   width: 200px; /* Need a specific value to work */
   position: fixed;
