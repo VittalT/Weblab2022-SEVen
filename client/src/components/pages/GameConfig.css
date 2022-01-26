@@ -72,9 +72,6 @@
   color: var(--themeNavy);
 }
 
-.GameInfo:after {
-}
-
 .MapInfo {
   background-color: var(--themeLightBlue);
 }
