@@ -381,7 +381,6 @@ export class Game {
 
     // remove clickState so future minions cannot be spawned from this tower
     for (const userId of this.playerIds) {
-      console.log("RT");
       const player = this.getPlayer(userId);
       if (player.towerIds)
         if (player.towerClickedId === towerId) {
@@ -529,11 +528,9 @@ export class Game {
     const minionIdsCopy = [...player.minionIds];
     for (const towerId of towerIdsCopy) {
       this.removeTower(towerId);
-      console.log("RTF");
     }
     for (const minionId of minionIdsCopy) {
       this.removeMinion(minionId);
-      console.log("RMF");
     }
   }
 
@@ -598,7 +595,6 @@ export class Game {
   }
 
   public async onGameEnd(): Promise<void> {
-    console.log("A");
     this.isInPlay = false;
     if (this.winnerId !== null) {
       const winnerName = this.idToName[this.winnerId];
@@ -629,10 +625,9 @@ export class Game {
   }
 
   public async adjustRatingsAll(): Promise<void> {
-    console.log("B");
-    console.log(this.playerIds);
+    // console.log(this.playerIds);
     for (const playerId of this.playerIds) {
-      console.log(playerId);
+      // console.log(playerId);
       if (playerId !== this.winnerId) {
         console.log("at least one is discovered");
         await this.adjustRatingsPair(this.winnerId ?? assert.fail("no winner Id"), playerId);
@@ -641,18 +636,15 @@ export class Game {
   }
 
   public async adjustRatingsPair(winnerId: string, loserId: string): Promise<boolean> {
-    console.log("YES");
     const winnerUser = await UserModel.findById(winnerId);
     let winnerIdRating = winnerUser.rating;
-    console.log(winnerIdRating);
-    console.log("RP1");
+    // console.log(winnerIdRating);
     const winner = this.getPlayer(winnerId);
     winner.prevRating = winnerIdRating;
-    console.log(winner);
+    // console.log(winner);
 
     const loserUser = await UserModel.findById(loserId);
     let loserIdRating = loserUser.rating;
-    console.log("RP2");
     const loser = this.getPlayer(loserId);
     loser.prevRating = loserIdRating;
 
@@ -664,11 +656,11 @@ export class Game {
     winnerUser.rating = Math.round(winnerIdRating);
     winner.rating = winnerUser.rating;
     winnerUser.all_time_rating = Math.max(winnerUser.all_time_rating, winnerUser.rating);
-    winnerUser.save();
+    await winnerUser.save();
     loserUser.rating = Math.round(loserIdRating);
     loser.rating = loserUser.rating;
     loserUser.all_time_rating = Math.max(loserUser.all_time_rating, loserUser.rating);
-    loserUser.save();
+    await loserUser.save();
     return true;
   }
 
@@ -857,14 +849,12 @@ export class Game {
       return;
     }
     console.log(`Clicked panel ${clickType} ${size}`);
-    console.log("A1");
     const player = this.getPlayer(userId);
     player.clickState = clickType;
     player.sizeClicked = size;
   }
 
   public getClickedAllyTowerId(userId: string, loc: Point) {
-    console.log("A2");
     const player = this.getPlayer(userId);
     for (const towerId of player.towerIds) {
       const tower = this.getTower(towerId);
@@ -926,7 +916,6 @@ export class Game {
     if (this.isInPlay === false) {
       return;
     }
-    console.log("A4");
     const player = this.getPlayer(userId);
     player.cursorLoc = loc;
   }
