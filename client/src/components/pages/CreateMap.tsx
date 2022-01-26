@@ -132,6 +132,9 @@ const CreateMap = (props: CreateMapProps) => {
   };
 
   const handleSaveMap = () => {
+    if (mapName.length > 15) {
+      return;
+    }
     const mapInfo = {
       name: mapName,
       creator_id: props.userId,
@@ -229,7 +232,8 @@ const CreateMap = (props: CreateMapProps) => {
                 height={canvasHeight}
               />
               <div className="Creation-subtitle">
-                Click in the canvas above to add gold mines! Gold mines cannot intersect.
+                Click in the canvas above to add gold mines! Gold mines cannot intersect. Maximum
+                map name is 15 characters.
               </div>
             </div>
             <div className="Creation-subContainer">
