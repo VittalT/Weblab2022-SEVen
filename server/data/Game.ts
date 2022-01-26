@@ -611,27 +611,30 @@ export class Game {
     }
   }
 
-  //id1 is the winner here
-  public async adjustRatingsPair(id1: string, id2: string): Promise<void> {
-    let id1Rating: number = 0;
-    let id2Rating: number = 0;
+  public async adjustRatingsPair(winnerId: string, loserId: string): Promise<void> {
+    const winnerUser = await UserModel.findById(winnerId);
+    const winnerIdRating = winnerUser.rating;
+    const winner = this.getPlayer(winnerId);
+    winner.prevRating = winnerIdRating;
 
-    const user1 = await UserModel.findById(id1);
-    id1Rating = user1.rating;
-    const user2 = await UserModel.findById(id2);
-    id2Rating = user2.rating;
+    const loserUser = await UserModel.findById(loserId);
+    const loserIdRating = loserUser.rating;
+    const loser = this.getPlayer(loserId);
+    loser.prevRating = loserIdRating;
 
-    const user1prob = 1 / (1 + Math.pow(10, (id2Rating - id1Rating) / 400));
-    const user2prob = 1 - user1prob;
-    id1Rating += 30 * (1 - user1prob);
-    id2Rating += 30 * (0 - user2prob);
+    const winnerExpectedProb = 1 / (1 + Math.pow(10, (loserIdRating - winnerIdRating) / 400));
+    const loserExpectedProb = 1 - winnerExpectedProb;
+    const newWinnerIdRating = loserUser + 30 * (1 - winnerExpectedProb);
+    winner.rating = newWinnerIdRating;
+    const newLoserIdRating = 30 * (0 - loserExpectedProb);
+    loser.rating = newLoserIdRating;
 
-    user1.rating = Math.round(id1Rating);
-    user1.all_time_rating = Math.max(user1.all_time_rating, user1.rating);
-    user1.save();
-    user2.rating = Math.round(id2Rating);
-    user2.all_time_rating = Math.max(user2.all_time_rating, user2.rating);
-    user2.save();
+    winnerUser.rating = Math.round(winnerIdRating);
+    winnerUser.all_time_rating = Math.max(winnerUser.all_time_rating, winnerUser.rating);
+    winnerUser.save();
+    loserUser.rating = Math.round(loserIdRating);
+    loserUser.all_time_rating = Math.max(loserUser.all_time_rating, loserUser.rating);
+    loserUser.save();
   }
 
   public clearGame(): void {

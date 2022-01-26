@@ -18,6 +18,8 @@ class Player {
   public canPlaceTower: boolean;
   public canExplode: boolean;
   public hoverAllyTower: Tower;
+  public prevRating: number;
+  public rating: number;
 
   public constructor(
     gold: number,
@@ -43,6 +45,8 @@ class Player {
     this.canPlaceTower = false;
     this.canExplode = false;
     this.hoverAllyTower = new Tower(-1, new Point(-1000, -1000), Size.Small, []);
+    this.prevRating = 1200;
+    this.rating = 1200;
   }
 }
 

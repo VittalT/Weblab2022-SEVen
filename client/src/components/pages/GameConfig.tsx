@@ -38,6 +38,7 @@ const GameConfig = (props: Props) => {
 
   const [hostId, setHostId] = useState<string>("");
   const [hostName, setHostName] = useState<string>("");
+  const [gameMapCreatorName, setGameMapCreatorName] = useState<string>("");
   const [playerIds, setPlayerIds] = useState<Array<string>>([]);
   const [playerNames, setPlayerNames] = useState<Array<string>>([]);
   const [playerRatings, setPlayerRatings] = useState<Array<number>>([]);
@@ -198,9 +199,10 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     const possMap = maps.find((mapObj: GameMap) => mapObj._id === gameMapId);
-    console.log(`N ${gameMapId} ${possMap !== undefined ? possMap.name : "und"}`);
+    // console.log(`N ${gameMapId} ${possMap !== undefined ? possMap.name : "und"}`);
     if (possMap !== undefined) {
       console.log(`game name ${possMap.name}`);
+      setGameMapCreatorName(possMap.creator_name);
       setGameMapName(possMap.name);
     }
   }, [gameMapId, maps]); //
@@ -259,6 +261,9 @@ const GameConfig = (props: Props) => {
                 )}
               </div>
             </div>
+            <span>
+              Current Map: {gameMapName}, created by {gameMapCreatorName}
+            </span>
           </div>
           <br />
           <div>
