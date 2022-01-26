@@ -144,7 +144,7 @@ const GameConfig = (props: Props) => {
       if (currGameCode.length === 6) {
         const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
         const data = await post("/api/getLobbyInfo", { gameCode: currGameCode });
-        // console.log(data);
+        console.log(`waya ${JSON.stringify(data)}`);
         const lobbyData = await updateLobbyData(data);
       } else {
         navigate("/findgame");
@@ -203,11 +203,11 @@ const GameConfig = (props: Props) => {
     });
   }, [gameCode]); //
   const displayPlayersAndRatings = (isRated: boolean) => {
-    // return playerIds
-    //   .map((playerId: string) =>
-    //     isRated ? `${idToName[playerId]} (${idToRating[playerId]})` : `${idToName[playerId]}`
-    //   )
-    //   .join(", ");
+    return playerIds
+      .map((playerId: string) =>
+        isRated ? `${idToName[playerId]} (${idToRating[playerId]})` : `${idToName[playerId]}`
+      )
+      .join(", ");
   };
   // useEffect(() => {
   // }, [playerIds, idToName, idToRating]); //

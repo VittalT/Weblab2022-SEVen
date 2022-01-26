@@ -162,6 +162,10 @@ export class Game {
     return this.playerIds.map((name: string) => this.idToName[name].toString());
   }
 
+  public getPlayerIds(): Array<string> {
+    return this.playerIds;
+  }
+
   public toString(): string {
     return "Game With gameCode: " + this.gameCode;
   }

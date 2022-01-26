@@ -140,7 +140,7 @@ router.post("/getLobbyInfo", auth.ensureLoggedIn, (req: Request, res: Response) 
     gameCode: currGame.getGameCode(),
     hostName: currGame.getHostName(),
     hostId: currGame.getHostId(),
-    playerNames: currGame.getPlayerNames(),
+    playerIds: currGame.getPlayerIds(),
   });
 });
 
