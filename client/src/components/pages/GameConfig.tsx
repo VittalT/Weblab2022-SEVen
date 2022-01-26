@@ -215,9 +215,6 @@ const GameConfig = (props: Props) => {
   // *either you are the host or waiting to start
   return (
     <>
-      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
-        Leave Game
-      </Button>
       <div className="u-gameContainer">
         <h1 className="u-gameHeader">Game Configuration</h1>
         <div className="u-flexColumn">
@@ -265,6 +262,9 @@ const GameConfig = (props: Props) => {
           </div>
         </div>
       </div>
+      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
+        Leave Game
+      </Button>
     </>
   );
 };
