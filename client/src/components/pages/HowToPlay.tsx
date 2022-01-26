@@ -71,7 +71,7 @@ const HowToPlay = (props: Props) => {
           <p className="HTP-rule">
             Those are all the rules for gameplay! If there is not winner at the end of 10 minutes,
             the player with the most health will be declared the winner. You can now start playing
-            games with your friends in groups of 2-4! If you're up for the challenge, you can also
+            games with your friends in groups of 2-6! If you're up for the challenge, you can also
             toggle a game setting to compete in rated games with others in your lobby. Enjoy!
           </p>
         </div>

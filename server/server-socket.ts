@@ -36,7 +36,7 @@ export const removeUser = (user: User, socket: Socket): void => {
 
 export const updateDisplay = (userId: string, message: string) => {
   // console.log("Display was updated");
-  const currSocketId = getSocketFromUserID(userId)!.id;
+  const currSocketId = getSocketFromUserID(userId)?.id;
   if (currSocketId !== undefined) {
     io.to(currSocketId).emit("updateDisplay", { message: message });
   }
