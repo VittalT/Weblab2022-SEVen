@@ -27,10 +27,10 @@
   --lightblue: #98c1d9;
 
   --themePurple: #501f3a;
-  --themePink: #cb2d6f;
+  --themePink: #ff8ba0;
   --themeWhite: #cccccc;
   --themeLightBlue: #14a098;
-  --themeNavy: #0f292f;
+  --themeNavy: #14363e;
   --hover-brightness: 1.2;
 
   --xs: 4px;
@@ -45,7 +45,7 @@ html {
 }
 
 body {
-  background-color: var(--themePurple);
+  background-color: var(--themeNavy);
   margin: 0 !important;
   padding: 0 !important;
 }

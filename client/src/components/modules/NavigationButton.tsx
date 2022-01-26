@@ -20,9 +20,9 @@ const NavigationButton = (props: Props) => {
         borderRadius: 4,
         width: 250,
         fontFamily: "Odibee Sans",
-        backgroundColor: "#98C1D9",
+        backgroundColor: "#ff8ba0", //#cb2d6f",
         "&:hover": {
-          backgroundColor: "#6CB1D9",
+          backgroundColor: "#ffb6c1",
         },
       }}
       variant="contained"
