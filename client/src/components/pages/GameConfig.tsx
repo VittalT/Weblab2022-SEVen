@@ -53,6 +53,7 @@ const GameConfig = (props: Props) => {
     hostId: string;
     playerIds: Array<string>;
   }) => {
+    console.log(`data ${data} ${data.playerIds}`);
     setGameType(data.gameType);
     setGameCode(data.gameCode);
     setHostName(data.hostName);
@@ -78,8 +79,7 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/users").then((users: User[]) => {
-      // const user1 = await UserModel.findById(id1);
-      // id1Rating = user1.rating;
+      console.log(JSON.stringify(users));
       const _idToName: Record<string, string> = {};
       const _idToRating: Record<string, number> = {};
       for (const user of users) {
@@ -88,6 +88,7 @@ const GameConfig = (props: Props) => {
       }
       setIdToName(_idToName);
       setIdToRating(_idToRating);
+      console.log(playerIds);
       const playerNames = playerIds.map((userId: string) => idToName[userId]);
       const playerRatings = playerIds.map((userId: string) => idToRating[userId]);
       setPlayerNames(playerNames);
@@ -157,7 +158,7 @@ const GameConfig = (props: Props) => {
       socket.off("startGame");
       socket.off("gameStartFailed");
     };
-  }, []);
+  }, [gameCode]);
 
   useEffect(() => {
     get("/api/getMaps").then((data: GameMap[]) => {
