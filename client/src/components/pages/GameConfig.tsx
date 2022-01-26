@@ -231,7 +231,7 @@ const GameConfig = (props: Props) => {
               </div>
             )}
             {startGameFailedStatus ? (
-              <div>Failed to start game, there must be 2, 3, or 4 players in the lobby</div>
+              <div>Failed to start game, there must be 2, 3, 4, 5, or 6 players in the lobby</div>
             ) : (
               <div> </div>
             )}
