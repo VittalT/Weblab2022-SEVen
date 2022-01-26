@@ -113,7 +113,6 @@ const GamePanel = (props: GameProps) => {
           )}
         </div>
         <div className="GamePanel-button GamePanel-infoButton u-flexColumn">
-          <div>Info</div>
           <div className="u-flexRow u-flex-alignCenter">
             <p>Hide</p> <Switch defaultChecked onClick={toggleShowInfo} /> <p>Show</p>
           </div>

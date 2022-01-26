@@ -9,7 +9,7 @@
 }
 
 .GamePanel-button {
-  font-family: serif, sans-serif, Times;
+  font-family: "Odibee Sans";
   margin: 5px;
   /* border: 1px solid black; */
   padding: 10px;
@@ -25,7 +25,7 @@
 }
 
 .GamePanel-smallButton {
-  font-family: serif, sans-serif, Times;
+  font-family: "Odibee Sans";
   margin: 5px;
   /* border: 1px solid black; */
   padding: 10px;
@@ -38,7 +38,7 @@
   background-color: rgb(203, 195, 227);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border: 2px solid black; /* Green */
-  font-size: 30px;
+  font-size: 35px;
 }
 
 .GamePanel-buttonSmall {
@@ -51,12 +51,12 @@
 }
 
 .GamePanel-buttonTitle {
-  font-size: 15px;
+  font-size: 20px;
   font-style: bold;
 }
 
 .GamePanel-buttonInfo {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .GamePanel-towerButton {
@@ -69,7 +69,6 @@
 
 .GamePanel-infoButton {
   background-color: rgb(198, 194, 194);
-  height: 55px;
 }
 
 .GamePanel-explosionButton {
@@ -77,5 +76,5 @@
 }
 
 .GamePanel-hideInfo {
-  font-size: 18px;
+  font-size: 26px;
 }

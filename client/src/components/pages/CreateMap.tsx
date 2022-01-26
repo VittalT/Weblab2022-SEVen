@@ -137,7 +137,7 @@ const CreateMap = (props: CreateMapProps) => {
     <>
       <div className="u-gameContainer">
         <div className="Creation-titleContainer">
-          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Minion Battle</h1>
+          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Minion Mania</h1>
         </div>
         {numPlayers === 0 ? (
           <div className="configurables">
@@ -151,9 +151,10 @@ const CreateMap = (props: CreateMapProps) => {
                     marginBottom: 1,
                     fontSize: 20,
                     borderRadius: 3,
-                    backgroundColor: "#98c1d9",
+                    fontFamily: "Odibee Sans",
+                    backgroundColor: "#ff8ba0",
                     "&:hover": {
-                      backgroundColor: "#6CB1D9",
+                      backgroundColor: "#e76682",
                     },
                   }}
                   variant="contained"
@@ -170,9 +171,10 @@ const CreateMap = (props: CreateMapProps) => {
                     marginBottom: 1,
                     fontSize: 20,
                     borderRadius: 3,
-                    backgroundColor: "#98c1d9",
+                    fontFamily: "Odibee Sans",
+                    backgroundColor: "#ff8ba0",
                     "&:hover": {
-                      backgroundColor: "#6CB1D9",
+                      backgroundColor: "#e76682",
                     },
                   }}
                   variant="contained"
@@ -189,9 +191,10 @@ const CreateMap = (props: CreateMapProps) => {
                     marginBottom: 1,
                     fontSize: 20,
                     borderRadius: 3,
-                    backgroundColor: "#98c1d9",
+                    fontFamily: "Odibee Sans",
+                    backgroundColor: "#ff8ba0",
                     "&:hover": {
-                      backgroundColor: "#6CB1D9",
+                      backgroundColor: "#e76682",
                     },
                   }}
                   variant="contained"

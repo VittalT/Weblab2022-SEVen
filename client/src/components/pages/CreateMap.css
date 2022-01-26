@@ -41,14 +41,17 @@
 }
 
 .Creation-subtitle {
-  font-family: "Open Sans";
-  font-size: 20px;
+  font-family: "Odibee Sans";
+  color: white;
+  font-size: 26px;
   padding-top: 15px;
 }
 
 .Creation-button {
   display: inline-block;
   font-size: 30px;
+  background-color: #ff8ba0;
+  color: white;
 }
 
 .Creation-buttonContainer {
@@ -62,7 +65,7 @@
 .configurables {
   padding-top: 10px;
   padding-bottom: 0px;
-  font-family: Metal Mania;
+  font-family: "Odibee Sans";
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -73,7 +76,7 @@
   padding-top: 10px;
   padding-left: 30px;
   padding-bottom: 0px;
-  font-family: Metal Mania;
+  font-family: "Odibee Sans";
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -83,14 +86,20 @@
 .Creation-configHeader {
   font-size: 40px;
   padding-bottom: 20px;
+  color: white;
 }
 
 .Creation-configHeaderX {
   font-size: 40px;
   padding-bottom: 0px;
+  font-family: "Odibee Sans";
+  color: white;
 }
 
 .Creation-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
 }
 
