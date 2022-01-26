@@ -29,7 +29,7 @@ type Props = URLProps & {
 };
 
 const GameConfig = (props: Props) => {
-  const [gameType, setGameType] = useState<string>("");
+  const [gameType, setGameType] = useState<string>("a");
   const [gameCode, setGameCode] = useState<string>(props.passedGameCode);
   const [gameMapId, setGameMapId] = useState<string>(""); // TODO put 61ef3fcacd275e74b9034d3e
   const [gameMapName, setGameMapName] = useState<string>(""); // TODO put No Gold Mines
