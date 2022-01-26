@@ -21,7 +21,7 @@
   top: 30px !important;
   left: 30px !important;
   border-radius: 12px !important;
-  background-color: #ff8ba0 !important;
+  background-color: var(--themePink) !important;
   color: #ffffff !important;
   font-size: 30px !important;
   height: 50px !important;
@@ -35,7 +35,7 @@
 
 .Start {
   border-radius: 12px !important;
-  background-color: #ff8ba0 !important;
+  background-color: var(--themePink) !important;
   color: #ffffff !important;
   font-size: 30px !important;
   height: 50px !important;
@@ -55,7 +55,7 @@
   justify-content: center;
   text-align: center;
   font-size: 35px;
-  color: #cccccc;
+  color: var(--themeWhite);
 }
 
 .GameInfo-header {
@@ -64,5 +64,5 @@
 }
 
 .GameInfo {
-  outline: 2px solid #ff8ba0;
+  outline: 2px solid var(--themePink);
 }
