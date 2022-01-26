@@ -246,7 +246,6 @@ const GameConfig = (props: Props) => {
             ) : (
               <div> </div>
             )}
-            <br />
             <div> Game Type: {gameType} </div>
             <div> Game Code: {gameCode} </div>
             <div> Curent Players: {displayPlayersAndRatings(isRated)} </div>
@@ -260,15 +259,17 @@ const GameConfig = (props: Props) => {
                 )}
               </div>
             </div>
-
-            <div>Current Map: {gameMapName}</div>
           </div>
-          <MapPanel
-            gameMapId={gameMapId}
-            maps={maps}
-            onClickGameMap={onClickGameMap}
-            isHost={props.passedUserId === hostId}
-          />
+          <br />
+          <div>
+            <div className="MapName">Current Map: {gameMapName}</div>
+            <MapPanel
+              gameMapId={gameMapId}
+              maps={maps}
+              onClickGameMap={onClickGameMap}
+              isHost={props.passedUserId === hostId}
+            />
+          </div>
         </div>
       </div>
       <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">

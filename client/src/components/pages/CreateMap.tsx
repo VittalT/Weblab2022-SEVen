@@ -153,7 +153,7 @@ const CreateMap = (props: CreateMapProps) => {
     <>
       <div className="u-gameContainer">
         <div className="Creation-titleContainer">
-          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Create Map</h1>
+          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Create a Map</h1>
         </div>
         {numPlayers === 0 ? (
           <div className="configurables">
