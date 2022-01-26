@@ -55,7 +55,6 @@
   justify-content: center;
   text-align: center;
   font-size: 35px;
-  overflow-wrap: break-word;
 }
 
 .GameInfo-header {
@@ -79,4 +78,9 @@
 
 .MapName {
   color: var(--themeWhite);
+}
+
+.PlayerContent {
+  inline-size: 800px;
+  word-break: break-all;
 }

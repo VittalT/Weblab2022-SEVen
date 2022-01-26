@@ -237,7 +237,10 @@ const GameConfig = (props: Props) => {
             )}
             <div> Game Type: {gameType} </div>
             <div> Game Code: {gameCode} </div>
-            <div> Current Players: {displayPlayersAndRatings(isRated)} </div>
+            <div className="PlayerContent">
+              {" "}
+              Current Players: {displayPlayersAndRatings(isRated)}{" "}
+            </div>
             <div className="u-flexRow">
               <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
               <div>
