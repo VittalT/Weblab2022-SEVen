@@ -79,7 +79,7 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/users").then((users: User[]) => {
-      console.log(JSON.stringify(users));
+      // console.log(JSON.stringify(users));
       const _idToName: Record<string, string> = {};
       const _idToRating: Record<string, number> = {};
       for (const user of users) {

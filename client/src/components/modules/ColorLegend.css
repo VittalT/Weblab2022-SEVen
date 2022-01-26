@@ -1,10 +1,10 @@
 .ColorLegend-text {
-  font-size: 5px;
+  font-size: 10px;
 }
 
 .ColorLegend-colorDot {
-  height: 15px;
-  width: 15px;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
   display: inline-block;
 }
