@@ -658,8 +658,8 @@ export class Game {
 
     const winnerExpectedProb = 1 / (1 + Math.pow(10, (loserIdRating - winnerIdRating) / 400));
     const loserExpectedProb = 1 - winnerExpectedProb;
-    winnerIdRating += loserUser + 30 * (1 - winnerExpectedProb);
-    loserIdRating += winnerUser + 30 * (0 - loserExpectedProb);
+    winnerIdRating += 30 * (1 - winnerExpectedProb);
+    loserIdRating += 30 * (0 - loserExpectedProb);
 
     winnerUser.rating = Math.round(winnerIdRating);
     winner.rating = winnerUser.rating;

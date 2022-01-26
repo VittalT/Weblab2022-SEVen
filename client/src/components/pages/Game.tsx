@@ -136,10 +136,10 @@ const Game = (props: GameProps) => {
         <></>
       ) : (
         <div className="Game-endScreen">
-          <span className="Game-center">{"" + winnerName + " won!"}</span>
-          <span className="Game-center">{`Your Rating: ${(player ?? assert.fail()).prevRating} -> ${
+          <div className="Game-center">{"" + winnerName + " won!"}</div>
+          <div className="Game-center">{`Your Rating: ${(player ?? assert.fail()).prevRating} -> ${
             (player ?? assert.fail()).rating
-          }`}</span>
+          }`}</div>
           <button className="Game-endButton" onClick={navGameConfig}>
             Return to lobby
           </button>
