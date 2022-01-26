@@ -4,12 +4,26 @@ import { Router, RouteComponentProps } from "@reach/router";
 import "../../utilities.css";
 import "./HowToPlay.css";
 import BackButton from "../modules/BackButton";
+import User from "../../../../shared/User";
+import { get, post } from "../../utilities";
+import { navigate } from "@reach/router";
 
 type Props = RouteComponentProps & {
   forceNavigate: () => Promise<void>;
 };
 
 const HowToPlay = (props: Props) => {
+  useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
+  }, []);
+
   useEffect(() => {
     props.forceNavigate();
   }, []);

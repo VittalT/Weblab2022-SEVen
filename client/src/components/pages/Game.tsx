@@ -34,6 +34,17 @@ const Game = (props: GameProps) => {
   const [winnerName, setWinnerName] = useState("");
 
   useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     const doThings = async () => {
       setClickState(ClickState.Tower);
       setSizeClicked(Size.Small);

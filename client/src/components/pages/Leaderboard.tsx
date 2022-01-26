@@ -9,7 +9,7 @@ import { get, post } from "../../utilities";
 import { User } from "../../../../server/models/User";
 import { LeaderboardRecord } from "../modules/LeaderboardRecord";
 
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, navigate } from "@reach/router";
 
 type Props = RouteComponentProps & {
   forceNavigate: () => Promise<void>;
@@ -24,6 +24,17 @@ const Leaderboard = (props: Props) => {
   const [bestAlltimeRatings, setBestAlltimeRatings] = useState<ReactElement[]>([]);
   const [highestGamesPlayed, setHighestGamesPlayed] = useState<ReactElement[]>([]);
   const [highestGamesWon, setHighestGamesWon] = useState<ReactElement[]>([]);
+
+  useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     props.forceNavigate();

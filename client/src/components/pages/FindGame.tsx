@@ -18,6 +18,7 @@ import { isPropertySignature } from "typescript";
 
 import { PrivateGameInput } from "../modules/NewPostInput";
 import { CenterFocusStrong } from "@material-ui/icons";
+import User from "../../../../shared/User";
 
 type Game = {
   is_private: string;
@@ -71,6 +72,14 @@ const FindGame = (props: Props) => {
   };
 
   useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
     props.forceNavigate();
   }, []);
 
