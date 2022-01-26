@@ -21,31 +21,48 @@
   top: 30px !important;
   left: 30px !important;
   border-radius: 12px !important;
-  background-color: #98c1d9 !important;
+  background-color: #ff8ba0 !important;
   color: #ffffff !important;
-  font-size: 25px !important;
+  font-size: 30px !important;
   height: 50px !important;
   width: 200px !important;
+  font-family: "Odibee Sans", cursive !important;
 }
 
 .Leave:hover {
-  background-color: #6cb1d9 !important;
+  background-color: #e76682 !important;
 }
 
 .Start {
   border-radius: 12px !important;
-  background-color: #98c1d9 !important;
+  background-color: #ff8ba0 !important;
   color: #ffffff !important;
-  font-size: 25px !important;
+  font-size: 30px !important;
   height: 50px !important;
   width: 200px !important;
   position: fixed !important;
   top: 30px !important;
   right: 30px !important;
+  font-family: "Odibee Sans", cursive !important;
+}
+
+.Start:hover {
+  background-color: #e76682 !important;
+}
+
+.GameInfo-container {
+  margin-top: 5px;
+  justify-content: center;
+  text-align: center;
+  font-size: 35px;
+  color: #cccccc;
+}
+
+.GameInfo-header {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .GameInfo {
-  justify-content: center;
-  text-align: center;
-  font-size: 25px;
+  outline: 2px solid #ff8ba0;
 }

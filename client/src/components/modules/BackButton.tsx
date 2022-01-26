@@ -19,6 +19,7 @@ const BackButton = (props: Props) => {
         fontSize: 25,
         fontFamily: "Odibee Sans",
         width: 100,
+        height: 50,
         borderRadius: 3,
         position: "fixed",
         top: 30,

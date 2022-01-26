@@ -228,24 +228,25 @@ const GameConfig = (props: Props) => {
     <>
       <div className="u-gameContainer">
         <h1 className="u-gameHeader">Game Configuration</h1>
-        <div className="GameInfo">
-          {props.passedUserId === hostId ? (
-            <div>
-              <div>You are the host</div>
-            </div>
-          ) : (
-            <div>
-              <div>{hostName + " is the host"} </div>
-              <div>{"Waiting for " + hostName + " to start the game... "}</div>
-            </div>
-          )}
-          {startGameFailedStatus ? (
-            <div>Failed to start game, there must be 2, 3, or 4 players in the lobby</div>
-          ) : (
-            <div> </div>
-          )}
-          <br />
-          <div>
+        <div className="GameInfo-container">
+          <div className="GameInfo">
+            <h2 className="GameInfo-header">Your Game Details</h2>
+            {props.passedUserId === hostId ? (
+              <div>
+                <div>You are the host</div>
+              </div>
+            ) : (
+              <div>
+                <div>{hostName + " is the host"} </div>
+                <div>{"Waiting for " + hostName + " to start the game... "}</div>
+              </div>
+            )}
+            {startGameFailedStatus ? (
+              <div>Failed to start game, there must be 2, 3, or 4 players in the lobby</div>
+            ) : (
+              <div> </div>
+            )}
+            <br />
             <div> Game Type: {gameType} </div>
             <div> Game Code: {gameCode} </div>
             <div> Curent Players: {displayPlayersAndRatings(isRated)} </div>
@@ -261,13 +262,13 @@ const GameConfig = (props: Props) => {
             </div>
 
             <div>Current Map: {gameMapName}</div>
-            <MapPanel
-              gameMapId={gameMapId}
-              maps={maps}
-              onClickGameMap={onClickGameMap}
-              isHost={props.passedUserId === hostId}
-            />
           </div>
+          <MapPanel
+            gameMapId={gameMapId}
+            maps={maps}
+            onClickGameMap={onClickGameMap}
+            isHost={props.passedUserId === hostId}
+          />
         </div>
       </div>
       <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">

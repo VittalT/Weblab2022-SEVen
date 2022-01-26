@@ -86,7 +86,7 @@ const FindGame = (props: Props) => {
   return (
     <>
       <div className="u-gameContainer">
-        <h1 className="u-gameHeader">Minion Battle</h1>
+        <h1 className="u-gameHeader">Minion Mania</h1>
         <div>
           <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
@@ -96,12 +96,14 @@ const FindGame = (props: Props) => {
                   id="but"
                   sx={{
                     marginTop: 10,
-                    marginBottom: 12,
-                    fontSize: 25,
+                    marginBottom: 13,
+                    width: 250,
+                    fontSize: 30,
+                    fontFamily: "Odibee Sans",
                     borderRadius: 3,
-                    backgroundColor: "#98c1d9",
+                    backgroundColor: "#ff8ba0",
                     "&:hover": {
-                      backgroundColor: "#6CB1D9",
+                      backgroundColor: "#e76682",
                     },
                   }}
                   variant="contained"
@@ -118,8 +120,18 @@ const FindGame = (props: Props) => {
                   }}
                   {...bindMenu(popupState)}
                 >
-                  <MenuItem onClick={createPublicGame}>Public</MenuItem>
-                  <MenuItem onClick={createPrivateGame}>Private</MenuItem>
+                  <MenuItem
+                    sx={{ fontFamily: "Odibee Sans", fontSize: 21 }}
+                    onClick={createPublicGame}
+                  >
+                    Public
+                  </MenuItem>
+                  <MenuItem
+                    sx={{ fontFamily: "Odibee Sans", fontSize: 21 }}
+                    onClick={createPrivateGame}
+                  >
+                    Private
+                  </MenuItem>
                 </Menu>
               </React.Fragment>
             )}
@@ -132,11 +144,13 @@ const FindGame = (props: Props) => {
                 <Button
                   size="large"
                   sx={{
-                    fontSize: 25,
+                    fontSize: 30,
+                    fontFamily: "Odibee Sans",
                     borderRadius: 3,
-                    backgroundColor: "#98c1d9",
+                    width: 250,
+                    backgroundColor: "#ff8ba0",
                     "&:hover": {
-                      backgroundColor: "#6CB1D9",
+                      backgroundColor: "#e76682",
                     },
                   }}
                   variant="contained"
@@ -153,7 +167,9 @@ const FindGame = (props: Props) => {
                   }}
                   {...bindMenu(popupState)}
                 >
-                  <MenuItem onClick={navToLobby}>Public</MenuItem>
+                  <MenuItem sx={{ fontFamily: "Odibee Sans", fontSize: 21 }} onClick={navToLobby}>
+                    Public
+                  </MenuItem>
                   <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
                 </Menu>
               </React.Fragment>
