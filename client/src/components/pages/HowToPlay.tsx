@@ -48,7 +48,7 @@ const HowToPlay = (props: Props) => {
             To trigger an explosion, simply click the explosion button, then press the tower you
             wish to explode. While this will cause minions within a certain distance of your tower
             to be destroyed, it will also destroy your own minions within the same distance and
-            further cause some damage to your own tower.
+            further cause some damage to your own tower and surrounding towers.
           </p>
         </div>
       </div>
