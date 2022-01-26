@@ -553,7 +553,7 @@ export class Game {
     let remainingPlayers = 0;
     let remainingPlayerId = "";
     if (Date.now() - this.startTime > 10 * 60 * 1000) {
-      this.winnerId = this.playerIds[0];
+      this.winnerId = this.mostHealth();
     }
     for (const playerId of Object.keys(this.players)) {
       const player = this.players[playerId];
@@ -569,6 +569,29 @@ export class Game {
       this.winnerId = remainingPlayerId; // this will cause game to end on next refresh
       console.log(`1 remaining player: ${this.winnerId}`);
     }
+  }
+
+  // returns id of player with the most health
+  public mostHealth(): string {
+    let winnerId = this.playerIds[0];
+    let maxHealth = 0;
+    for (const playerId of this.playerIds) {
+      const player: Player = this.getPlayer(playerId);
+      if (player !== undefined && player.inGame) {
+        let totalHealth = 0;
+        for (const towerId of player.towerIds) {
+          const tower: Tower = this.getTower(towerId);
+          if (tower !== undefined) {
+            totalHealth += tower.health;
+          }
+        }
+        if (totalHealth > maxHealth) {
+          winnerId = playerId;
+          maxHealth = totalHealth;
+        }
+      }
+    }
+    return winnerId;
   }
 
   public async onGameEnd(): Promise<void> {

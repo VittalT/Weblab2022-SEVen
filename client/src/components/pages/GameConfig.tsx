@@ -234,9 +234,7 @@ const GameConfig = (props: Props) => {
           <div className="GameInfo">
             <h2 className="GameInfo-header">Your Game Details</h2>
             {props.passedUserId === hostId ? (
-              <div>
-                <div>You are the host</div>
-              </div>
+              <div>You are the host</div>
             ) : (
               <div>
                 <div>{hostName + " is the host"} </div>
@@ -280,9 +278,13 @@ const GameConfig = (props: Props) => {
       <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
         Leave Game
       </Button>
-      <Button size="medium" className="Start" onClick={startGame} variant="contained">
-        Start Game
-      </Button>
+      {props.passedUserId === hostId ? (
+        <Button size="medium" className="Start" onClick={startGame} variant="contained">
+          Start Game
+        </Button>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
