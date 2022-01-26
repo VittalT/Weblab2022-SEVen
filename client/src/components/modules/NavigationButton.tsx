@@ -16,8 +16,10 @@ const NavigationButton = (props: Props) => {
       size="large"
       sx={{
         marginBottom: 3,
-        fontSize: 25,
+        fontSize: 30,
         borderRadius: 4,
+        width: 250,
+        fontFamily: "Odibee Sans",
         backgroundColor: "#98C1D9",
         "&:hover": {
           backgroundColor: "#6CB1D9",
