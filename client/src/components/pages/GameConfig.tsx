@@ -53,7 +53,7 @@ const GameConfig = (props: Props) => {
     hostId: string;
     playerIds: Array<string>;
   }) => {
-    console.log(`data ${data} ${data.playerIds}`);
+    // console.log(`data ${data} ${data.playerIds}`);
     setGameType(data.gameType);
     setGameCode(data.gameCode);
     setHostName(data.hostName);
@@ -144,7 +144,7 @@ const GameConfig = (props: Props) => {
       if (currGameCode.length === 6) {
         const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
         const data = await post("/api/getLobbyInfo", { gameCode: currGameCode });
-        console.log(`waya ${JSON.stringify(data)}`);
+        // console.log(`waya ${JSON.stringify(data)}`);
         const lobbyData = await updateLobbyData(data);
       } else {
         navigate("/findgame");
@@ -215,6 +215,9 @@ const GameConfig = (props: Props) => {
   // *either you are the host or waiting to start
   return (
     <>
+      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
+        Leave Game
+      </Button>
       <div className="u-gameContainer">
         <h1 className="u-gameHeader">Game Configuration</h1>
         <div className="u-flexColumn">
@@ -262,9 +265,6 @@ const GameConfig = (props: Props) => {
           </div>
         </div>
       </div>
-      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
-        Leave Game
-      </Button>
     </>
   );
 };
