@@ -137,11 +137,11 @@ const CreateMap = (props: CreateMapProps) => {
     <>
       <div className="u-gameContainer">
         <div className="Creation-titleContainer">
-          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Minion Mania</h1>
+          <h1 className="Creation-gameTitle u-textCenter u-gameHeader">Create Map</h1>
         </div>
         {numPlayers === 0 ? (
           <div className="configurables">
-            <div className="Creation-configHeader">Symmetry Type</div>
+            <div className="Creation-configHeader">Want to Make a Symmetric Map?</div>
             <div className="Creation-centered">
               <div>
                 <Button
@@ -149,7 +149,8 @@ const CreateMap = (props: CreateMapProps) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 20,
+                    fontSize: 30,
+                    width: 350,
                     borderRadius: 3,
                     fontFamily: "Odibee Sans",
                     backgroundColor: "#ff8ba0",
@@ -169,7 +170,8 @@ const CreateMap = (props: CreateMapProps) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 20,
+                    fontSize: 30,
+                    width: 350,
                     borderRadius: 3,
                     fontFamily: "Odibee Sans",
                     backgroundColor: "#ff8ba0",
@@ -189,7 +191,8 @@ const CreateMap = (props: CreateMapProps) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 20,
+                    fontSize: 30,
+                    width: 350,
                     borderRadius: 3,
                     fontFamily: "Odibee Sans",
                     backgroundColor: "#ff8ba0",

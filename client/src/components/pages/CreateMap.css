@@ -13,7 +13,7 @@
 }
 
 .Creation-canvasItem {
-  outline: 3px black solid;
+  outline: 3px solid var(--themePink);
 }
 
 .Creation-subContainer {
@@ -42,7 +42,7 @@
 
 .Creation-subtitle {
   font-family: "Odibee Sans";
-  color: white;
+  color: var(--themeWhite);
   font-size: 26px;
   padding-top: 15px;
 }
@@ -86,14 +86,14 @@
 .Creation-configHeader {
   font-size: 40px;
   padding-bottom: 20px;
-  color: white;
+  color: var(--themeWhite);
 }
 
 .Creation-configHeaderX {
   font-size: 40px;
   padding-bottom: 0px;
   font-family: "Odibee Sans";
-  color: white;
+  color: var(--themeWhite);
 }
 
 .Creation-centered {
