@@ -86,95 +86,99 @@ const FindGame = (props: Props) => {
   return (
     <>
       <div className="u-gameContainer">
-        <h1 className="u-gameHeader">Minion Mania</h1>
-        <div>
-          <PopupState variant="popover" popupId="demo-popup-menu">
-            {(popupState) => (
-              <React.Fragment>
-                <Button
-                  size="large"
-                  id="but"
-                  sx={{
-                    marginTop: 10,
-                    marginBottom: 13,
-                    width: 250,
-                    fontSize: 30,
-                    fontFamily: "Odibee Sans",
-                    borderRadius: 3,
-                    backgroundColor: "#ff8ba0",
-                    "&:hover": {
-                      backgroundColor: "#e76682",
-                    },
-                  }}
-                  variant="contained"
-                  {...bindTrigger(popupState)}
-                >
-                  Create Game
-                </Button>
-                <Menu
-                  PaperProps={{
-                    style: {
+        <h1 className="u-gameHeader">Find a Game</h1>
+        <div className="u-flexRow">
+          <div>
+            <PopupState variant="popover" popupId="demo-popup-menu">
+              {(popupState) => (
+                <React.Fragment>
+                  <Button
+                    size="large"
+                    id="but"
+                    sx={{
+                      marginTop: 10,
+                      marginRight: 10,
+                      marginBottom: 13,
                       width: 250,
-                      borderRadius: 4,
-                    },
-                  }}
-                  {...bindMenu(popupState)}
-                >
-                  <MenuItem
-                    sx={{ fontFamily: "Odibee Sans", fontSize: 21 }}
-                    onClick={createPublicGame}
+                      fontSize: 30,
+                      fontFamily: "Odibee Sans",
+                      borderRadius: 3,
+                      backgroundColor: "#ff8ba0",
+                      "&:hover": {
+                        backgroundColor: "#e76682",
+                      },
+                    }}
+                    variant="contained"
+                    {...bindTrigger(popupState)}
                   >
-                    Public
-                  </MenuItem>
-                  <MenuItem
-                    sx={{ fontFamily: "Odibee Sans", fontSize: 21 }}
-                    onClick={createPrivateGame}
+                    Create Game
+                  </Button>
+                  <Menu
+                    PaperProps={{
+                      style: {
+                        width: 250,
+                        borderRadius: 4,
+                      },
+                    }}
+                    {...bindMenu(popupState)}
                   >
-                    Private
-                  </MenuItem>
-                </Menu>
-              </React.Fragment>
-            )}
-          </PopupState>
-        </div>
-        <div className="dropdown">
-          <PopupState variant="popover" popupId="demo-popup-menu">
-            {(popupState) => (
-              <React.Fragment>
-                <Button
-                  size="large"
-                  sx={{
-                    fontSize: 30,
-                    fontFamily: "Odibee Sans",
-                    borderRadius: 3,
-                    width: 250,
-                    backgroundColor: "#ff8ba0",
-                    "&:hover": {
-                      backgroundColor: "#e76682",
-                    },
-                  }}
-                  variant="contained"
-                  {...bindTrigger(popupState)}
-                >
-                  Join Game
-                </Button>
-                <Menu
-                  PaperProps={{
-                    style: {
+                    <MenuItem
+                      sx={{ fontFamily: "Odibee Sans", fontSize: 21 }}
+                      onClick={createPublicGame}
+                    >
+                      Public
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ fontFamily: "Odibee Sans", fontSize: 21 }}
+                      onClick={createPrivateGame}
+                    >
+                      Private
+                    </MenuItem>
+                  </Menu>
+                </React.Fragment>
+              )}
+            </PopupState>
+          </div>
+          <div className="dropdown">
+            <PopupState variant="popover" popupId="demo-popup-menu">
+              {(popupState) => (
+                <React.Fragment>
+                  <Button
+                    size="large"
+                    sx={{
+                      marginTop: 10,
+                      fontSize: 30,
+                      fontFamily: "Odibee Sans",
+                      borderRadius: 3,
                       width: 250,
-                      borderRadius: 4,
-                    },
-                  }}
-                  {...bindMenu(popupState)}
-                >
-                  <MenuItem sx={{ fontFamily: "Odibee Sans", fontSize: 21 }} onClick={navToLobby}>
-                    Public
-                  </MenuItem>
-                  <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
-                </Menu>
-              </React.Fragment>
-            )}
-          </PopupState>
+                      backgroundColor: "#ff8ba0",
+                      "&:hover": {
+                        backgroundColor: "#e76682",
+                      },
+                    }}
+                    variant="contained"
+                    {...bindTrigger(popupState)}
+                  >
+                    Join Game
+                  </Button>
+                  <Menu
+                    PaperProps={{
+                      style: {
+                        width: 250,
+                        borderRadius: 4,
+                      },
+                    }}
+                    {...bindMenu(popupState)}
+                  >
+                    <MenuItem sx={{ fontFamily: "Odibee Sans", fontSize: 21 }} onClick={navToLobby}>
+                      Public
+                    </MenuItem>
+                    <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
+                  </Menu>
+                </React.Fragment>
+              )}
+            </PopupState>
+          </div>
         </div>
       </div>
       <BackButton text="Back" destPath="/" />

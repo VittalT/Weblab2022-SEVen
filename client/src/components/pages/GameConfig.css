@@ -55,7 +55,6 @@
   justify-content: center;
   text-align: center;
   font-size: 35px;
-  color: var(--themeWhite);
 }
 
 .GameInfo-header {
@@ -64,5 +63,19 @@
 }
 
 .GameInfo {
+  margin-top: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   outline: 2px solid var(--themePink);
+  background-color: var(--themeLightBlue);
+  border-radius: 30px;
+  color: var(--themeNavy);
+}
+
+.MapInfo {
+  background-color: var(--themeLightBlue);
+}
+
+.MapName {
+  color: var(--themeWhite);
 }
