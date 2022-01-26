@@ -50,7 +50,7 @@ const HowToPlay = (props: Props) => {
             to be destroyed, it will also destroy your own minions within the same distance and
             further cause some damage to your own tower and surrounding towers.
           </p>
-          <p>
+          <p className="HTP-rule">
             The map may also have yellow pockets of gold that can be collected by placing a tower on
             them or deploying a minion through them.
           </p>
