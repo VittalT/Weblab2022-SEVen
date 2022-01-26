@@ -28,7 +28,7 @@ const HomeScreen = (props: Props) => {
   return (
     <>
       <div className="HomeScreen-container u-gameContainer">
-        <h3 className="HomeScreen-header u-gameHeader">Minion Battle</h3>
+        <h1 className="HomeScreen-header u-gameHeader">Minion Battle</h1>
         {props.userId ? (
           <>
             <NavigationButton text="Find Game" destPath="/findgame" onClickFunction={doNothing} />
