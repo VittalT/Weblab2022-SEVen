@@ -508,7 +508,7 @@ export class Game {
           this.removeMinion(parseInt(minionId));
         }
       }
-      for (const [tower2Id, tower2] of [..Object.entries(this.towers)]) {
+      for (const [tower2Id, tower2] of [...Object.entries(this.towers)]) {
         const tower2Radius = towerConstants[tower2.size].hitRadius;
         if (
           tower.location.distanceTo(tower2.location) <=
