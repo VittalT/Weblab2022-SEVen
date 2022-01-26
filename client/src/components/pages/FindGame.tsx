@@ -97,7 +97,7 @@ const FindGame = (props: Props) => {
                 >
                   Create Game
                 </Button>
-                <Menu sx={{ width: 100 }} {...bindMenu(popupState)}>
+                <Menu sx={{}} {...bindMenu(popupState)}>
                   <MenuItem onClick={createPublicGame}>Public</MenuItem>
                   <MenuItem onClick={createPrivateGame}>Private</MenuItem>
                 </Menu>

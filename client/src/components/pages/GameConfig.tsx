@@ -215,21 +215,15 @@ const GameConfig = (props: Props) => {
   // *either you are the host or waiting to start
   return (
     <>
-      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
-        Leave Game
-      </Button>
       <div className="u-gameContainer">
         <h1 className="u-gameHeader">Game Configuration</h1>
-        <div className="u-flexColumn">
+        <div className="GameInfo">
           {props.passedUserId === hostId ? (
-            <div className="u-flexColumn">
+            <div>
               <div>You are the host</div>
-              <Button size="medium" className="Leave" onClick={startGame} variant="contained">
-                Start Game
-              </Button>
             </div>
           ) : (
-            <div className="u-flexColumn">
+            <div>
               <div>{hostName + " is the host"} </div>
               <div>{"Waiting for " + hostName + " to start the game... "}</div>
             </div>
@@ -240,21 +234,21 @@ const GameConfig = (props: Props) => {
             <div> </div>
           )}
           <br />
-          <div> GAME CONFIG </div>
-          <div> Game Type: {gameType} </div>
-          <div> Game Code: {gameCode} </div>
-          <div> Curent Players: {displayPlayersAndRatings(isRated)} </div>
-          <div className="u-flexColumn">
-            <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
-            <div>
-              {props.passedUserId === hostId ? (
-                <Switch defaultChecked onClick={toggleIsRated} />
-              ) : (
-                <></>
-              )}
+          <div>
+            <div> Game Type: {gameType} </div>
+            <div> Game Code: {gameCode} </div>
+            <div> Curent Players: {displayPlayersAndRatings(isRated)} </div>
+            <div className="u-flexRow">
+              <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
+              <div>
+                {props.passedUserId === hostId ? (
+                  <Switch defaultChecked onClick={toggleIsRated} />
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="u-flexColumn">
+
             <div>Current Map: {gameMapName}</div>
             <MapPanel
               gameMapId={gameMapId}
@@ -265,6 +259,12 @@ const GameConfig = (props: Props) => {
           </div>
         </div>
       </div>
+      <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
+        Leave Game
+      </Button>
+      <Button size="medium" className="Start" onClick={startGame} variant="contained">
+        Start Game
+      </Button>
     </>
   );
 };
