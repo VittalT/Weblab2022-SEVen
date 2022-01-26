@@ -1,20 +1,20 @@
 .NewPostInput-input,
 .NewPostInput-button {
-  font-size: 14px;
+  font-size: 21px;
   padding: var(--s) var(--m);
 }
 
 .NewPostInput-input {
   flex-grow: 1;
-  border: var(--darkgrey) 1px solid;
+  border: var(--themePink) 1px solid;
   border-radius: var(--xs) 0 0 var(--xs);
   transition: box-shadow 0.1s;
-  flex-direction: column;
+  width: 100px;
 }
 
 .NewPostInput-input:focus-within {
-  border-color: var(--primary--dim);
-  box-shadow: 0 0 0 var(--xs) rgba(0, 123, 255, 0.25);
+  border-color: var(--themeLightBlue);
+  box-shadow: 0 0 0 var(--xs) var(--themePink);
 }
 
 .NewPostInput-button {
@@ -27,5 +27,11 @@
 
 .NewPostInput-button:hover {
   color: var(--white);
-  background-color: #98c1d9;
+  background-color: #ff8ba0;
+}
+
+.Private-input {
+  display: flex;
+  flex-direction: row;
+  width: 50px;
 }
