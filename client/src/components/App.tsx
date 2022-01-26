@@ -63,6 +63,9 @@ const App = () => {
         setUserId(user._id);
         setUserName(user.name);
       }
+      socket.on("connect", () => {
+        post("/api/initsocket", { socketid: socket.id });
+      });
     };
     forceNavigate();
 
@@ -70,6 +73,7 @@ const App = () => {
   }, []);
 
   const handleLogin = (res: GoogleLoginResponse) => {
+    console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
       setUserId(user._id);
