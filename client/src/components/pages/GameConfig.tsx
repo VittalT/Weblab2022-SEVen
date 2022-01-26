@@ -71,6 +71,7 @@ const GameConfig = (props: Props) => {
   const navToGame = () => {
     navigate("/game");
   };
+
   useEffect(() => {
     get("/api/users").then((users: User[]) => {
       // const user1 = await UserModel.findById(id1);

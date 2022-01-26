@@ -74,7 +74,7 @@ const FindGame = (props: Props) => {
   return (
     <>
       <div className="u-gameContainer">
-        <h3 className="u-gameHeader">Minion Battle</h3>
+        <h1 className="u-gameHeader">Minion Battle</h1>
         <div>
           <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
@@ -82,7 +82,8 @@ const FindGame = (props: Props) => {
                 <Button
                   size="large"
                   sx={{
-                    marginBottom: 10,
+                    marginTop: 10,
+                    marginBottom: 12,
                     fontSize: 25,
                     borderRadius: 3,
                     backgroundColor: "#98c1d9",
@@ -110,7 +111,6 @@ const FindGame = (props: Props) => {
                 <Button
                   size="large"
                   sx={{
-                    marginBottom: 10,
                     fontSize: 25,
                     borderRadius: 3,
                     backgroundColor: "#98c1d9",
