@@ -32,7 +32,7 @@ const HowToPlay = (props: Props) => {
             To place a tower, select the size of the tower and click on the map where you want it to
             be spawned. Towers must be spawned at least a certain distance away from each other and
             can only be placed within a certain radius of one of your existing towers (this area
-            will be displayed when you attempt to spawn your tower). When one of your towers die,
+            will be displayed when you attempt to spawn your tower). When one of your towers dies,
             you may not rebuild another tower in that area for 5 seconds (this area will also be
             indicated).
           </p>
