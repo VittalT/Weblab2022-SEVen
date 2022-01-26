@@ -25,6 +25,12 @@
   --grey: #f7f7f7;
   --white: #fff;
   --lightblue: #98c1d9;
+
+  --themeBlack: #2c3531;
+  --themeBlue: #116466;
+  --themeBrown: #d9b08c;
+  --themePeach: #ffcb9a;
+  --themePale: #d1e8e2;
   --hover-brightness: 1.2;
 
   --xs: 4px;
@@ -39,7 +45,7 @@ html {
 }
 
 body {
-  background-color: var(--bg);
+  background-color: var(--themeBlue);
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -155,6 +161,7 @@ form {
   align-items: center;
   overflow-y: auto;
   margin-top: 0px;
+  background-color: (--themefirst);
 }
 
 .u-displayText {

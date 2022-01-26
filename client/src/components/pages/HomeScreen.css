@@ -18,6 +18,6 @@
 
 .HomeScreen-logout {
   position: fixed;
-  left: 35px;
+  right: 35px;
   top: 35px;
 }
