@@ -132,10 +132,8 @@ const drawGoldMine = (
   goldMineLoc: Point,
   scaleFactor: number
 ) => {
-  // console.log(goldMineLoc);
   // const drawLoc = goldMineLoc.scaleBy(scaleFactor);
   const drawLoc = scaleBy(goldMineLoc, scaleFactor);
-  // console.log(drawLoc);
   const goldRadius = GoldConstants.realRadius * scaleFactor;
 
   // draw circle
@@ -161,7 +159,6 @@ const drawTimer = (context: CanvasRenderingContext2D, numMilliSeconds: number) =
 /** main draw */
 export const drawCanvas = (data: { userId: string; gameUpdateData: GameUpdateData }) => {
   // get the canvas element
-  // console.log(gameUpdateData);
   const userId = data.userId;
   const gameUpdateData = data.gameUpdateData;
 
@@ -191,7 +188,6 @@ export const drawCanvas = (data: { userId: string; gameUpdateData: GameUpdateDat
   const teamId = gameUpdateData.playerToTeamId[userId];
 
   if (player.clickState === ClickState.Explosion && player.canExplode) {
-    // console.log("here");
     const tower = player.hoverAllyTower;
     const towerRadius = towerConstants[tower.size].hitRadius;
     const drawLoc = scaleBy(player.cursorLoc, scaleFactor);

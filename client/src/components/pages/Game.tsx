@@ -55,7 +55,6 @@ const Game = (props: GameProps) => {
       const data = await get("/api/getCurrRoomStatus");
       const currGameCode = data.gameCode;
       if (currGameCode.length === 6) {
-        console.log("going to join room soon");
         if (props.passedUserId === undefined || props.passedUserId.length === 0) {
           navigate("/"); // PICK UP PROPS
         }
@@ -88,7 +87,6 @@ const Game = (props: GameProps) => {
   }, []);
 
   const processUpdate = (gameUpdateData: GameUpdateData) => {
-    // console.log(gameUpdateData);
     updateDisplayState(gameUpdateData);
     drawCanvas({ userId: props.passedUserId, gameUpdateData: gameUpdateData });
   };
@@ -100,7 +98,6 @@ const Game = (props: GameProps) => {
     // }
     setClickState(player.clickState);
     setSizeClicked(player.sizeClicked);
-    // console.log(player.clickState);
     setGold(player.gold);
   };
 

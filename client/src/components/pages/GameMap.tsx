@@ -20,7 +20,6 @@ const GameMap = (props: GameMapProps) => {
   useEffect(() => {
     const canvas = document.getElementById("game-canvas") ?? assert.fail();
     canvas.addEventListener("click", (event: MouseEvent) => {
-      // console.log(`A ${event.offsetX} ${event.offsetY}`);
       clickGameMap(props.gameCode, event.offsetX, event.offsetY, props.userId);
     });
   }, [props.gameCode]);

@@ -14,7 +14,6 @@ const ColorLegend = (props: ColorLegendProps) => {
   const [teamIdToName, setTeamIdToName] = useState<Record<number, string>>({});
   useEffect(() => {
     get("/api/getTeamIdToName", { gameCode: props.gameCode }).then((data) => {
-      console.log(`teamIdToName ${JSON.stringify(data)}`);
       if (data.successful) {
         setTeamIdToName(data.teamIdToName);
       }

@@ -31,7 +31,6 @@ const App = () => {
     const user: User = await get("/api/whoami");
     socket.emit("joinRoom", { user: user, userId: userId, gameCode: gameCode });
     setGameCode(gameCode);
-    console.log("im inside the joinroom function!");
     return true;
   };
 
@@ -57,8 +56,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("app was entered or refreshed!");
-
     const doThings = async () => {
       const user: User = await get("/api/whoami");
       if (user._id) {
@@ -73,13 +70,10 @@ const App = () => {
   }, []);
 
   const handleLogin = (res: GoogleLoginResponse) => {
-    console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
       setUserId(user._id);
       setUserName(user.name);
-      // console.log(`User Id: ${user._id}`);
-      // console.log(`User Id: ${userId}`);
     });
   };
 
