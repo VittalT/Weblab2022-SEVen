@@ -42,7 +42,6 @@ const HowToPlay = (props: Props) => {
             also passively generates gold, which can be used to purchase more towers, more minions,
             or trigger an explosion. The game ends when only one player has any towers remaining.
           </p>
-
           <p className="HTP-rule">
             To place a tower, select the size of the tower and click on the map where you want it to
             be spawned. Towers must be spawned at least a certain distance away from each other and
@@ -51,7 +50,7 @@ const HowToPlay = (props: Props) => {
             you may not rebuild another tower in that area for 5 seconds (this area will also be
             indicated).
           </p>
-          <img src="programming.gif" alt="Deploy Tower"></img>
+          <img className="GIF" src="programming.gif" alt="Deploy Tower"></img>
           <p className="HTP-rule">
             To deploy a minion, select the size of the minion you wish to deploy and click one of
             your own towers (the point from which it will be deployed) and an enemy tower (the tower
@@ -60,19 +59,19 @@ const HowToPlay = (props: Props) => {
             minions attacking it are destroyed. Each minion also takes a certain amount of time to
             reach its destination and begin attacking the tower.
           </p>
-          <img src="programming.gif" alt="Deploy Minion"></img>
+          <img className="GIF" src="programming.gif" alt="Deploy Minion"></img>
           <p className="HTP-rule">
             To trigger an explosion, simply click the explosion button, then press the tower you
             wish to explode. While this will cause minions within a certain distance of your tower
             to be destroyed, it will also destroy your own minions within the same distance and
             further cause some damage to your own tower and surrounding towers.
           </p>
-          <img src="programming.gif" alt="Create Explosion"></img>
+          <img className="GIF" src="programming.gif" alt="Create Explosion"></img>
           <p className="HTP-rule">
             The map may also have yellow pockets of gold that can be collected by placing a tower on
             them or deploying a minion through them.
           </p>
-          <img src="programming.gif" alt="Collect Gold"></img>
+          <img className="GIF" src="programming.gif" alt="Collect Gold"></img>
           <p className="HTP-rule">
             Those are all the rules for gameplay! If there isn't a winner at the end of 10 minutes,
             the player with the most health will be declared the winner. You can now start playing
