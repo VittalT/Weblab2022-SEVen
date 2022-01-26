@@ -237,7 +237,7 @@ const GameConfig = (props: Props) => {
             )}
             <div> Game Type: {gameType} </div>
             <div> Game Code: {gameCode} </div>
-            <div> Curent Players: {displayPlayersAndRatings(isRated)} </div>
+            <div> Current Players: {displayPlayersAndRatings(isRated)} </div>
             <div className="u-flexRow">
               <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
               <div>
@@ -248,13 +248,12 @@ const GameConfig = (props: Props) => {
                 )}
               </div>
             </div>
-            <span>
-              Current Map: {gameMapName}, created by {gameMapCreatorName}
-            </span>
           </div>
           <br />
           <div>
-            <div className="MapName">Current Map: {gameMapName}</div>
+            <div className="MapName">
+              Current Map: {gameMapName}, created by {gameMapCreatorName}
+            </div>
             <MapPanel
               gameMapId={gameMapId}
               maps={maps}

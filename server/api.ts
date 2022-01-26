@@ -38,6 +38,11 @@ router.get("/users", (req: Request, res: Response) => {
   UserModel.find({}).then((users: User[]) => res.send(users));
 });
 
+router.get("/userFromId", (req: Request, res: Response) => {
+  const userId = req.query.id;
+  UserModel.findById(userId).then((user: User) => res.send(user));
+});
+
 router.post("/initsocket", (req: Request, res: Response) => {
   // do nothing if user not logged in
   if (req.user) {

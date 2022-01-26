@@ -18,6 +18,7 @@ import { GameUpdateData } from "../../../../shared/types";
 import User from "../../../../shared/User";
 import { canvasDimensions } from "../../../../shared/constants";
 import ColorLegend from "../modules/ColorLegend";
+import Player from "../../../../shared/Player";
 
 type GameProps = RouteComponentProps & {
   passedUserId: string;
@@ -32,6 +33,7 @@ const Game = (props: GameProps) => {
   const [displayText, setDisplayText] = useState("Place or select tower");
   const [isInPlay, setIsInplay] = useState(true);
   const [winnerName, setWinnerName] = useState("");
+  const [player, setPlayer] = useState<Player>();
 
   useEffect(() => {
     // import User from "../../../../shared/User";
@@ -87,6 +89,9 @@ const Game = (props: GameProps) => {
   }, []);
 
   const processUpdate = (gameUpdateData: GameUpdateData) => {
+    // console.log(gameUpdateData);
+    // console.log(gameUpdateData.players[props.passedUserId]);
+    setPlayer(gameUpdateData.players[props.passedUserId]);
     updateDisplayState(gameUpdateData);
     drawCanvas({ userId: props.passedUserId, gameUpdateData: gameUpdateData });
   };
@@ -131,7 +136,10 @@ const Game = (props: GameProps) => {
         <></>
       ) : (
         <div className="Game-endScreen">
-          <div className="Game-center">{"" + winnerName + " won!"}</div>
+          <span className="Game-center">{"" + winnerName + " won!"}</span>
+          <span className="Game-center">{`Your Rating: ${(player ?? assert.fail()).prevRating} -> ${
+            (player ?? assert.fail()).rating
+          }`}</span>
           <button className="Game-endButton" onClick={navGameConfig}>
             Return to lobby
           </button>
