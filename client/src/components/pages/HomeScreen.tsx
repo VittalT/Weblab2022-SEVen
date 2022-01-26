@@ -20,9 +20,14 @@ type Props = RouteComponentProps & {
   userId: String;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
   handleLogout: () => void;
+  forceNavigate: () => Promise<void>;
 };
 
 const HomeScreen = (props: Props) => {
+  useEffect(() => {
+    props.forceNavigate();
+  }, []);
+
   const doNothing = () => {};
 
   return (

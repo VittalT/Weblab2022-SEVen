@@ -95,6 +95,7 @@ const App = () => {
         path="/"
         handleLogin={handleLogin as (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void}
         handleLogout={handleLogout}
+        forceNavigate={forceNavigate}
         userId={userId}
       />
       <FindGame
