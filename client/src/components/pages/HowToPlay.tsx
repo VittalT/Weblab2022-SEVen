@@ -38,42 +38,40 @@ const HowToPlay = (props: Props) => {
             of your enemies' towers.
           </p>
           <p className="HTP-rule">
-            At the beginning of the game, each player starts with a single small tower. Each tower
-            also passively generates gold, which can be used to purchase more towers, more minions,
-            or trigger an explosion. The game ends when only one player has any towers remaining.
+            Each player starts with a single small tower. Towers passively generates gold and
+            regenerate health, and minions attack towers and reduce their health. Gold can be used
+            to purchase more towers, minions, or trigger an explosion. The game ends when only one
+            player has any towers remaining.
           </p>
           <p className="HTP-rule">
             To place a tower, select the size of the tower and click on the map where you want it to
-            be spawned. Towers must be spawned at least a certain distance away from each other and
-            can only be placed within a certain radius of one of your existing towers (this area
-            will be displayed when you attempt to spawn your tower). When one of your towers dies,
-            you may not rebuild another tower in that area for 5 seconds (this area will also be
-            indicated).
+            be spawned. Towers must be spawned far enough from nearby towers but also close to some
+            ally tower, as shown on the blueprint following the cursor.
           </p>
-          <img className="GIF" src="../GIFs/tower.gif" alt="Deploy Tower" width="250"></img>
+          <img className="GIF" src="./tower.gif" width="250"></img>
           <p className="HTP-rule">
-            To deploy a minion, select the size of the minion you wish to deploy and click one of
-            your own towers (the point from which it will be deployed) and an enemy tower (the tower
-            that it will attack). Each tower has a certain amount of health and each minion does a
-            certain amount of damage per second - when a tower's health reaches zero, it and all the
-            minions attacking it are destroyed. Each minion also takes a certain amount of time to
-            reach its destination and begin attacking the tower.
+            To deploy a minion, select the size of the minion you wish to deploy, click an ally
+            tower and an enemy tower. The minion then travels from the selected ally tower to the
+            enemy tower, and then starts dealing damage to the enemy tower.
           </p>
           <img className="GIF" src="programming.gif" alt="Deploy Minion"></img>
           <p className="HTP-rule">
-            To trigger an explosion, simply click the explosion button, then press the tower you
-            wish to explode. While this will cause minions within a certain distance of your tower
-            to be destroyed, it will also destroy your own minions within the same distance and
-            further cause some damage to your own tower and surrounding towers.
+            To trigger an explosion, click the explosion button, and then press the tower you wish
+            to explode. This will destroy all nearby minions and reduce health of all nearby towers,
+            both enemy and ally!
           </p>
           <img className="GIF" src="programming.gif" alt="Create Explosion"></img>
+          <p className="HTP-rule">
+            When one of your towers dies, you may not rebuild another tower in that area for 5
+            seconds (this area will also be indicated).
+          </p>
           <p className="HTP-rule">
             The map may also have yellow pockets of gold that can be collected by placing a tower on
             them or deploying a minion through them.
           </p>
           <img className="GIF" src="programming.gif" alt="Collect Gold"></img>
           <p className="HTP-rule">
-            Those are all the rules for gameplay! If there isn't a winner at the end of 10 minutes,
+            These are all the rules for gameplay! If there isn't a winner at the end of 10 minutes,
             the player with the most health will be declared the winner. You can now start playing
             games with your friends in groups of 2-6! If you're up for the challenge, you can also
             toggle a game setting to compete in rated games with others in your lobby. Enjoy!
