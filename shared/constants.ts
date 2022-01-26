@@ -86,11 +86,15 @@ export const teamColors: Array<string> = [
   "#349CD9", // blue
   "#3C8C1A", // green
   "#797A0F", // brown-yellow
+  "#822510", // red
+  "#5e148f", // pink,
 ];
 
 export const teamColorsFaded: Array<string> = [
   "#E6B3A7", // light orange
   "#98C1D9", // light blue
-  "#08A721", // light green
+  "#5fc26e", // light green
   "#CACB56", // light brown-yellow
+  "#c9715d", // light red
+  "#a468cc", // light purple
 ];
