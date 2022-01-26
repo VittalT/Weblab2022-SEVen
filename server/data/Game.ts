@@ -381,6 +381,7 @@ export class Game {
 
     // remove clickState so future minions cannot be spawned from this tower
     for (const userId of this.playerIds) {
+      console.log("RT");
       const player = this.getPlayer(userId);
       if (player.towerIds)
         if (player.towerClickedId === towerId) {
@@ -525,12 +526,14 @@ export class Game {
   public forfeit(playerId: string) {
     const player: Player = this.getPlayer(playerId);
     const towerIdsCopy = [...player.towerIds];
-    const playerIdsCopy = [...player.minionIds];
+    const minionIdsCopy = [...player.minionIds];
     for (const towerId of towerIdsCopy) {
       this.removeTower(towerId);
+      console.log("RTF");
     }
-    for (const minionId of playerIdsCopy) {
+    for (const minionId of minionIdsCopy) {
       this.removeMinion(minionId);
+      console.log("RMF");
     }
   }
 
@@ -572,6 +575,7 @@ export class Game {
   }
 
   public async onGameEnd(): Promise<void> {
+    console.log("A");
     this.isInPlay = false;
     if (this.winnerId !== null) {
       const winnerName = this.idToName[this.winnerId];
@@ -584,6 +588,7 @@ export class Game {
     }
     if (this.isRated && this.winnerId !== null) {
       await this.adjustRatingsAll();
+      this.sendGameState();
     }
     await this.updatePlayerStats();
     this.clearGame();
@@ -600,41 +605,48 @@ export class Game {
     }
   }
 
-  public adjustRatingsAll(): void {
+  public async adjustRatingsAll(): Promise<void> {
+    console.log("B");
     console.log(this.playerIds);
     for (const playerId of this.playerIds) {
       console.log(playerId);
       if (playerId !== this.winnerId) {
         console.log("at least one is discovered");
-        this.adjustRatingsPair(this.winnerId ?? assert.fail("no winner Id"), playerId);
+        await this.adjustRatingsPair(this.winnerId ?? assert.fail("no winner Id"), playerId);
       }
     }
   }
 
-  public async adjustRatingsPair(winnerId: string, loserId: string): Promise<void> {
+  public async adjustRatingsPair(winnerId: string, loserId: string): Promise<boolean> {
+    console.log("YES");
     const winnerUser = await UserModel.findById(winnerId);
-    const winnerIdRating = winnerUser.rating;
+    let winnerIdRating = winnerUser.rating;
+    console.log(winnerIdRating);
+    console.log("RP1");
     const winner = this.getPlayer(winnerId);
     winner.prevRating = winnerIdRating;
+    console.log(winner);
 
     const loserUser = await UserModel.findById(loserId);
-    const loserIdRating = loserUser.rating;
+    let loserIdRating = loserUser.rating;
+    console.log("RP2");
     const loser = this.getPlayer(loserId);
     loser.prevRating = loserIdRating;
 
     const winnerExpectedProb = 1 / (1 + Math.pow(10, (loserIdRating - winnerIdRating) / 400));
     const loserExpectedProb = 1 - winnerExpectedProb;
-    const newWinnerIdRating = loserUser + 30 * (1 - winnerExpectedProb);
-    winner.rating = newWinnerIdRating;
-    const newLoserIdRating = 30 * (0 - loserExpectedProb);
-    loser.rating = newLoserIdRating;
+    winnerIdRating += loserUser + 30 * (1 - winnerExpectedProb);
+    loserIdRating += winnerUser + 30 * (0 - loserExpectedProb);
 
     winnerUser.rating = Math.round(winnerIdRating);
+    winner.rating = winnerUser.rating;
     winnerUser.all_time_rating = Math.max(winnerUser.all_time_rating, winnerUser.rating);
     winnerUser.save();
     loserUser.rating = Math.round(loserIdRating);
+    loser.rating = loserUser.rating;
     loserUser.all_time_rating = Math.max(loserUser.all_time_rating, loserUser.rating);
     loserUser.save();
+    return true;
   }
 
   public clearGame(): void {
@@ -822,12 +834,14 @@ export class Game {
       return;
     }
     console.log(`Clicked panel ${clickType} ${size}`);
+    console.log("A1");
     const player = this.getPlayer(userId);
     player.clickState = clickType;
     player.sizeClicked = size;
   }
 
   public getClickedAllyTowerId(userId: string, loc: Point) {
+    console.log("A2");
     const player = this.getPlayer(userId);
     for (const towerId of player.towerIds) {
       const tower = this.getTower(towerId);
@@ -889,6 +903,7 @@ export class Game {
     if (this.isInPlay === false) {
       return;
     }
+    console.log("A4");
     const player = this.getPlayer(userId);
     player.cursorLoc = loc;
   }
