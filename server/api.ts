@@ -188,7 +188,7 @@ router.post("/getGameActiveStatus", (req: Request, res: Response) => {
   if (!Object.keys(games).includes(gameCode)) {
     res.send({ isActive: false });
   } else {
-    console.log("entered loop here?");
+    // console.log("entered loop here?");
     const currGame = games[gameCode];
     res.send({
       isActive: currGame.getIsActive(),

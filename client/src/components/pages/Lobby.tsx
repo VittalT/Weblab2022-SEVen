@@ -77,9 +77,10 @@ const Lobby = (props: Props) => {
         <div className="Lobby-column">
           <div className="Lobby-lobbyTitle">{title}</div>
           <div>
-            {publicGames.map((game: { hostName: string; gameCode: string }) => (
+            {publicGames.map((game: { hostName: string; gameCode: string }, i) => (
               <div className="Lobby-center">
                 <Button
+                  key={i}
                   size="medium"
                   sx={{
                     marginTop: 1,

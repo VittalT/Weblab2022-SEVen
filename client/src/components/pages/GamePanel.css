@@ -63,8 +63,18 @@
   background-color: rgb(173, 216, 230);
 }
 
+.GamePanel-towerButton:hover {
+  background-color: rgb(66, 187, 227);
+  transition: 0.3s;
+}
+
 .GamePanel-minionButton {
   background-color: rgb(255, 127, 127);
+}
+
+.GamePanel-minionButton:hover {
+  background-color: rgb(254, 68, 68);
+  transition: 0.3s;
 }
 
 .GamePanel-infoButton {
@@ -73,6 +83,11 @@
 
 .GamePanel-explosionButton {
   background-color: rgb(255, 255, 167);
+}
+
+.GamePanel-explosionButton:hover {
+  background-color: rgb(252, 252, 63);
+  transition: 0.3s;
 }
 
 .GamePanel-hideInfo {
