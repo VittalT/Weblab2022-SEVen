@@ -16,6 +16,8 @@
   border-radius: 50px;
   padding: 30px;
   color: var(--themeNavy);
+  text-align: center;
+  width: 18%;
 }
 
 .Leaderboard-header {

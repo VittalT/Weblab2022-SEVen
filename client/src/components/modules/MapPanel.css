@@ -35,6 +35,10 @@
   overflow-x: auto;
 }
 
+.MapText {
+  font-family: "Odibee Sans", cursive;
+}
+
 #preview-canvas {
   width: 800px;
   height: 375px;
