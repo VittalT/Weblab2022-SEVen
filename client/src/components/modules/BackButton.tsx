@@ -17,13 +17,15 @@ const BackButton = (props: Props) => {
       size="medium"
       sx={{
         fontSize: 25,
+        fontFamily: "Odibee Sans",
+        width: 100,
         borderRadius: 3,
         position: "fixed",
         top: 30,
         left: 30,
-        backgroundColor: "#98C1D9",
+        backgroundColor: "#ff8ba0",
         "&:hover": {
-          backgroundColor: "#6CB1D9",
+          backgroundColor: "#e76682",
         },
       }}
       variant="contained"
