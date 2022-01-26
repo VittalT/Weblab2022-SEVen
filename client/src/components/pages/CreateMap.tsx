@@ -168,8 +168,8 @@ const CreateMap = (props: CreateMapProps) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 30,
-                    width: 350,
+                    fontSize: 40,
+                    width: 375,
                     borderRadius: 3,
                     fontFamily: "Odibee Sans",
                     backgroundColor: "#ff8ba0",
@@ -189,8 +189,8 @@ const CreateMap = (props: CreateMapProps) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 30,
-                    width: 350,
+                    fontSize: 40,
+                    width: 375,
                     borderRadius: 3,
                     fontFamily: "Odibee Sans",
                     backgroundColor: "#ff8ba0",
@@ -210,8 +210,8 @@ const CreateMap = (props: CreateMapProps) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 30,
-                    width: 350,
+                    fontSize: 40,
+                    width: 375,
                     borderRadius: 3,
                     fontFamily: "Odibee Sans",
                     backgroundColor: "#ff8ba0",

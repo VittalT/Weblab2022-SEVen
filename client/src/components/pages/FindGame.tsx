@@ -99,8 +99,8 @@ const FindGame = (props: Props) => {
                       marginTop: 10,
                       marginRight: 10,
                       marginBottom: 13,
-                      width: 250,
-                      fontSize: 30,
+                      width: 375,
+                      fontSize: 40,
                       fontFamily: "Odibee Sans",
                       borderRadius: 3,
                       backgroundColor: "#ff8ba0",
@@ -116,7 +116,7 @@ const FindGame = (props: Props) => {
                   <Menu
                     PaperProps={{
                       style: {
-                        width: 250,
+                        width: 375,
                         borderRadius: 4,
                       },
                     }}
@@ -147,10 +147,10 @@ const FindGame = (props: Props) => {
                     size="large"
                     sx={{
                       marginTop: 10,
-                      fontSize: 30,
+                      fontSize: 40,
                       fontFamily: "Odibee Sans",
                       borderRadius: 3,
-                      width: 250,
+                      width: 375,
                       backgroundColor: "#ff8ba0",
                       "&:hover": {
                         backgroundColor: "#e76682",
@@ -164,7 +164,7 @@ const FindGame = (props: Props) => {
                   <Menu
                     PaperProps={{
                       style: {
-                        width: 250,
+                        width: 375,
                         borderRadius: 4,
                       },
                     }}

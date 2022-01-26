@@ -84,8 +84,9 @@ const Lobby = (props: Props) => {
                   sx={{
                     marginTop: 1,
                     marginBottom: 1,
-                    fontSize: 15,
-                    width: 250,
+                    fontSize: 20,
+                    fontFamily: "Odibee Sans",
+                    width: 300,
                     borderRadius: 3,
                     backgroundColor: "#ff8ba0",
                     "&:hover": {
