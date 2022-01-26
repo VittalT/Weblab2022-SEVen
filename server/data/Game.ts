@@ -555,7 +555,7 @@ export class Game {
   public checkWin() {
     let remainingPlayers = 0;
     let remainingPlayerId = "";
-    if (Date.now() - this.startTime > 0.1 * 60 * 1000) {
+    if (Date.now() - this.startTime > 10 * 60 * 1000) {
       this.winnerId = this.mostHealth();
     }
     for (const playerId of Object.keys(this.players)) {
