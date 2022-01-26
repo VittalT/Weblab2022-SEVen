@@ -24,17 +24,17 @@ const HowToPlay = (props: Props) => {
             of your enemies' towers.
           </p>
           <p className="HTP-rule">
-            At the beginning of the game, each player starts with a single small tower. The map may
-            also have yellow pockets of gold that can be collected by placing a tower on them or
-            deploying a minion through them. Each tower also passively generates gold, which can be
-            used to purchase more towers, more minions, or trigger an explosion. The game ends when
-            only one player has any towers remaining.
+            At the beginning of the game, each player starts with a single small tower. Each tower
+            also passively generates gold, which can be used to purchase more towers, more minions,
+            or trigger an explosion. The game ends when only one player has any towers remaining.
           </p>
           <p className="HTP-rule">
             To place a tower, select the size of the tower and click on the map where you want it to
-            be spawned. Towers must be spawned a certain distance away from each other and can only
-            be placed within a certain radius of one of your existing towers. This area will be
-            displayed when you attempt to spawn your tower.
+            be spawned. Towers must be spawned at least a certain distance away from each other and
+            can only be placed within a certain radius of one of your existing towers (this area
+            will be displayed when you attempt to spawn your tower). When one of your towers die,
+            you may not rebuild another tower in that area for 5 seconds (this area will also be
+            indicated).
           </p>
           <p className="HTP-rule">
             To deploy a minion, select the size of the minion you wish to deploy and click one of
@@ -49,6 +49,10 @@ const HowToPlay = (props: Props) => {
             wish to explode. While this will cause minions within a certain distance of your tower
             to be destroyed, it will also destroy your own minions within the same distance and
             further cause some damage to your own tower and surrounding towers.
+          </p>
+          <p>
+            The map may also have yellow pockets of gold that can be collected by placing a tower on
+            them or deploying a minion through them.
           </p>
         </div>
       </div>

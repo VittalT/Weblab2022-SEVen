@@ -41,7 +41,7 @@ const MapPanel = (props: MapPanelProps) => {
                 key={i}
                 onClick={() => props.onClickGameMap(gameMap._id, gameMap.name)}
               >
-                <p className="GamePanel-text"> {gameMap.name} </p>
+                {gameMap.name}
               </button>
             ))}
           </div>
