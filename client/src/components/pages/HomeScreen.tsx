@@ -50,7 +50,7 @@ const HomeScreen = (props: Props) => {
               buttonText="Logout"
               onLogoutSuccess={props.handleLogout}
               onFailure={() => console.log("Failed to log out")}
-              className="NavBar-link NavBar-login"
+              className="HomeScreen-logout"
             />
           </>
         ) : (

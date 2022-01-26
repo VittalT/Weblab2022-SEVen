@@ -15,3 +15,9 @@
 .HomeScreen-button {
   margin: 50px;
 }
+
+.HomeScreen-logout {
+  position: fixed;
+  left: 35px;
+  top: 35px;
+}
