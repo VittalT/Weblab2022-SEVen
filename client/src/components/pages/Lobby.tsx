@@ -85,6 +85,7 @@ const Lobby = (props: Props) => {
                     marginTop: 1,
                     marginBottom: 1,
                     fontSize: 15,
+                    width: 250,
                     borderRadius: 3,
                     backgroundColor: "#ff8ba0",
                     "&:hover": {
