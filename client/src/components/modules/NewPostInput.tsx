@@ -4,6 +4,7 @@ import "../../utilities.css";
 import "./NewPostInput.css";
 import { get, post } from "../../utilities";
 import { Router, RouteComponentProps, navigate } from "@reach/router";
+import Button from "@mui/material/Button";
 
 type NewPostInputProps = {
   defaultText: string;
@@ -34,8 +35,22 @@ const NewPostInput = (props: NewPostInputProps) => {
         onChange={handleChange}
         className="NewPostInput-input"
       />
+      {/* <Button
+        size="small"
+        sx={{
+          fontSize: 10,
+          borderRadius: 2,
+          backgroundColor: "#98c1d9",
+          "&:hover": {
+            backgroundColor: "#6CB1D9",
+          },
+        }}
+        variant="contained"
+      >
+        Enter
+      </Button> */}
       <div className="NewPostInput-button u-pointer u-textCenter" onClick={handleSubmit}>
-        Submit
+        Enter
       </div>
     </div>
   );

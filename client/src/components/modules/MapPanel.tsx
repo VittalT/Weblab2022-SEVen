@@ -33,7 +33,7 @@ const MapPanel = (props: MapPanelProps) => {
           <div className="u-flexRow MapOptions">
             {props.maps.map((gameMap: GameMap, i) => (
               <button
-                className={`GamePanel-button ${
+                className={`MapPanel-button u-pointer u-flex-alignCenter u-inlineBlock u-textCenter ${
                   gameMap._id === props.gameMapId
                     ? "MapPanel-button_selected"
                     : "MapPanel-button_not_selected"

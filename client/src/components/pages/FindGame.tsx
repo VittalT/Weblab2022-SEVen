@@ -5,7 +5,8 @@ import "./FindGame.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
+import MuiMenuItem from "@material-ui/core/MenuItem";
+import { withStyles } from "@material-ui/core/styles";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 import NavigationButton from "../modules/NavigationButton";
@@ -16,6 +17,7 @@ import { get, post } from "../../utilities";
 import { isPropertySignature } from "typescript";
 
 import { PrivateGameInput } from "../modules/NewPostInput";
+import { CenterFocusStrong } from "@material-ui/icons";
 
 type Game = {
   is_private: string;
@@ -98,7 +100,15 @@ const FindGame = (props: Props) => {
                 >
                   Create Game
                 </Button>
-                <Menu sx={{}} {...bindMenu(popupState)}>
+                <Menu
+                  PaperProps={{
+                    style: {
+                      width: 250,
+                      borderRadius: 4,
+                    },
+                  }}
+                  {...bindMenu(popupState)}
+                >
                   <MenuItem onClick={createPublicGame}>Public</MenuItem>
                   <MenuItem onClick={createPrivateGame}>Private</MenuItem>
                 </Menu>
@@ -125,7 +135,15 @@ const FindGame = (props: Props) => {
                 >
                   Join Game
                 </Button>
-                <Menu {...bindMenu(popupState)}>
+                <Menu
+                  PaperProps={{
+                    style: {
+                      width: 250,
+                      borderRadius: 4,
+                    },
+                  }}
+                  {...bindMenu(popupState)}
+                >
                   <MenuItem onClick={navToLobby}>Public</MenuItem>
                   <PrivateGameInput passedUserId={props.passedUserId} joinRoom={props.joinRoom} />
                 </Menu>
