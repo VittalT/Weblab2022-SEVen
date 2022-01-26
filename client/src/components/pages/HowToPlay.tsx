@@ -50,7 +50,7 @@ const HowToPlay = (props: Props) => {
             you may not rebuild another tower in that area for 5 seconds (this area will also be
             indicated).
           </p>
-          <img className="GIF" src="programming.gif" alt="Deploy Tower"></img>
+          <img className="GIF" src="../GIFs/tower.gif" alt="Deploy Tower" width="250"></img>
           <p className="HTP-rule">
             To deploy a minion, select the size of the minion you wish to deploy and click one of
             your own towers (the point from which it will be deployed) and an enemy tower (the tower
