@@ -66,10 +66,6 @@ input {
   font-family: "Metal Mania", cursive;
 }
 
-.MuiButtonBase-root {
-  background-color: var(--lightblue);
-}
-
 form {
   flex-grow: 1;
 }
@@ -90,11 +86,15 @@ form {
 .u-flexColumn {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center !important;
 }
 
 .u-flexRow {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .u-flex-justifyCenter {

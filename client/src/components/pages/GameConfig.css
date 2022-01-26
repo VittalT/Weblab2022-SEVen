@@ -17,7 +17,7 @@
 }
 
 .Leave {
-  position: "fixed" !important;
+  position: fixed !important;
   top: 30px !important;
   left: 30px !important;
   border-radius: 12px !important;
@@ -30,4 +30,22 @@
 
 .Leave:hover {
   background-color: #6cb1d9 !important;
+}
+
+.Start {
+  border-radius: 12px !important;
+  background-color: #98c1d9 !important;
+  color: #ffffff !important;
+  font-size: 25px !important;
+  height: 50px !important;
+  width: 200px !important;
+  position: fixed !important;
+  top: 30px !important;
+  right: 30px !important;
+}
+
+.GameInfo {
+  justify-content: center;
+  text-align: center;
+  font-size: 25px;
 }

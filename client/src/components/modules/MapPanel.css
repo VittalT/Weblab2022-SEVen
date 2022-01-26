@@ -5,3 +5,20 @@
 .MapPanel-button_not_selected {
   background-color: white;
 }
+
+.canvasContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.MapOptions {
+  width: 800px;
+  overflow-x: auto;
+}
+
+#preview-canvas {
+  width: 800px;
+  height: 375px;
+  display: inline;
+  outline: 3px black solid;
+}

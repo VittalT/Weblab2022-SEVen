@@ -27,32 +27,36 @@ const MapPanel = (props: MapPanelProps) => {
   }, [props.gameMapId]);
 
   return (
-    <div className="u-flexColumn">
-      {props.isHost ? (
-        <div className="u-flexRow">
-          {props.maps.map((gameMap: GameMap, i) => (
-            <button
-              className={`GamePanel-button ${
-                gameMap._id === props.gameMapId
-                  ? "MapPanel-button_selected"
-                  : "MapPanel-button_not_selected"
-              }`}
-              key={i}
-              onClick={() => props.onClickGameMap(gameMap._id, gameMap.name)}
-            >
-              <p className="GamePanel-text"> {gameMap.name} </p>
-            </button>
-          ))}
+    <>
+      <div className="u-flexColumn">
+        {props.isHost ? (
+          <div className="u-flexRow MapOptions">
+            {props.maps.map((gameMap: GameMap, i) => (
+              <button
+                className={`GamePanel-button ${
+                  gameMap._id === props.gameMapId
+                    ? "MapPanel-button_selected"
+                    : "MapPanel-button_not_selected"
+                }`}
+                key={i}
+                onClick={() => props.onClickGameMap(gameMap._id, gameMap.name)}
+              >
+                <p className="GamePanel-text"> {gameMap.name} </p>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <></>
+        )}
+        <div className="canvasContainer">
+          <canvas
+            id="preview-canvas"
+            width={mapPreviewDimensions.width}
+            height={mapPreviewDimensions.height}
+          />
         </div>
-      ) : (
-        <></>
-      )}
-      <canvas
-        id="preview-canvas"
-        width={mapPreviewDimensions.width}
-        height={mapPreviewDimensions.height}
-      />
-    </div>
+      </div>
+    </>
   );
 };
 
