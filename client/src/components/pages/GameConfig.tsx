@@ -203,11 +203,11 @@ const GameConfig = (props: Props) => {
     });
   }, [gameCode]); //
   const displayPlayersAndRatings = (isRated: boolean) => {
-    return playerIds
-      .map((playerId: string) =>
-        isRated ? `${idToName[playerId]} (${idToRating[playerId]})` : `${idToName[playerId]}`
-      )
-      .join(", ");
+    // return playerIds
+    //   .map((playerId: string) =>
+    //     isRated ? `${idToName[playerId]} (${idToRating[playerId]})` : `${idToName[playerId]}`
+    //   )
+    //   .join(", ");
   };
   // useEffect(() => {
   // }, [playerIds, idToName, idToRating]); //
@@ -224,6 +224,9 @@ const GameConfig = (props: Props) => {
           {props.passedUserId === hostId ? (
             <div className="u-flexColumn">
               <div>You are the host</div>
+              <Button size="medium" className="Leave" onClick={startGame} variant="contained">
+                Start Game
+              </Button>
             </div>
           ) : (
             <div className="u-flexColumn">
