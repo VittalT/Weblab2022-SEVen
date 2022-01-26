@@ -5,6 +5,8 @@ import "./CreateMap.css";
 
 import BackButton from "../modules/BackButton";
 
+import Button from "@mui/material/Button";
+
 import { Router, RouteComponentProps } from "@reach/router";
 //import { drawCreateCanvas } from "../../canvasManager";
 import { post } from "../../utilities";
@@ -139,23 +141,82 @@ const CreateMap = (props: CreateMapProps) => {
         </div>
         {numPlayers === 0 ? (
           <div className="configurables">
-            <h1 className="Creation-configHeader">Number of Players</h1>
-            <div>
-              <button onClick={() => handleNumPlayerChange(2)}>2 Player Symmetry</button>
-              <button onClick={() => handleNumPlayerChange(4)}>4 Player Symmetry</button>
-              <button onClick={() => handleNumPlayerChange(3)}>No Symmetry</button>
+            <div className="Creation-configHeader">Symmetry Type</div>
+            <div className="Creation-centered">
+              <div>
+                <Button
+                  size="large"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 1,
+                    fontSize: 20,
+                    borderRadius: 3,
+                    backgroundColor: "#98c1d9",
+                    "&:hover": {
+                      backgroundColor: "#6CB1D9",
+                    },
+                  }}
+                  variant="contained"
+                  onClick={() => handleNumPlayerChange(3)}
+                >
+                  No Symmetry
+                </Button>
+              </div>
+              <div>
+                <Button
+                  size="large"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 1,
+                    fontSize: 20,
+                    borderRadius: 3,
+                    backgroundColor: "#98c1d9",
+                    "&:hover": {
+                      backgroundColor: "#6CB1D9",
+                    },
+                  }}
+                  variant="contained"
+                  onClick={() => handleNumPlayerChange(2)}
+                >
+                  2 Player Symmetry
+                </Button>
+              </div>
+              <div>
+                <Button
+                  size="large"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 1,
+                    fontSize: 20,
+                    borderRadius: 3,
+                    backgroundColor: "#98c1d9",
+                    "&:hover": {
+                      backgroundColor: "#6CB1D9",
+                    },
+                  }}
+                  variant="contained"
+                  onClick={() => handleNumPlayerChange(4)}
+                >
+                  4 Player Symmetry
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
           <div className="u-flex">
             <div className="Creation-subContainer">
-              <canvas id="create-canvas" width={canvasWidth} height={canvasHeight} />
-              <div className="Creation-button">Add gold</div>
+              <canvas
+                id="create-canvas"
+                className="Creation-canvasItem"
+                width={canvasWidth}
+                height={canvasHeight}
+              />
+              <div className="Creation-subtitle">Click in the canvas above to add gold!</div>
             </div>
             <div className="Creation-subContainer">
               <div>
-                <div className="configurables">
-                  <h1 className="Creation-configHeader">Creator Name</h1>
+                <div className="configurablesX">
+                  <h1 className="Creation-configHeaderX">Creator Name</h1>
                   <input
                     type="text"
                     placeholder={props.userName}
@@ -164,8 +225,8 @@ const CreateMap = (props: CreateMapProps) => {
                     className="Creation-input"
                   />
                 </div>
-                <div className="configurables">
-                  <h1 className="Creation-configHeader">Map Name</h1>
+                <div className="configurablesX">
+                  <h1 className="Creation-configHeaderX">Map Name</h1>
                   <input
                     type="text"
                     placeholder="New Map"
@@ -174,7 +235,7 @@ const CreateMap = (props: CreateMapProps) => {
                     className="Creation-input"
                   />
                 </div>
-                <div className="configurables">
+                <div className="Creation-buttonContainer">
                   <form>
                     <button
                       type="submit"

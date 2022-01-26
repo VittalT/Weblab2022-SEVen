@@ -12,6 +12,10 @@
   align-items: center;
 }
 
+.Creation-canvasItem {
+  outline: 3px black solid;
+}
+
 .Creation-subContainer {
   height: 100vh;
   width: 100%;
@@ -28,26 +32,66 @@
 
 .Creation-input {
   flex-grow: 1;
+  width: 200px;
+  height: 25px;
   border: var(--darkgrey) 1px solid;
   border-radius: var(--xs) 0 0 var(--xs);
   transition: box-shadow 0.1s;
+  font-size: 20px;
+}
+
+.Creation-subtitle {
+  font-family: "Open Sans";
+  font-size: 20px;
+  padding-top: 15px;
 }
 
 .Creation-button {
-  background-color: #98c1d9;
-  font-family: "Open Sans";
-  font-size: 14px;
-  padding: var(--s) var(--m);
+  display: inline-block;
+  font-size: 30px;
+}
+
+.Creation-buttonContainer {
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .configurables {
-  padding-top: 5%;
-  padding-bottom: 5%;
+  padding-top: 10px;
+  padding-bottom: 0px;
   font-family: Metal Mania;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.configurablesX {
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-bottom: 0px;
+  font-family: Metal Mania;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .Creation-configHeader {
   font-size: 40px;
+  padding-bottom: 20px;
+}
+
+.Creation-configHeaderX {
+  font-size: 40px;
+  padding-bottom: 0px;
+}
+
+.Creation-centered {
+  align-items: center;
 }
 
 .dropbtn {
