@@ -16,6 +16,8 @@ import { socket } from "../../client-socket";
 
 import Button from "@mui/material/Button";
 
+import User from "../../../../shared/User";
+
 type Props = RouteComponentProps & {
   passedUserId: string;
   joinRoom: (userId: string, gameCode: string) => void;
@@ -31,6 +33,17 @@ const Lobby = (props: Props) => {
     await props.joinRoom(props.passedUserId, gameCode);
     navigate("/gameconfig");
   };
+
+  useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     socket.on("updatePublicLobby", () => {

@@ -46,6 +46,17 @@ const GameConfig = (props: Props) => {
 
   const [startGameFailedStatus, setStartGameFailedStatus] = useState<boolean>(false);
 
+  useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
+  }, []);
+
   const updateLobbyData = (data: {
     gameType: string;
     gameCode: string;

@@ -105,7 +105,12 @@ const App = () => {
         joinRoom={joinRoom}
         forceNavigate={forceNavigate}
       />
-      <CreateMap path="/createmap" userId={userId} userName={userName} />
+      <CreateMap
+        path="/createmap"
+        userId={userId}
+        userName={userName}
+        forceNavigate={forceNavigate}
+      />
       <GameConfig
         path="/gameconfig"
         passedUserId={userId}

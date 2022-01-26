@@ -7,6 +7,10 @@ import BackButton from "../modules/BackButton";
 
 import Button from "@mui/material/Button";
 
+import User from "../../../../shared/User";
+import { get } from "../../utilities";
+import { navigate } from "@reach/router";
+
 import { Router, RouteComponentProps } from "@reach/router";
 //import { drawCreateCanvas } from "../../canvasManager";
 import { post } from "../../utilities";
@@ -27,6 +31,7 @@ import {
 type CreateMapProps = RouteComponentProps & {
   userId: string;
   userName: string;
+  forceNavigate: () => void;
 };
 
 const CreateMap = (props: CreateMapProps) => {
@@ -45,6 +50,17 @@ const CreateMap = (props: CreateMapProps) => {
   let canvas: HTMLElement;
 
   useEffect(() => {
+    // import User from "../../../../shared/User";
+    // import { get, post } from "../../utilities";
+    // import { Router, RouteComponentProps, navigate } from "@reach/router";
+    get("/api/whoami").then((user: User) => {
+      if (user._id === undefined) {
+        navigate("/");
+      }
+    });
+
+    props.forceNavigate();
+
     if (numPlayers !== 0) {
       canvas = document.getElementById("create-canvas") ?? assert.fail();
       drawCreateCanvas();
