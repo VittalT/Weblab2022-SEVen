@@ -40,6 +40,7 @@ const CreateMap = (props: CreateMapProps) => {
   const [numPlayers, setNumPlayers] = useState<number>(0);
   const [goldMines, setGoldMines] = useState<Point[]>([]);
   const [towers, setTowers] = useState<Point[]>([]);
+  const [displayText, setDisplayText] = useState<string>("");
 
   const scaleFactor = canvasScaleFactors.createMap;
   const realWidth = canvasDimensions.width;
@@ -132,19 +133,23 @@ const CreateMap = (props: CreateMapProps) => {
   };
 
   const handleSaveMap = () => {
-    if (mapName.length > 15) {
-      return;
+    if (mapName.length < 1 || mapName.length > 15) {
+      setDisplayText("Map name must be between 1 and 15 characters.");
+    } else if (creatorName.length < 1 || creatorName.length > 15) {
+      setDisplayText("Creator name must be between 1 and 15 characters.");
+    } else {
+      setDisplayText("Saving Map!");
+      const mapInfo = {
+        name: mapName,
+        creator_id: props.userId,
+        creator_name: creatorName,
+        num_players: numPlayers,
+        gold_mines: goldMines,
+        towers: towers,
+        created: Date.now(),
+      };
+      post("/api/createMap", mapInfo).then(() => {});
     }
-    const mapInfo = {
-      name: mapName,
-      creator_id: props.userId,
-      creator_name: creatorName,
-      num_players: numPlayers,
-      gold_mines: goldMines,
-      towers: towers,
-      created: Date.now(),
-    };
-    post("/api/createMap", mapInfo).then(() => {});
   };
 
   return (
@@ -155,7 +160,7 @@ const CreateMap = (props: CreateMapProps) => {
         </div>
         {numPlayers === 0 ? (
           <div className="configurables">
-            <div className="Creation-configHeader">Want to Make a Symmetric Map?</div>
+            <div className="Creation-configHeader">What Type of Map Symmetry?</div>
             <div className="Creation-centered">
               <div>
                 <Button
@@ -224,55 +229,72 @@ const CreateMap = (props: CreateMapProps) => {
           </div>
         ) : (
           <div className="u-flex">
-            <div className="Creation-subContainer">
+            <div className="CreateMap-mapField">
               <canvas
                 id="create-canvas"
                 className="Creation-canvasItem u-pointer"
                 width={canvasWidth}
                 height={canvasHeight}
               />
-              <div className="Creation-subtitle">
-                Click in the canvas above to add gold mines! Gold mines cannot intersect. Maximum
-                map name is 15 characters.
+              <div className="Creation-subtitle u-flexColumn u-flex-justifyCenter">
+                <span>
+                  Click in the canvas above to add gold mines! Gold mines cannot intersect.
+                </span>
+                <span>{displayText}</span>
               </div>
             </div>
-            <div className="Creation-subContainer">
-              <div>
-                <div className="configurablesX">
-                  <h1 className="Creation-configHeaderX">Creator Name</h1>
-                  <input
-                    type="text"
-                    placeholder={props.userName}
-                    value={creatorName}
-                    onChange={handleCreatorChange}
-                    className="Creation-input"
-                  />
-                </div>
-                <div className="configurablesX">
-                  <h1 className="Creation-configHeaderX">Map Name</h1>
-                  <input
-                    type="text"
-                    placeholder="New Map"
-                    value={mapName}
-                    onChange={handleMapNameChange}
-                    className="Creation-input"
-                  />
-                </div>
-                <div className="Creation-buttonContainer">
-                  <form>
-                    <button
-                      type="submit"
-                      className="Creation-button u-pointer"
-                      value="Save Map"
-                      onClick={handleSaveMap}
-                      formAction="/"
-                    >
-                      Save Map
-                    </button>
-                  </form>
-                </div>
+            <form className="CreateMap-inputFields">
+              <div className="CreateMap-inputBox">
+                <h1 className="Creation-configHeaderX">Creator Name</h1>
+                <input
+                  type="text"
+                  placeholder={props.userName}
+                  value={creatorName}
+                  onChange={handleCreatorChange}
+                  className="Creation-input"
+                />
               </div>
-            </div>
+              <div className="CreateMap-inputBox">
+                <h1 className="Creation-configHeaderX">Map Name</h1>
+                <input
+                  type="text"
+                  placeholder="New Map"
+                  value={mapName}
+                  onChange={handleMapNameChange}
+                  className="Creation-input"
+                />
+              </div>
+              <div className="Creation-buttonContainer">
+                <button
+                  type="submit"
+                  className="Creation-button u-pointer"
+                  value="Save Map"
+                  onClick={handleSaveMap}
+                  formAction="/"
+                >
+                  Save Map
+                </button>
+                {/* <Button
+                    size="large"
+                    sx={{
+                      // marginTop: -10,
+                      // marginBottom: -1s0,
+                      fontSize: 20,
+                      width: 125,
+                      borderRadius: 3,
+                      fontFamily: "Odibee Sans",
+                      backgroundColor: "#ff8ba0",
+                      "&:hover": {
+                        backgroundColor: "#e76682",
+                      },
+                    }}
+                    variant="contained"
+                    onClick={handleSaveMap}
+                  >
+                    Save Map
+                  </Button> */}
+              </div>
+            </form>
           </div>
         )}
         <BackButton text="Back" destPath="/" />

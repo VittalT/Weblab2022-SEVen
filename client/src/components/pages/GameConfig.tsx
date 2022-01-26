@@ -242,7 +242,7 @@ const GameConfig = (props: Props) => {
               <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
               <div>
                 {props.passedUserId === hostId ? (
-                  <Switch defaultChecked onClick={toggleIsRated} />
+                  <Switch checked={isRated} defaultChecked onClick={toggleIsRated} />
                 ) : (
                   <></>
                 )}
