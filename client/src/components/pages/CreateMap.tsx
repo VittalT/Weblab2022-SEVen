@@ -233,7 +233,9 @@ const CreateMap = (props: CreateMapProps) => {
                 width={canvasWidth}
                 height={canvasHeight}
               />
-              <div className="Creation-subtitle">Click in the canvas above to add gold!</div>
+              <div className="Creation-subtitle">
+                Click in the canvas above to add gold mines! Gold mines cannot intersect.
+              </div>
             </div>
             <div className="Creation-subContainer">
               <div>
