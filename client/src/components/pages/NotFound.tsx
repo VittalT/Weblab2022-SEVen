@@ -7,6 +7,7 @@ type NotFoundProps = RouteComponentProps;
 
 const NotFound = (props: NotFoundProps) => {
   useEffect(() => {
+    navigate("/");
     get("/api/whoami").then((user: User) => {
       if (user._id === undefined) {
         navigate("/");
