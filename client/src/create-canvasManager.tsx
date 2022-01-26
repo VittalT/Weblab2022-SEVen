@@ -9,7 +9,6 @@ let goldColor: string = "#FFFF00";
 export const drawGoldMine = (coord: Point) => {
   const canvas = document.getElementById("create-canvas") as HTMLCanvasElement;
   if (!canvas) return;
-  console.log("drawing");
   const context = canvas.getContext("2d") ?? assert.fail();
   const goldDrawRadius = GoldConstants.realRadius * scaleFactor;
   fillCircle(context, coord, goldDrawRadius, goldColor);

@@ -50,9 +50,9 @@ const Lobby = (props: Props) => {
       get("/api/getPublicGames").then((data) => {
         setPublicGames(data);
         if (data.length === 0) {
-          setTitle("CURRENTLY NO PUBLIC GAMES");
+          setTitle("Currently No Public Games :(");
         } else {
-          setTitle("PUBLIC GAMES");
+          setTitle("Public Games");
         }
       });
     });
@@ -60,9 +60,9 @@ const Lobby = (props: Props) => {
     get("/api/getPublicGames").then((data) => {
       setPublicGames(data);
       if (data.length === 0) {
-        setTitle("CURRENTLY NO PUBLIC GAMES");
+        setTitle("Currently No Public Games :(");
       } else {
-        setTitle("PUBLIC GAMES");
+        setTitle("Public Games");
       }
     });
     return () => {
@@ -73,7 +73,7 @@ const Lobby = (props: Props) => {
   return (
     <>
       <div className="u-gameContainer">
-        <h1 className="u-gameHeader">LOBBY</h1>
+        <h1 className="u-gameHeader">Lobby</h1>
         <div className="Lobby-column">
           <div className="Lobby-lobbyTitle">{title}</div>
           <div>

@@ -64,7 +64,6 @@ const CreateMap = (props: CreateMapProps) => {
     if (numPlayers !== 0) {
       canvas = document.getElementById("create-canvas") ?? assert.fail();
       drawCreateCanvas();
-      console.log("init");
     }
   }, [numPlayers]);
 
@@ -72,7 +71,6 @@ const CreateMap = (props: CreateMapProps) => {
     if (numPlayers !== 0) {
       canvas = document.getElementById("create-canvas") ?? assert.fail();
       const handleClick = (event: MouseEvent) => {
-        console.log("click");
         const newGoldMines: Array<Point> = [];
         newGoldMines.push(new Point(event.offsetX / scaleFactor, event.offsetY / scaleFactor));
         if (numPlayers === 2 || numPlayers === 4) {
@@ -113,7 +111,6 @@ const CreateMap = (props: CreateMapProps) => {
           const drawLoc = new Point(newGoldMine.x * scaleFactor, newGoldMine.y * scaleFactor);
           drawGoldMine(drawLoc);
         }
-        console.log(goldMines.length);
       };
       canvas.addEventListener("click", handleClick);
       return () => {
@@ -144,9 +141,7 @@ const CreateMap = (props: CreateMapProps) => {
       towers: towers,
       created: Date.now(),
     };
-    post("/api/createMap", mapInfo).then(() => {
-      console.log("Added map");
-    });
+    post("/api/createMap", mapInfo).then(() => {});
   };
 
   return (
@@ -233,7 +228,9 @@ const CreateMap = (props: CreateMapProps) => {
                 width={canvasWidth}
                 height={canvasHeight}
               />
-              <div className="Creation-subtitle">Click in the canvas above to add gold!</div>
+              <div className="Creation-subtitle">
+                Click in the canvas above to add gold mines! Gold mines cannot intersect.
+              </div>
             </div>
             <div className="Creation-subContainer">
               <div>

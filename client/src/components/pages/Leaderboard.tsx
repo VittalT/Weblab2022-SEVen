@@ -40,7 +40,6 @@ const Leaderboard = (props: Props) => {
     props.forceNavigate();
 
     get("/api/users").then((users: User[]) => {
-      for (let i = 0; i < users.length; i++) console.log(users[i].rating);
       setBestRatings(
         users.sort((a: User, b: User) => b.rating - a.rating).slice(0, peopleToInclude)
       );

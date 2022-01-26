@@ -65,7 +65,6 @@ const GameConfig = (props: Props) => {
     hostId: string;
     playerIds: Array<string>;
   }) => {
-    // console.log(`data ${data} ${data.playerIds}`);
     setGameType(data.gameType);
     setGameCode(data.gameCode);
     setHostName(data.hostName);
@@ -82,7 +81,6 @@ const GameConfig = (props: Props) => {
 
   const startGame = () => {
     socket.emit("startGameTrigger", { gameCode: gameCode });
-    console.log("gameccode sent in parameter to emit is " + gameCode);
   };
 
   const navToGame = () => {
@@ -91,7 +89,6 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/users").then((users: User[]) => {
-      // console.log(JSON.stringify(users));
       const _idToName: Record<string, string> = {};
       const _idToRating: Record<string, number> = {};
       for (const user of users) {
@@ -100,7 +97,6 @@ const GameConfig = (props: Props) => {
       }
       setIdToName(_idToName);
       setIdToRating(_idToRating);
-      console.log(playerIds);
       const playerNames = playerIds.map((userId: string) => idToName[userId]);
       const playerRatings = playerIds.map((userId: string) => idToRating[userId]);
       setPlayerNames(playerNames);
@@ -156,7 +152,6 @@ const GameConfig = (props: Props) => {
       if (currGameCode.length === 6) {
         const roomJoined = props.joinRoom(props.passedUserId, currGameCode);
         const data = await post("/api/getLobbyInfo", { gameCode: currGameCode });
-        // console.log(`waya ${JSON.stringify(data)}`);
         const lobbyData = await updateLobbyData(data);
       } else {
         navigate("/findgame");
@@ -174,12 +169,10 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/getMaps").then((data: GameMap[]) => {
-      console.log("getting maps");
       setMaps(data);
     });
     socket.on("updateMaps", () => {
       get("/api/getMaps").then((data: GameMap[]) => {
-        console.log("updating maps");
         setMaps(data);
       });
     });
@@ -190,7 +183,6 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/getGameMapId", { gameCode: gameCode }).then((data) => {
-      console.log(`game map id ${data.gameMapId}`);
       if (data.successful) {
         setGameMapId(data.gameMapId);
       }
@@ -199,9 +191,7 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     const possMap = maps.find((mapObj: GameMap) => mapObj._id === gameMapId);
-    // console.log(`N ${gameMapId} ${possMap !== undefined ? possMap.name : "und"}`);
     if (possMap !== undefined) {
-      console.log(`game name ${possMap.name}`);
       setGameMapCreatorName(possMap.creator_name);
       setGameMapName(possMap.name);
     }
@@ -209,7 +199,6 @@ const GameConfig = (props: Props) => {
 
   useEffect(() => {
     get("/api/getGameIsRated", { gameCode: gameCode }).then((data) => {
-      console.log(`game isRated ${data.isRated}`);
       if (data.successful) {
         setIsRated(data.isRated);
       }
@@ -234,9 +223,7 @@ const GameConfig = (props: Props) => {
           <div className="GameInfo">
             <h2 className="GameInfo-header">Your Game Details</h2>
             {props.passedUserId === hostId ? (
-              <div>
-                <div>You are the host</div>
-              </div>
+              <div>You are the host</div>
             ) : (
               <div>
                 <div>{hostName + " is the host"} </div>
@@ -279,9 +266,13 @@ const GameConfig = (props: Props) => {
       <Button size="medium" className="Leave" onClick={leaveCurrentGame} variant="contained">
         Leave Game
       </Button>
-      <Button size="medium" className="Start" onClick={startGame} variant="contained">
-        Start Game
-      </Button>
+      {props.passedUserId === hostId ? (
+        <Button size="medium" className="Start" onClick={startGame} variant="contained">
+          Start Game
+        </Button>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
