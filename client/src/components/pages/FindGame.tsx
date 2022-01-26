@@ -81,6 +81,7 @@ const FindGame = (props: Props) => {
               <React.Fragment>
                 <Button
                   size="large"
+                  id="but"
                   sx={{
                     marginTop: 10,
                     marginBottom: 12,
@@ -96,7 +97,7 @@ const FindGame = (props: Props) => {
                 >
                   Create Game
                 </Button>
-                <Menu {...bindMenu(popupState)}>
+                <Menu sx={{ width: 100 }} {...bindMenu(popupState)}>
                   <MenuItem onClick={createPublicGame}>Public</MenuItem>
                   <MenuItem onClick={createPrivateGame}>Private</MenuItem>
                 </Menu>

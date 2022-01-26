@@ -16,13 +16,12 @@ const BackButton = (props: Props) => {
     <Button
       size="medium"
       sx={{
-        marginBottom: 10,
         fontSize: 25,
         borderRadius: 3,
         position: "fixed",
         top: 30,
         left: 30,
-        backgroundColor: "#98c1d9",
+        backgroundColor: "#98C1D9",
         "&:hover": {
           backgroundColor: "#6CB1D9",
         },

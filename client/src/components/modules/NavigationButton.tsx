@@ -17,8 +17,8 @@ const NavigationButton = (props: Props) => {
       sx={{
         marginBottom: 3,
         fontSize: 25,
-        borderRadius: 3,
-        backgroundColor: "#98c1d9",
+        borderRadius: 4,
+        backgroundColor: "#98C1D9",
         "&:hover": {
           backgroundColor: "#6CB1D9",
         },

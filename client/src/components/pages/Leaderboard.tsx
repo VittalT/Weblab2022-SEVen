@@ -84,9 +84,7 @@ const Leaderboard = (props: Props) => {
   return (
     <>
       <div className="u-gameContainer">
-        <div>
-          <h1 className="u-gameHeader">Leaderboard</h1>
-        </div>
+        <h1 className="u-gameHeader">Leaderboard</h1>
         <hr className="Leaderboard-line" />
         <div className="Leaderboard-statsContainer">
           <div className="Leaderboard-column">
