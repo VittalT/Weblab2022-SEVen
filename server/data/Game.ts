@@ -75,13 +75,12 @@ export class Game {
   // updates all frontend playerlobbies to include most recent information
   public updateLobbies() {
     const hostName = this.idToName[this.hostId];
-    const playerNames = this.playerIds.map((name: string) => this.idToName[name]);
     const data = {
       gameType: this.gameType,
       gameCode: this.gameCode,
       hostName: hostName,
       hostId: this.hostId,
-      playerNames: playerNames,
+      playerIds: this.playerIds,
     };
     getIo().in(this.gameCode).emit("updateLobbies", data); //should be to
   }

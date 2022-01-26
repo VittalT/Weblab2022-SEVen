@@ -36,9 +36,13 @@ const GameConfig = (props: Props) => {
   const [isRated, setIsRated] = useState<boolean>(true);
   const [maps, setMaps] = useState<GameMap[]>([]);
 
-  const [hostName, setHostName] = useState<string>("");
-  const [playerNames, setPlayerNames] = useState<Array<string>>([""]);
   const [hostId, setHostId] = useState<string>("");
+  const [hostName, setHostName] = useState<string>("");
+  const [playerIds, setPlayerIds] = useState<Array<string>>([]);
+  const [playerNames, setPlayerNames] = useState<Array<string>>([]);
+  const [playerRatings, setPlayerRatings] = useState<Array<number>>([]);
+  const [idToName, setIdToName] = useState<Record<string, string>>({});
+  const [idToRating, setIdToRating] = useState<Record<string, number>>({});
 
   const [startGameFailedStatus, setStartGameFailedStatus] = useState<boolean>(false);
 
@@ -47,13 +51,13 @@ const GameConfig = (props: Props) => {
     gameCode: string;
     hostName: string;
     hostId: string;
-    playerNames: Array<string>;
+    playerIds: Array<string>;
   }) => {
     setGameType(data.gameType);
     setGameCode(data.gameCode);
     setHostName(data.hostName);
     setHostId(data.hostId);
-    setPlayerNames(data.playerNames);
+    setPlayerIds(data.playerIds);
   };
 
   const leaveCurrentGame = async () => {
@@ -75,9 +79,20 @@ const GameConfig = (props: Props) => {
     get("/api/users").then((users: User[]) => {
       // const user1 = await UserModel.findById(id1);
       // id1Rating = user1.rating;
-      users.find((user) => user._id);
+      const _idToName: Record<string, string> = {};
+      const _idToRating: Record<string, number> = {};
+      for (const user of users) {
+        _idToName[user._id] = user.name;
+        _idToRating[user._id] = user.rating;
+      }
+      setIdToName(_idToName);
+      setIdToRating(_idToRating);
+      const playerNames = playerIds.map((userId: string) => idToName[userId]);
+      const playerRatings = playerIds.map((userId: string) => idToRating[userId]);
+      setPlayerNames(playerNames);
+      setPlayerRatings(playerRatings);
     });
-  }, []);
+  }, [playerIds]);
 
   const gameConfigForceNavigate = async () => {
     const data = await get("/api/getCurrRoomStatus");
@@ -185,8 +200,15 @@ const GameConfig = (props: Props) => {
       }
     });
   }, [gameCode]); //
-
-  const displayPlayers = () => {};
+  const displayPlayersAndRatings = (isRated: boolean) => {
+    return playerIds
+      .map((playerId: string) =>
+        isRated ? `${idToName[playerId]} (${idToRating[playerId]})` : `${idToName[playerId]}`
+      )
+      .join(", ");
+  };
+  // useEffect(() => {
+  // }, [playerIds, idToName, idToRating]); //
 
   // *either you are the host or waiting to start
   return (
@@ -233,7 +255,7 @@ const GameConfig = (props: Props) => {
           <div> GAME CONFIG </div>
           <div> Game Type: {gameType} </div>
           <div> Game Code: {gameCode} </div>
-          <div> Curent Players: {playerNames.toString()} </div>
+          <div> Curent Players: {displayPlayersAndRatings(isRated)} </div>
           <div className="u-flexColumn">
             <div>Rating Type: {isRated ? "Rated" : "Unrated"}</div>
             <div>

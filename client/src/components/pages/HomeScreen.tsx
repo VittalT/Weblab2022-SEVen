@@ -31,12 +31,20 @@ const HomeScreen = (props: Props) => {
         <h3 className="HomeScreen-header u-gameHeader">Minion Battle</h3>
         {props.userId ? (
           <>
-            <NavigationButton text="Find Game" destPath="/findgame" />
-            <NavigationButton text="Create Map" destPath="/createmap" />
+            <NavigationButton text="Find Game" destPath="/findgame" onClickFunction={doNothing} />
+            <NavigationButton text="Create Map" destPath="/createmap" onClickFunction={doNothing} />
             {/* <NavigationButton onClickFunction={doNothing} text="CUSTOMIZATIONS" destPath="/TODO" /> */}
-            <NavigationButton text="How to Play" destPath="/howtoplay" />
+            <NavigationButton
+              text="How to Play"
+              destPath="/howtoplay"
+              onClickFunction={doNothing}
+            />
             {/* <NavigationButton onClickFunction={doNothing} text="ACHIEVEMENTS" destPath="/TODO" /> */}
-            <NavigationButton text="Leaderboard" destPath="/leaderboard" />
+            <NavigationButton
+              text="Leaderboard"
+              destPath="/leaderboard"
+              onClickFunction={doNothing}
+            />
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Logout"
