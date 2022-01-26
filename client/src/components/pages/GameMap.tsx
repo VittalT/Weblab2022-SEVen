@@ -41,7 +41,7 @@ const GameMap = (props: GameMapProps) => {
     <>
       <canvas
         id="game-canvas"
-        className="GameMap-canvas"
+        className="GameMap-canvas u-pointer"
         width={props.width}
         height={props.height}
       />

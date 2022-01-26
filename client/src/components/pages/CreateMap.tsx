@@ -207,7 +207,7 @@ const CreateMap = (props: CreateMapProps) => {
             <div className="Creation-subContainer">
               <canvas
                 id="create-canvas"
-                className="Creation-canvasItem"
+                className="Creation-canvasItem u-pointer"
                 width={canvasWidth}
                 height={canvasHeight}
               />
