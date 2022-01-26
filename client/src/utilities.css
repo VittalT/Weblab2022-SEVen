@@ -33,8 +33,10 @@
   --l: 24px;
 }
 
-html {
+body {
   background-color: var(--bg);
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 body,
@@ -135,7 +137,7 @@ form {
 .u-gameHeader {
   font-family: "Metal Mania", cursive;
   font-size: 75px;
-  margin-bottom: 75px;
+  margin-bottom: 0px;
 }
 
 .u-gameContainer {
@@ -147,6 +149,7 @@ form {
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto;
+  margin-top: 0px;
 }
 
 .u-displayText {
