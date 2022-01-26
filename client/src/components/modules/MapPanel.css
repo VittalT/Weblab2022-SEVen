@@ -9,6 +9,7 @@
 .canvasContainer {
   width: 100%;
   text-align: center;
+  padding-bottom: 25px;
 }
 
 .MapPanel-button {
