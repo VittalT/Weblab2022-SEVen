@@ -20,10 +20,10 @@ const Leaderboard = (props: Props) => {
   get("/api/users").then((users: User[]) => {
     peopleToInclude = users.length;
   });
-  const [bestRatings, setBestRatings] = useState<ReactElement[]>([]);
-  const [bestAlltimeRatings, setBestAlltimeRatings] = useState<ReactElement[]>([]);
-  const [highestGamesPlayed, setHighestGamesPlayed] = useState<ReactElement[]>([]);
-  const [highestGamesWon, setHighestGamesWon] = useState<ReactElement[]>([]);
+  const [bestRatings, setBestRatings] = useState<Array<User>>([]);
+  const [bestAlltimeRatings, setBestAlltimeRatings] = useState<Array<User>>([]);
+  const [highestGamesPlayed, setHighestGamesPlayed] = useState<Array<User>>([]);
+  const [highestGamesWon, setHighestGamesWon] = useState<Array<User>>([]);
 
   useEffect(() => {
     // import User from "../../../../shared/User";
@@ -42,52 +42,18 @@ const Leaderboard = (props: Props) => {
     get("/api/users").then((users: User[]) => {
       for (let i = 0; i < users.length; i++) console.log(users[i].rating);
       setBestRatings(
-        users
-          .sort((a: User, b: User) => b.rating - a.rating)
-          .slice(0, peopleToInclude)
-          .map((user: User) => (
-            <LeaderboardRecord
-              recordholder_id={user.googleid}
-              recordholder_name={user.name}
-              record_value={user.rating}
-            />
-          ))
+        users.sort((a: User, b: User) => b.rating - a.rating).slice(0, peopleToInclude)
       );
       setBestAlltimeRatings(
         users
           .sort((a: User, b: User) => b.all_time_rating - a.all_time_rating)
           .slice(0, peopleToInclude)
-          .map((user: User) => (
-            <LeaderboardRecord
-              recordholder_id={user.googleid}
-              recordholder_name={user.name}
-              record_value={user.all_time_rating}
-            />
-          ))
       );
       setHighestGamesPlayed(
-        users
-          .sort((a: User, b: User) => b.games_played - a.games_played)
-          .slice(0, peopleToInclude)
-          .map((user: User) => (
-            <LeaderboardRecord
-              recordholder_id={user.googleid}
-              recordholder_name={user.name}
-              record_value={user.games_played}
-            />
-          ))
+        users.sort((a: User, b: User) => b.games_played - a.games_played).slice(0, peopleToInclude)
       );
       setHighestGamesWon(
-        users
-          .sort((a: User, b: User) => b.games_won - a.games_won)
-          .slice(0, peopleToInclude)
-          .map((user: User) => (
-            <LeaderboardRecord
-              recordholder_id={user.googleid}
-              recordholder_name={user.name}
-              record_value={user.games_won}
-            />
-          ))
+        users.sort((a: User, b: User) => b.games_won - a.games_won).slice(0, peopleToInclude)
       );
     });
   }, []);
@@ -99,24 +65,56 @@ const Leaderboard = (props: Props) => {
         <hr className="Leaderboard-line" />
         <div className="Leaderboard-statsContainer">
           <div className="Leaderboard-column">
-            <h2 className="Leaderboard-header">Current Rating</h2>
+            <h2 className="Leaderboard-header u-flex-justifyCenter">Current Rating</h2>
             <hr className="Leaderboard-line" />
-            {bestRatings}
+            <div className="Leaderboard-panel">
+              {bestRatings.map((user: User) => (
+                <LeaderboardRecord
+                  recordholder_id={user._id}
+                  recordholder_name={user.name}
+                  record_value={user.rating}
+                />
+              ))}
+            </div>
           </div>
           <div className="Leaderboard-column">
             <h2 className="Leaderboard-header">All-time Rating</h2>
             <hr className="Leaderboard-line" />
-            {bestAlltimeRatings}
+            <div className="Leaderboard-panel">
+              {bestAlltimeRatings.map((user: User) => (
+                <LeaderboardRecord
+                  recordholder_id={user._id}
+                  recordholder_name={user.name}
+                  record_value={user.all_time_rating}
+                />
+              ))}
+            </div>
           </div>
           <div className="Leaderboard-column">
             <h2 className="Leaderboard-header">Games Played</h2>
             <hr className="Leaderboard-line" />
-            {highestGamesPlayed}
+            <div className="Leaderboard-panel">
+              {highestGamesPlayed.map((user: User) => (
+                <LeaderboardRecord
+                  recordholder_id={user._id}
+                  recordholder_name={user.name}
+                  record_value={user.games_played}
+                />
+              ))}
+            </div>
           </div>
           <div className="Leaderboard-column">
             <h2 className="Leaderboard-header">Games Won</h2>
             <hr className="Leaderboard-line" />
-            {highestGamesWon}
+            <div className="Leaderboard-panel">
+              {highestGamesWon.map((user: User) => (
+                <LeaderboardRecord
+                  recordholder_id={user._id}
+                  recordholder_name={user.name}
+                  record_value={user.games_won}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <BackButton text="BACK" destPath="/" />
