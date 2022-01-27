@@ -5,10 +5,17 @@
 }
 
 .HTP-ruleContainer {
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-left: 225px;
+  margin-right: 225px;
+  justify-content: center;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
 }
 
 .GIF {
   color: white;
+  width: 600px;
 }

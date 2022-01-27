@@ -7,6 +7,10 @@ import BackButton from "../modules/BackButton";
 import User from "../../../../shared/User";
 import { get, post } from "../../utilities";
 import { navigate } from "@reach/router";
+import { towerConstants } from "../../../../shared/constants";
+import t from "./tower.gif";
+import m from "./minion.gif";
+import e from "./explosion.gif";
 
 type Props = RouteComponentProps & {
   forceNavigate: () => Promise<void>;
@@ -48,19 +52,28 @@ const HowToPlay = (props: Props) => {
             be spawned. Towers must be spawned far enough from nearby towers but also close to some
             ally tower, as shown on the blueprint following the cursor.
           </p>
-          <img className="GIF" src="./tower.gif" width="250"></img>
+          <div className="img-container">
+            <img className="GIF" src={t} alt="Deploy Tower" />
+          </div>
+
           <p className="HTP-rule">
             To deploy a minion, select the size of the minion you wish to deploy, click an ally
             tower and an enemy tower. The minion then travels from the selected ally tower to the
             enemy tower, and then starts dealing damage to the enemy tower.
           </p>
-          <img className="GIF" src="programming.gif" alt="Deploy Minion"></img>
+          <div className="img-container">
+            <img className="GIF" src={m} alt="Deploy Minion"></img>
+          </div>
+
           <p className="HTP-rule">
             To trigger an explosion, click the explosion button, and then press the tower you wish
             to explode. This will destroy all nearby minions and reduce health of all nearby towers,
             both enemy and ally!
           </p>
-          <img className="GIF" src="programming.gif" alt="Create Explosion"></img>
+          <div className="img-container">
+            <img className="GIF" src={e} alt="Create Explosion"></img>
+          </div>
+
           <p className="HTP-rule">
             When one of your towers dies, you may not rebuild another tower in that area for 5
             seconds (this area will also be indicated).
@@ -69,7 +82,7 @@ const HowToPlay = (props: Props) => {
             The map may also have yellow pockets of gold that can be collected by placing a tower on
             them or deploying a minion through them.
           </p>
-          <img className="GIF" src="programming.gif" alt="Collect Gold"></img>
+
           <p className="HTP-rule">
             These are all the rules for gameplay! If there isn't a winner at the end of 10 minutes,
             the player with the most health will be declared the winner. You can now start playing
