@@ -7,10 +7,10 @@ import BackButton from "../modules/BackButton";
 import User from "../../../../shared/User";
 import { get, post } from "../../utilities";
 import { navigate } from "@reach/router";
-import { towerConstants } from "../../../../shared/constants";
-import t from "./tower.gif";
-import m from "./minion.gif";
-import e from "./explosion.gif";
+import towerGIF from "../GIFs/tower.gif";
+import minionGIF from "../GIFs/minion.gif";
+import explosionGIF from "../GIFs/explosion.gif";
+import tommbstoneGIF from "../GIFs/tombstone.gif";
 
 type Props = RouteComponentProps & {
   forceNavigate: () => Promise<void>;
@@ -53,7 +53,7 @@ const HowToPlay = (props: Props) => {
             ally tower, as shown on the blueprint following the cursor.
           </p>
           <div className="img-container">
-            <img className="GIF" src={t} alt="Deploy Tower" />
+            <img className="GIF" src={towerGIF} alt="Place Tower" />
           </div>
 
           <p className="HTP-rule">
@@ -62,7 +62,7 @@ const HowToPlay = (props: Props) => {
             enemy tower, and then starts dealing damage to the enemy tower.
           </p>
           <div className="img-container">
-            <img className="GIF" src={m} alt="Deploy Minion"></img>
+            <img className="GIF" src={minionGIF} alt="Deploy Minion"></img>
           </div>
 
           <p className="HTP-rule">
@@ -71,13 +71,17 @@ const HowToPlay = (props: Props) => {
             both enemy and ally!
           </p>
           <div className="img-container">
-            <img className="GIF" src={e} alt="Create Explosion"></img>
+            <img className="GIF" src={explosionGIF} alt="Create Explosion"></img>
           </div>
 
           <p className="HTP-rule">
             When one of your towers dies, you may not rebuild another tower in that area for 5
             seconds (this area will also be indicated).
           </p>
+          <div className="img-container">
+            <img className="GIF" src={tommbstoneGIF} alt="Tombstone" />
+          </div>
+
           <p className="HTP-rule">
             The map may also have yellow pockets of gold that can be collected by placing a tower on
             them or deploying a minion through them.

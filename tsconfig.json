@@ -101,5 +101,5 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "downlevelIteration": true
   },
-  "include": ["./client/src/index.d.ts"]
+  "include": ["client", "server"]
 }
